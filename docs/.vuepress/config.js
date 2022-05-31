@@ -1,6 +1,7 @@
 const { defaultTheme } = require('@vuepress/theme-default')
 
 module.exports = {
+  base: '/rain9-blog/',
   lang: 'zh-CN',
   title: '你好， 欢迎来到 Rain9 基地 ！',
   description: '这是我的个人站点',
