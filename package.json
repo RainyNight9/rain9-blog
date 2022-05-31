@@ -1,0 +1,15 @@
+{
+  "name": "rain9-blog",
+  "version": "1.0.0",
+  "description": "rain9-blog",
+  "main": "index.js",
+  "author": "BiggerRain <15911122312@163.COM>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.46"
+  }
+}
