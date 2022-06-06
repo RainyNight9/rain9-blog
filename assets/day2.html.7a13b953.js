@@ -1,0 +1,1 @@
+const t={key:"v-4b700c75",path:"/vim/day2.html",title:"day2",lang:"zh-CN",frontmatter:{prev:{text:"day1",link:"./day1.html"},next:{text:"day3",link:"./day3.html"}},excerpt:"",headers:[],git:{updatedTime:165441571e4,contributors:[{name:"BiggerRain",email:"15911122312@163.COM",commits:1}]},filePathRelative:"vim/day2.md"};export{t as data};

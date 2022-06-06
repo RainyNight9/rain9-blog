@@ -1,0 +1,9 @@
+import{_ as e,o as a,c as d,e as r}from"./app.ed02cb61.js";const n={},o=r(`<h1 id="day4" tabindex="-1"><a class="header-anchor" href="#day4" aria-hidden="true">#</a> day4</h1><h2 id="\u76EE\u6807-\u66F4\u6709\u6548\u7387\u7684\u5904\u7406\u5355\u5B57\u7B26-undo-redo" tabindex="-1"><a class="header-anchor" href="#\u76EE\u6807-\u66F4\u6709\u6548\u7387\u7684\u5904\u7406\u5355\u5B57\u7B26-undo-redo" aria-hidden="true">#</a> \u76EE\u6807\uFF1A\u66F4\u6709\u6548\u7387\u7684\u5904\u7406\u5355\u5B57\u7B26 &amp; undo/redo</h2><h2 id="\u65B0\u7684\u77E5\u8BC6\u70B9" tabindex="-1"><a class="header-anchor" href="#\u65B0\u7684\u77E5\u8BC6\u70B9" aria-hidden="true">#</a> \u65B0\u7684\u77E5\u8BC6\u70B9</h2><pre><code>1\u3001\u5220\u9664\u5149\u6807\u6240\u5728\u7684\u5B57\u7B26 \u2014\u2014&gt; x
+2\u3001\u5220\u9664\u5149\u6807\u524D\u7684\u5B57\u7B26 \u2014\u2014&gt; X
+3\u3001\u5220\u9664\u5F53\u524D\u5149\u6807\u7684\u5B57\u7B26\u5E76\u8FDB\u5165 insert \u6A21\u5F0F \u2014\u2014&gt; s
+4\u3001\u5220\u9664\u5F53\u524D\u5149\u6807\u7F29\u5728\u2F8F\u5E76\u8FDB\u2F0A insert \u6A21\u5F0F \u2014\u2014&gt; S
+5\u3001\u66FF\u6362\u4E00\u4E2A\u5B57\u7B26 \u2014\u2014&gt; r
+6\u3001\u66FF\u6362\u591A\u4E2A\u5B57\u7B26 \u2014\u2014&gt; R
+</code></pre><h3 id="undo-redo" tabindex="-1"><a class="header-anchor" href="#undo-redo" aria-hidden="true">#</a> undo/redo</h3><p>\u53EF\u64A4\u9500\u5757 \u8FDB\u2F0A\u63D2\u2F0A\u6A21\u5F0F\u5F00\u59CB\uFF0C\u76F4\u5230\u8FD4\u56DE\u666E\u901A\u6A21\u5F0F\u4E3A\u2F4C\uFF0C\u5728\u6B64\u671F\u95F4\u8F93\u2F0A\u6216\u5220\u9664\u7684\u4EFB\u4F55\u5185\u5BB9\u90FD\u88AB\u5F53\u6210\u2F00\u6B21\u4FEE\u6539</p><pre><code>undo \u2014\u2014&gt; u
+redo \u2014\u2014&gt; C-r
+</code></pre>`,7),t=[o];function h(c,i){return a(),d("div",null,t)}var u=e(n,[["render",h],["__file","day4.html.vue"]]);export{u as default};

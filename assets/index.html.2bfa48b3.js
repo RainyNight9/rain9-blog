@@ -1,0 +1,1 @@
+const e={key:"v-744e09ce",path:"/vim/",title:"learn vim",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1654499829e3,contributors:[{name:"BiggerRain",email:"15911122312@163.COM",commits:2}]},filePathRelative:"vim/index.md"};export{e as data};
