@@ -7,9 +7,8 @@ export default defineUserConfig({
   title: 'Rain9',
   description: 'Rain9 的站点',
   theme: defaultTheme({
-    logo: 'public/images/lover.png',
+    logo: '/images/lover.png',
     repo: 'https://github.com/RainyNight9/rain9-blog',
-    // 默认主题配置
     navbar: [
       {
         text: '首页',
