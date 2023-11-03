@@ -1,3 +1,1 @@
-# Rain9 个人站点
-
-Hello Everybody！欢迎来到我的个人小站，希望现有内容可以帮助到您...
+# Hello VuePress

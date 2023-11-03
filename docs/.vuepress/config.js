@@ -1,13 +1,13 @@
-const { defaultTheme } = require('@vuepress/theme-default')
-const { searchPlugin } = require('@vuepress/plugin-search')
+import { defineUserConfig } from 'vuepress'
+import { defaultTheme } from '@vuepress/theme-default'
+import { searchPlugin } from '@vuepress/plugin-search'
 
-module.exports = {
-  base: '/rain9-blog/',
+export default defineUserConfig({
   lang: 'zh-CN',
-  title: '你好， 欢迎来到 Rain9 基地 ！',
-  description: '这是我的个人站点',
+  title: 'Rain9',
+  description: 'Rain9 的站点',
   theme: defaultTheme({
-    logo: 'https://9abj.com/static/images/lover.png',
+    logo: 'public/images/lover.png',
     repo: 'https://github.com/RainyNight9/rain9-blog',
     // 默认主题配置
     navbar: [
@@ -16,8 +16,16 @@ module.exports = {
         link: '/',
       },
       {
+        text: '前端',
+        link: '/blogs/frontend/',
+      },
+      {
+        text: '后端',
+        link: '/blogs/backend/',
+      },
+      {
         text: 'Vim',
-        link: '/vim/',
+        link: '/blogs/vim/',
       },
       {
         text: 'Rain9 的博客',
@@ -37,4 +45,4 @@ module.exports = {
       },
     }),
   ],
-}
+})
