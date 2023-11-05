@@ -27,10 +27,15 @@ export default defineUserConfig({
         link: '/blogs/vim/',
       },
       {
+        text: 'web3',
+        link: '/blogs/web3/',
+      },
+      {
         text: 'Rain9 的博客',
         children: [
           { text: 'Github', link: 'https://github.com/RainyNight9' },
-          { text: '掘金', link: 'https://juejin.cn/user/1943592288391496/posts' }
+          { text: '掘金', link: 'https://juejin.cn/user/1943592288391496/posts' },
+          { text: '公众号', link: 'https://juejin.cn/user/1943592288391496/posts' }
         ],
       }
     ],
