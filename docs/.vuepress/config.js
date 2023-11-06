@@ -4,6 +4,7 @@ import { searchPlugin } from '@vuepress/plugin-search'
 
 export default defineUserConfig({
   lang: 'zh-CN',
+  head: [['link', { rel: 'icon', href: '/images/lover.png' }]],
   title: 'Rain9',
   description: 'Rain9 的站点',
   theme: defaultTheme({
@@ -23,6 +24,10 @@ export default defineUserConfig({
         link: '/blogs/backend/',
       },
       {
+        text: '算法',
+        link: '/blogs/algorithm/',
+      },
+      {
         text: 'Vim',
         link: '/blogs/vim/',
       },
@@ -35,7 +40,7 @@ export default defineUserConfig({
         children: [
           { text: 'Github', link: 'https://github.com/RainyNight9' },
           { text: '掘金', link: 'https://juejin.cn/user/1943592288391496/posts' },
-          { text: '公众号', link: 'https://juejin.cn/user/1943592288391496/posts' }
+          { text: '公众号', link: 'https://mp.weixin.qq.com/s/kFGRxEwoWiXDgUC_D8mgnQ' }
         ],
       }
     ],
