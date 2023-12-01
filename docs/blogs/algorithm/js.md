@@ -301,3 +301,74 @@ Function.prototype.myApply = (context) => {
   return res
 }
 ```
+
+## 13. 手写 bind 函数
+
+```js
+Function.prototype.myBind = (context) => {
+  if(typeof this !== "function") {
+    throw new Error('must be a function')
+  }
+
+  let args = [...arguments].slice(1)
+  let fn = this
+
+  return function Fn(){
+    return fn.apply(
+      this instanceof Fn ? this : context
+      args.concat(...arguments)
+    )
+  }
+}
+```
+
+## 14. 函数柯里化的实现
+
+```js
+function curry(fn, args) {
+  let len = fn.length
+
+  args = args || []
+  return function(){
+    let subArgs = args.slice(0)
+
+    for(let i=0; i<arguments.length; i++){
+      subArgs.push(arguments[i])
+    }
+
+    if(subArgs.length >= len){
+      return fn.apply(this, subArgs)
+    }else{
+      return curry.call(this, fn, subArgs)
+    }
+  }
+}
+
+// es6 实现
+function curry(fn, ...args){
+  return fn.length <= args.length ? fn(...args) : curry.bind(null, fn, ...args)
+}
+```
+
+## 15. 实现 AJAX 请求
+
+```js
+const SERVICE_URL = "/server"
+
+let xhr = new XMLHttpRequest()
+xhr.open('GET', SERVICE_URL, true)
+xhr.onreadystatechange = function(){
+  if(this.readyState !== 4) return
+  if(this.state === 200){
+    handle(this.response)
+  }else{
+    console.error(this.statusText)
+  }
+}
+xhr.onerror = function(){
+  console.error(this.statusText)
+}
+xhr.responseType = "json"
+xhr.setRequestHeader("Accept", "application/json")
+xhr.send(null)
+```
