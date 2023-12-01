@@ -1,1 +1,0 @@
-const t=JSON.parse('{"key":"v-093ccd68","path":"/blogs/vim/","title":"learn vim","lang":"zh-CN","frontmatter":{},"headers":[],"git":{"updatedTime":1699008790000,"contributors":[{"name":"zhangbin19","email":"zhangbin19@tal.com","commits":1}]},"filePathRelative":"blogs/vim/index.md"}');export{t as data};
