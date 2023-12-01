@@ -1,6 +1,3 @@
----
-theme: channing-cyan
----
 # 链表
 
 ## 基础知识
@@ -9,27 +6,26 @@ theme: channing-cyan
 
 链表是一种由一群结点组成顺序的数据结构。在最简单的情况下，每个结点由一个数据和一个指向在顺序中下一个结点的指针（即连接）而组成。
 
-    1、链表中的每个节点至少包含两部分：数据域 和 指针域
-    2、链表中的每个节点，通过指针域的值，形成线性结构
-    3、查找节点O(n），插入节点O(1)，删除节点O(1)
-    4、不适合快速的定位数据，适合动态的插入和删除数据的应用场景
+1. 链表中的每个节点至少包含两部分：数据域 和 指针域
+2. 链表中的每个节点，通过指针域的值，形成线性结构
+3. 查找节点O(n），插入节点O(1)，删除节点O(1)
+4. 不适合快速的定位数据，适合动态的插入和删除数据的应用场景
 
 实现链表的方式：包括地址、下标(相对地址)、引用。
 
-    1、传统方法(节点+指针) 
-    2、使用数组模拟
-        指针域和数据域分离
-        利用数组存放下标进行索引
+1. 传统方法(节点+指针)
+2. 使用数组模拟
+   - 指针域和数据域分离
+   - 利用数组存放下标进行索引
 
 链表不适合快速的定位数据，适合动态的插入和删除的应用场景。
 
 ## 应用场景
 
-    1、操作系统内的动态内存分配
-    
-    2、LRU 缓存淘汰算法
-        LRU = Least Recently Used(近期最少使用)
-        vue 的 keep-alive 的实现就是 LRU 缓存淘汰算法
+1. 操作系统内的动态内存分配
+2. LRU 缓存淘汰算法
+    - LRU = Least Recently Used(近期最少使用)
+    - vue 的 keep-alive 的实现就是 LRU 缓存淘汰算法
 
 缓存是一种高速的数据结构。缓存其实就是低速设备有效的数据管理手段，缓存是⾼速设备之于低速设备的⼀种称呼。
 
@@ -37,17 +33,17 @@ theme: channing-cyan
 
 ## 经典算法
 
-1、[141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/)
+### 1、[141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/)
 
 思路一：哈希表
 
-    使用哈希表(额外的存储区)存储已经遍历过的节点
+- 使用哈希表(额外的存储区)存储已经遍历过的节点
 
 思路二：快慢指针
 
-    使用快慢指针，快指针一次向前2个节点 慢指针一次向前1个节点
-        有环的链表中，快指针和慢指针最终一定会在环中相遇
-        无环的链表中，快指针会率先访问到链表尾，从而终结检测过程
+- 使用快慢指针，快指针一次向前2个节点 慢指针一次向前1个节点
+  - 有环的链表中，快指针和慢指针最终一定会在环中相遇
+  - 无环的链表中，快指针会率先访问到链表尾，从而终结检测过程
 
 ```ts
 function hasCycle(head: ListNode | null): boolean {
@@ -61,21 +57,21 @@ function hasCycle(head: ListNode | null): boolean {
 };
 ```
 
-2、[142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
+### 2、[142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
 
 思路一：哈希表
 
 思路二：快慢指针
 
-    快指针走的路程是慢指针的2倍
-    考虑快慢指针第一次相遇的情况(设此时慢指针走的路程为x)
-        指定一个指针p放置在链表头部(p每次向前1个节点) 
-        再走一个路程为x的长度
-            慢指针到达了2x的位置
-            指针p到达了x的位置
-            慢指针和p相遇了
-                往前回放一下，在环的入口开始，慢指针和p已经相遇了
-                慢指针和p重叠走了一段距离
+- 快指针走的路程是慢指针的2倍
+  - 考虑快慢指针第一次相遇的情况(设此时慢指针走的路程为x)
+    - 指定一个指针p放置在链表头部(p每次向前1个节点) 
+    - 再走一个路程为x的长度
+      - 慢指针到达了2x的位置
+      - 指针p到达了x的位置
+      - 慢指针和p相遇了
+        - 往前回放一下，在环的入口开始，慢指针和p已经相遇了
+        - 慢指针和p重叠走了一段距离
 
 ```ts
 function detectCycle(head: ListNode | null): ListNode | null {
@@ -119,15 +115,15 @@ function detectCycle(head: ListNode | null): ListNode | null {
 };
 ```
 
-3、[202. 快乐数](https://leetcode.cn/problems/happy-number/)
+### 3、[202. 快乐数](https://leetcode.cn/problems/happy-number/)
 
 思路一：快慢指针
 
 转化为判断链表是否有环的问题
 
-    1、创建一个慢指针，一次走一步，再创建一个快指针，一次走两步。
-    2、当快慢指针相遇，代表形参环路，该数不是快乐数。
-    3、若指针移动过程中，找到了 11，则当前数是一个快乐数。
+1. 创建一个慢指针，一次走一步，再创建一个快指针，一次走两步。
+2. 当快慢指针相遇，代表形参环路，该数不是快乐数。
+3. 若指针移动过程中，找到了 11，则当前数是一个快乐数。
 
 ```ts
 function isHappy(n: number): boolean {
@@ -144,11 +140,11 @@ function getNext(x: number): number {
 }
 ```
 
-4、[206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
+### 4、[206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
 
 思路一：迭代反转
 
-    可以使用虚拟头节点来进行头插法
+- 可以使用虚拟头节点来进行头插法
 
 ```ts
 function reverseList(head: ListNode | null): ListNode | null {
@@ -165,7 +161,7 @@ function reverseList(head: ListNode | null): ListNode | null {
 
 思路二：递归
 
-    一次拆掉一个节点并递归处理剩余的子链表
+- 一次拆掉一个节点并递归处理剩余的子链表
 
 ```ts
 function reverseList(head: ListNode | null): ListNode | null {
@@ -177,12 +173,12 @@ function reverseList(head: ListNode | null): ListNode | null {
 };
 ```
 
-5、[92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
+### 5、[92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
 
 思路一：递归
 
-    使用虚拟头结点(dummy head)
-        通常用于链表的首地址有可能改变的情况
+- 使用虚拟头结点(dummy head)
+  - 通常用于链表的首地址有可能改变的情况
 
 ```ts
 function reverseBetween(head: ListNode | null, left: number, right: number): ListNode | null {
@@ -206,11 +202,11 @@ function reverseN(head: ListNode, n: number): ListNode{
 }
 ```
 
-6、**[25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)**
+### 6、**[25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)**
 
 思路一：递归（困难）
 
-    先判断是否有K个元素，然后对这K个节点进行反转，最后拆装一下首尾部分
+- 先判断是否有K个元素，然后对这K个节点进行反转，最后拆装一下首尾部分
 
 ```ts
 function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
@@ -241,11 +237,11 @@ function _reverseN(head: ListNode | null, n: number): ListNode | null {
 }
 ```
 
-7、[61. 旋转链表](https://leetcode.cn/problems/rotate-list/)
+### 7、[61. 旋转链表](https://leetcode.cn/problems/rotate-list/)
 
 思路一：迭代
 
-    把整个链表首尾相接，向后走K位后将环拆开
+- 把整个链表首尾相接，向后走K位后将环拆开
 
 ```ts
 function rotateRight(head: ListNode | null, k: number): ListNode | null {
@@ -262,7 +258,7 @@ function rotateRight(head: ListNode | null, k: number): ListNode | null {
 };
 ```
 
-8、[24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+### 8、[24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
 ```ts
 // 类似第 6 题解法，是K = 2的简单情形
@@ -305,11 +301,11 @@ function swapPairs(head: ListNode | null): ListNode | null {
 };
 ```
 
-9、[19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
+### 9、[19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
 
 思路一：快慢指针
 
-    找到前一个节点，删除后调整指针
+- 找到前一个节点，删除后调整指针
 
 ```ts
 function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
@@ -321,7 +317,7 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 };
 ```
 
-10、[83. 删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
+### 10、[83. 删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
 
 ```ts
 function deleteDuplicates(head: ListNode | null): ListNode | null {
@@ -338,7 +334,7 @@ function deleteDuplicates(head: ListNode | null): ListNode | null {
 };
 ```
 
-11、[82. 删除排序链表中的重复元素 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/)
+### 11、[82. 删除排序链表中的重复元素 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/)
 
 思路一：快慢指针
 
