@@ -17,3 +17,5 @@ next:
 ## webpack
 
 ## vite
+
+  [vite 相关](./vite.md)
