@@ -4,29 +4,45 @@
 
 ```js
 function create(obj){
-  function Fun(){}
-  Fun.prototype = obj
-  return new Fun()
+  function F(){}
+  F.prototype = obj
+  return new F()
 }
 ```
+
+1. 创建一个空函数
+2. 将此函数的原型设置为我们想要链接到的对象
+3. 返回该函数创建出来的新实例，此实例具有我们希望链接到其上的原型链
 
 ## 2. 手写 instanceof 方法
 
 ```js
 function myInstanceof(left, right) {
-  let proto = Object.getPrototypeOf(left)
+  left = Object.getPrototypeOf(left)
   let prototype = right.prototype
 
   while(true){
-    if(!proto) return false
-    if(proto === prototype) return true
+    if(!left) return false
+    if(left === prototype) return true
 
-    proto = Object.getPrototypeOf(proto)
+    left = Object.getPrototypeOf(left)
   }
 }
 ```
 
+1. 获取对象的原型
+2. 获取类型的原型
+3. 沿着左侧参数（即可能为实例对象）的原型链进行遍历，直到找到右侧参数（即可能为构造函数）对应实例化对象时设定好的原型或者遍历完整个原型链。
+4. 如果找到了就返回 true, 否则返回 false.
+
 ## 3. 手写 new 操作符
+
+在调用 new 的过程中会发生以上四件事情：
+
+1. 首先创建了一个新的空对象
+2. 设置原型，将对象的原型设置为函数的 prototype 对象。
+3. 让函数的 this 指向这个对象，执行构造函数的代码（为这个新对象添加属性）
+4. 判断函数的返回值类型，如果是值类型，返回创建的对象。如果是引用类型，就返回这个引用类型的对象。
 
 ```js
 function myNew() {
@@ -47,6 +63,11 @@ function myNew() {
   return flag ? res : newObj
 }
 ```
+
+1. 判断第一个参数是不是 function
+2. 新建一个空对象，对象的原型为构造函数的 prototype 对象
+3. 执行构造函数，将 this 指向新创建的对象，并传入参数
+4. 判断返回结果
 
 ## 4. 手写 Promise
 
@@ -101,7 +122,7 @@ function myPromise(fn) {
 myPromise.prototype.then = (onResolve, onReject) => {
   onResolve = typeof onResolve === 'function' ? onResolve : function(value) { return value }
 
-  onReject = typeof onReject === 'function' ? onReject : function(error) { throw error }
+  onReject = typeof onReject === 'function' ? onReject : function(error) { throw new Error('错误') }
 
   if (this.state === PENDING) {
     this.resolvedCallbacks.push(onResolve)
@@ -202,9 +223,12 @@ function promiseRace(promises){
 
 ## 8. 手写防抖函数
 
+防抖是指在事件被触发 n 秒后再执行回调，如果在这 n 秒内事件又被触发，则重新计时。这可以使用在一些点击请求的事件上，避免因为用户的多次点击向后端发送多次请求。
+
 ```js
 function debounce(fn, wait){
   let timer = null
+  
   return function() {
     let self = this
     let args = arguments
@@ -223,6 +247,8 @@ function debounce(fn, wait){
 
 ## 9. 手写节流函数
 
+节流是指规定一个单位时间，在这个单位时间内，只能有一次触发事件的回调函数执行，如果在同一个单位时间内某事件被触发多次，只有一次能生效。节流可以使用在 scroll 函数的事件监听上，通过事件节流来降低事件调用的频率。
+
 ```js
 function throttle(fn, delay){
   let cur = Date.now()
@@ -230,7 +256,7 @@ function throttle(fn, delay){
   return function(){
     let self = this
     let args = arguments
-    let now = Date.mow()
+    let now = Date.now()
 
     if(now - cur >= delay) {
       cur = Date.now()
@@ -244,15 +270,15 @@ function throttle(fn, delay){
 
 ```js
 function getType(value){
-  if(value === null) {
+  if (value === null) {
     return value + ''
   }
 
-  if(typeof value === 'object') {
-    let typeArray = Object.prototype.toString.call(value)
-    let type  = typeArray.split(" ")[1].split("")
-    type.pop()
-    return type.join("").toLowerCase()
+  if (typeof value === 'object') {
+    let typeArray = Object.prototype.toString.call(value) // "[Object Array]""
+    let type  = typeArray.split(" ")[1].split("") // [ A, r, r, a, y, ], ]
+    type.pop() // [ A, r, r, a, y ]
+    return type.join("").toLowerCase() // "array"
   } else {
     return typeof value
   }
@@ -291,9 +317,9 @@ Function.prototype.myApply = (context) => {
   context = context || window
   context.fn = this
 
-  if (arguments[1]){
+  if (arguments[1]) {
     res = context.fn(...arguments[1])
-  }else{
+  } else {
     res = context.fn()
   }
 
@@ -326,19 +352,25 @@ Function.prototype.myBind = (context) => {
 
 ```js
 function curry(fn, args) {
+  // 获取函数需要的参数长度
   let len = fn.length
 
   args = args || []
+
   return function(){
     let subArgs = args.slice(0)
-
+    
+    // 拼接得到现有的所有参数
     for(let i=0; i<arguments.length; i++){
       subArgs.push(arguments[i])
     }
 
+    // 判断参数的长度是否已经满足函数所需参数的长度
     if(subArgs.length >= len){
+      // 如果满足，执行函数
       return fn.apply(this, subArgs)
     }else{
+      // 如果不满足，递归返回科里化的函数，等待参数的传入
       return curry.call(this, fn, subArgs)
     }
   }
@@ -346,17 +378,26 @@ function curry(fn, args) {
 
 // es6 实现
 function curry(fn, ...args){
-  return fn.length <= args.length ? fn(...args) : curry.bind(null, fn, ...args)
+  return args.length >= fn.length ? fn(...args) : curry.bind(null, fn, ...args)
 }
 ```
 
-## 15. 实现 AJAX 请求
+## 15. 实现 AJAX
+
+创建AJAX请求的步骤：
+
+1. 创建一个 XMLHttpRequest 对象。
+2. 在这个对象上使用 open 方法创建一个 HTTP 请求，open 方法所需要的参数是请求的方法、请求的地址、是否异步和用户的认证信息。
+3. 在发起请求前，可以为这个对象添加一些信息和监听函数。
+4. 最后调用 sent 方法来向服务器发起请求，可以传入参数作为发送的数据体。
 
 ```js
 const SERVICE_URL = "/server"
 
 let xhr = new XMLHttpRequest()
+
 xhr.open('GET', SERVICE_URL, true)
+
 xhr.onreadystatechange = function(){
   if(this.readyState !== 4) return
   if(this.state === 200){
@@ -370,5 +411,78 @@ xhr.onerror = function(){
 }
 xhr.responseType = "json"
 xhr.setRequestHeader("Accept", "application/json")
+
 xhr.send(null)
+```
+
+## 16. 使用 Promise 封装 AJAX 请求
+
+```js
+function getJSON(url){
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest()
+
+    xhr.open("GET", url, true)
+
+    xhr.onreadystatechange = () => {
+      if(this.readyState !== 4) return
+      if(this.status === 200) {
+        resolve(this.response)
+      }else{
+        reject(new Error(this.stateText))
+      }
+    }
+    xhr.onerror = () => {
+      reject(new Error(this.stateText))
+    }
+    xhr.responseType = "json"
+    xhr.setRequestHeader("Accept", "application/json")
+
+    xhr.send(null)
+  })
+}
+```
+
+## 17. 实现浅拷贝
+
+1. Object.assign()
+2. 扩展运算符
+3. Array.prototype.slice
+4. Array.prototype.concat
+
+```js
+function shallowCopy(obj){
+  if(!obj || typeof obj !== 'object') return
+
+  let newObj = Array.isArray(obj) ? [] : {}
+
+  for(let key in obj){
+    if(obj.getOwnProperty(key)){
+      newObj[key] = obj[key]
+    }
+  }
+
+  return newObj
+}
+```
+
+## 18. 实现深拷贝
+
+1. JSON.parse(JSON.stringify(obj))
+2. 函数库 lodash 的 _.cloneDeep 方法
+
+```js
+function deepCopy(obj){
+  if(!obj || typeof obj !== 'object') return
+
+  let newObj = Array.isArray(obj) ? [] : {}
+  for(let key in obj){
+    if(obj.getOwnProperty(key)) {
+      let flag = typeof obj[key] === 'object'
+      newObj[key] = flag ? deepCopy(obj[key]) : obj[key]
+    }
+  }
+
+  return newObj
+}
 ```
