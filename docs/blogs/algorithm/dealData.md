@@ -344,3 +344,205 @@ function parseQueryParam(url){
   return param
 }
 ```
+
+## 17. 实现数组元素偏移
+
+```js
+const array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+function moveArray(arr, index, offset){
+  const output = [...arr];
+  let element = output.splice(index, 1)[0]
+  let moveStep = index + offset
+  if(moveStep < 0) moveStep++
+  if(moveStep >= arr.length) moveStep -= arr.length
+  output.splice(moveStep, 0, element)
+  return output
+}
+
+console.log(moveArray(numbers, 3, -5));
+```
+
+## 18. 实现一个函数 fn({start,success,fail}) 可以进行 catch/then 的链式调用
+
+```js
+function fn({ start, success, fail }) {
+  return new Promise((resolve, reject) => {
+    try {
+      const result = start();
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  })
+  .then(success)
+  .catch(fail);
+}
+
+// 使用示例
+fn({
+  start: () => 'Start Function',
+  success: result => console.log('Success:', result),
+  fail: error => console.error('Error:', error),
+});
+```
+
+## 19. 一个有序的数组，给定一个目标值，找到两个数组中的元素相加为目标值。要求：一次循环
+
+```js
+function findTwoSum(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+
+    while (left < right) {
+        const sum = nums[left] + nums[right];
+
+        if (sum === target) {
+            return [left, right];
+        } else if (sum < target) {
+            left++;
+        } else { // sum > target
+            right--;
+        }
+    }
+
+    return [-1, -1]; // 没有找到答案
+}
+
+// 测试用例：
+console.log(findTwoSum([2, 7, 11, 15], 9)); // 输出：[0, 1]
+```
+
+```js
+function findTwoSum(nums, target) {
+    const map = {};
+  
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        
+        if (map[complement] !== undefined) {
+            return [map[complement], i];
+        }
+        
+        map[nums[i]] = i;
+    }
+
+    return [-1, -1]; // 没有找到答案
+}
+
+// 测试用例：
+console.log(findTwoSum([3, 2, 4], 6)); // 输出：[1, 2]
+```
+
+## 20. 求树的深度，先写一个树的结构
+
+```js
+class TreeNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+function maxDepth(root) {
+  if (root === null) {
+    return 0;
+  } else {
+    let leftHeight = maxDepth(root.left);
+    let rightHeight = maxDepth(root.right);
+    
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+}
+```
+
+## 21. 最长不重复字符串
+
+```js
+function lengthOfLongestSubstring(s) {
+  let map = new Map()
+  let l = 0
+  let max = 0
+
+  for(let r=0; r<s.length; r++){
+    let item = s[r]
+    if(map.has(item) && map.get(item) >= l){
+      const index = map.get(item)
+      l = index + 1
+    }
+    max = Math.max(max, r - l + 1)
+    map.set(item, r)
+  }
+
+  return max
+}
+
+// 测试用例：
+console.log(lengthOfLongestSubstring("abcabcbb"));   // 输出：3 ("abc" 是最长子串)
+```
+
+```js
+function lengthOfLongestSubstring(s){
+  let arr = []
+  let max = 0
+
+  for(let i=0; i<s.length; i++){
+    let item = s[i]
+    let index = arr.indexOf(item)
+    if(index>-1){
+      arr.splice(0, index+1)
+    }
+    arr.push(item)
+    max = Math.max(max, arr.length)
+  }
+
+  return max
+}
+```
+
+## 22. 旋转链表
+
+```js
+function rotateRight(head, k){
+  if(!head || !head.next) return head
+  
+  let p = head
+  let n = 1
+  while(p.next){
+    p = p.next
+    n++
+  }
+  p.next = head
+
+  k = k % n
+  k = n - k
+
+  while(k--){
+    p = p.next
+  }
+  head = p.next
+  p.next = null
+  return head
+}
+```
+
+## 23. 二分查找
+
+```js
+function search(nums, target){
+  let l = 0, r = nums.length -1
+  while(l <= r){
+    let mid = Math.floor((r-l)/2) + l
+    let midNum = nums[mid]
+    if(midNum===target){
+      return mid
+    }else if(midNum > target){
+      r = mid-1
+    }else if(midNum < target){
+      l = mid+1
+    }
+  }
+  return -1
+}
+```
