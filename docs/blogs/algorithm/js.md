@@ -486,3 +486,16 @@ function deepCopy(obj){
   return newObj
 }
 ```
+
+## 19. 实现 promise.finally
+
+```js
+Promise.prototypeFinally = (cb) => {
+  let p = this.constructor()
+
+  return this.then(
+    value => p.resolve(cb()).then(()=>value),
+    err => p.reject(cb()).then(()=> throw new Error(err))
+  )
+}
+```

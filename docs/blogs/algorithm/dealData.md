@@ -546,3 +546,498 @@ function search(nums, target){
   return -1
 }
 ```
+
+## 24. add(1)(2,3)(4).sum()
+
+```js
+function add(){
+  let total = [...arguments].reduce((a, b)=> a+b, 0)
+
+  function sum(){
+    total += [...arguments].reduce((a, b)=> a+b, 0)
+  }
+
+  sum.toString = function(){
+    return total
+  }
+
+  return sum
+}
+```
+
+## 25. loadsh  的 set 和 get
+
+```js
+let obj = {
+  a: {
+    b: {
+      c: 'hello'
+    }
+  }
+}
+
+function set(obj, path, value){
+  let keys = path.split('.')
+
+  let curObj = obj
+  for(let i=0; i<keys.length-1; i++){
+    if(!(keys[i] in curObj)){
+      curObj[keys[i]] = {}
+    }
+    curObj = curObj[keys[i]]
+  }
+
+  curObj[keys[keys.length-1]] = value
+}
+
+function get(obj, path){
+  let keys = path.split('.')
+  let curObj = obj
+
+  for(let i=0; i<keys.length; i++){
+    let key = keys[i]
+    if(typeof key !== 'object' || !(key in curObj)) {
+      return undefined
+    }
+    curObj = curobj[key]
+  }
+
+  return curObj
+}
+```
+
+## 26. 去除字符串中出现次数最少的字符，不改变顺序
+
+```js
+"ababac" => "ababa"
+"aaabbbcceeff" => "aaabbb"
+
+function deleteLeast(str){
+  let map = {}
+
+  for(let i=0; i<str.length; i++){
+    let item = str[i]
+    if(map[item]){
+      map[item]++
+    }else{
+      map[item] = 1
+    }
+  }
+
+  let min = Math.min(...Object.values(map))
+  for(let key in map){
+    if(map[key]===min){
+      delete map[key]
+    }
+  }
+
+  let res = ''
+  for(let i=0; i<str.length; i++){
+    let item = str[i]
+    if(map[item]){
+      res += item
+    }
+  }
+
+  return res
+}
+```
+
+## 27. 实现一个批量请求函数，要求能够限制并发量
+
+```js
+function multiRequest(urls, max){
+  let len = urls.length
+  let count = 0
+  let res = new Array(len).fill(false)
+
+  return new Promise((relsove, reject)=>{
+    while(count<max){
+      next()
+    }
+
+    function next(){
+      let curNum = count++
+
+      if(curNum >= len){
+        if(!res.includes(false)){
+          resolve(res)
+          return
+        }
+      }
+      
+      fetch(urls[curNum]).then((value)=>{
+        res[curNum] = value
+        if(curNum<len){
+          next()
+        }
+      },err=>{
+        res[curNum] = err
+        if(curNum<len){
+          next()
+        }
+      })
+    }
+  })
+}
+```
+
+## 28. 树转数组
+
+```js
+function treeToArray(tree){
+  let res = []
+  res = getItem(tree, res)
+  return res
+}
+
+function getItem(tree, res){
+  for(let i=0; i<tree.length; i++){
+    let item = tree[i]
+    if(item.children){
+      getItem(item.children, res)
+      delete item.children
+    }
+    res.push(item)
+  }
+  return res
+}
+```
+
+```js
+function treeToArray(tree){
+  let queue = []
+  queue = queue.concat(tree)
+  let res = []
+  while(queue.length){
+    let item = queue.shift()
+    if(item.children){
+      queue = queue.concat(item.children)
+      delete item.children
+    }
+    res.push(item)
+  }
+  return res
+}
+```
+
+## 29. 数组转树
+
+```js
+function arrayToTree(arr, pid){
+  let res = []
+  getItem(arr, pid, res)
+  return res
+}
+
+function getItem(arr, pid, res){
+  for(let i=0; i<arr.length; i++){
+    let item = arr[i]
+    if(item.pid === pid){
+      let newItem = { ...item, children: []}
+      res.push(newItem)
+      getItem(arr, item.id, newItem.children)
+    }
+  }
+}
+```
+
+## 30. 删除链表中的一个节点
+
+```js
+function deleteNode(head, val){
+  if(head.val = val){
+    return head.next
+  }
+
+  let pre = head
+  let cur = head.next
+
+  while(cur){
+    if(cur.val === val){
+      pre.next = cur.next
+      cur = null
+      break
+    }else{
+      pre = cur
+      cur = cur.next
+    }
+  }
+
+  return head
+}
+```
+
+## 31. 实现一个函数，要求能在页面请求很多时候，尽可能的按照顺序的输出返回结果
+
+```js
+function processRequest(urls){
+  let limit = 3
+  let result = []
+
+  let queue = urls.slice(0)
+
+  async function sendRequest(){
+    if(queue.length===0){
+      return result
+    }
+
+    let url = queue.shift()
+    try{
+      let res = await fetch(url)
+      res.push(res)
+      sendRequest()
+    }catch(err){
+      sendRequest()
+    }
+  }
+
+  for(let i=0; i<limit; i++){
+    sendRequest()
+  }
+}
+```
+
+## 32. 自动重试 3 次，任意一次成功就直接返回
+
+```js
+function fetchWithRetry(url, max=3){
+  return new promise((resolve, reject)=>{
+    async function doFetch(count){
+      try{
+        let res = await fetch(url)
+        if(res.code===200){
+          resolve(res)
+        }else{
+          throw new Error()
+        }
+      }catch(err){
+        if(count<max){
+          doFetch(count++)
+        }else{
+          reject(err)
+        }
+      }
+    }
+
+    doFetch(0)
+  })
+}
+```
+
+## 33. 链表中，环的入口节点
+
+```js
+function detectCycle(head){
+  let visited = new Set()
+
+  while(head){
+    if(visited.has(head)){
+      return head
+    }else{
+      visited.add(head)
+      head = head.next
+    }
+  }
+
+  return null
+}
+
+function detectCycle(head){
+  if(!head) return head
+
+  let slow = head
+  let fast = head
+  while(fast && fast.next){
+      slow = slow.next
+      fast = fast.next.next
+
+      if(fast===slow){
+          let cur = head
+          while(cur!== slow){
+              cur = cur.next
+              slow = slow.next
+          }
+          return cur
+      }
+  }
+
+  return null
+}
+```
+
+## 34. 快速排序
+
+```js
+function quickSort(arr){
+  if(arr.length<=1){
+    return arr
+  }
+
+  let midIndex = Math.floor(arr.length/2)
+  let midNum = arr[midIndex]
+
+  let left = []
+  let right = []
+
+  for(let i=0; i<arr.length; i++){
+    if(arr[i]<midNum){
+      left.push(arr[i])
+    }else if(arr[i]>midNum){
+      right.push(arr[i])
+    }
+  }
+  return quickSort(left).concat(midNum, quickSort(right))
+}
+```
+
+## 35. 使用 js 实现有序数组原地去重
+
+```js
+function noRepeat(arr){
+  for(let i=0; i<arr.length-1; i++){
+    for(let j=i+1; j<arr.length; j++){
+      if(arr[j]===arr[i]){
+        arr.splice(j, 1)
+        j--
+      }
+    }
+  }
+  return arr
+}
+
+function noRepeat(arr){
+  for(let i=0; i<arr.length; i++){
+    if(arr.indexOf(arr[i]) !== i){
+      arr.splice(i, 1)
+      i--
+    }
+  }
+  return arr
+}
+
+function noRepeat(arr){
+  return arr.filter((value, index)=>{
+    return arr.indexof(value) !== index
+  })
+}
+
+function noRepeat(arr){
+  return Array.from(new Set(arr))
+}
+```
+
+## 36. 计算数组中时间的平均时间
+
+```js
+const arr = ['8:15', '6:35', '11:22']
+
+function averageTime(arr){
+  const totalMinutes = arr.reduce((pre, cur)=>{
+    const [hour, minutes] = cur.split(':')
+    return pre + Number(hour) * 60 + Number(minutes)
+  })
+
+  let averageMinutes = Math.floor(totalMinutes/arr.length)
+  const averageHour = Math.floor(averageMinutes/60)
+  averageMinutes = averageMinutes % 60
+  averageMinutes = averageMinutes<10 ? '0'+averageMinutes :  averageMinutes
+  return averageHour + ':' + averageMinutes
+}
+```
+
+## 37. 间隔执行函数
+
+```js
+function createRepeat(fn, repeat, interval){
+  let count = 0
+
+  return (param) => {
+    const timer = setInterval(()=>{
+      fn(param)
+      count++
+      if(count>=repaet){
+        clearInterval(timer)
+      }
+    }, interval * 1000)
+  }
+}
+```
+
+## 38. 不定长二维数组的全排列
+
+```js
+const arr = [[A, B], [a, b], [1, 2]]
+// [Aa1, Aa2, Ab1, Ab2, .....]
+
+// 动态规划
+function permutate(arr){
+  let res = arr[0].slice()
+
+  for(let i=1; i<arr.length; i++){
+    let pre = res.slice()
+    res = []
+    pre.forEach(item=>{
+      arr[i].forEach(cur=>{
+        res.push(item+cur)
+      })
+    })
+  }
+  return res
+}
+```
+
+## 39. 两个字符串对比，得出结论都做了什么操作？插入什么？删除什么？
+
+```js
+pre = 'abcde123'
+cur = '1abc123'
+
+
+function diffAction(pre, cur){
+
+}
+```
+
+## 40. 从数组中，获取最小正数的索引值
+
+```js
+function findMinIndex(arr){
+  let min = Math.max(...arr)
+  let index = -1
+
+  for(let i=0; i<arr.length; i++){
+    if(arr[i]>=0 && arr[i]<min){
+      min = arr[i]
+      index = i
+    }
+  }
+
+  return index
+}
+```
+
+## 41. 实现一个等待函数，支持让 async 函数在执行时暂停一段时间，函数的入参为暂停的时间
+
+```js
+function wait(time){
+  return new Promise(resolve=> setTimeout(()=>resolve()), time)
+}
+
+async function run(){
+  console.log('start')
+  await wait(2000)
+  console.log('end')
+}
+```
+
+## 42. 使用正则，筛选出数组中只包含大小写字母的字符串，并将结果转大写
+
+```js
+function filterArr(arr){
+  arr = arr.fliter(item => {
+    return /^[A-Za-z]+$/.test(item)
+  })
+  return arr.map(item => item.toUpperCase())
+}
+```
