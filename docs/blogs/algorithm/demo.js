@@ -148,3 +148,7 @@ function set(obj, path, value){
   curObj[keys[keys.length-1]] = value
 }
 
+function get(obj, path){
+  
+}
+
