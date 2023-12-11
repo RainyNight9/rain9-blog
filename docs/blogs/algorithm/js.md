@@ -500,3 +500,18 @@ Promise.prototype.finally = (cb) => {
 }
 ```
 
+## 20. 手写 reduce
+
+```js
+Array.prototype.myReduce = function(callback, initValue=0){
+    if(typeof callback !== 'function'){
+        throw new Error('bi xu shi hanshu')
+    }
+    let result = initValue
+    for (let i = 0; i < this.length; i++) {
+        result = callback(result, this[i], i, this)
+    }
+    return result
+}
+```
+
