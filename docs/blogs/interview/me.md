@@ -48,7 +48,7 @@
     - 原理 qiankun（single-spa + sandbox + import-html-entry）、Shadow DOM、Proxy
 2. 埋点
    - 背景 其他部门的方案不合适、特殊参数上传、耗时埋点等
-   - 技术 gif
+   - 技术 gif（跨域、远离dom，不阻塞、体积小，节约流量）
    - 成果 7个 项目接入
 3. 站内信
    - 背景
@@ -65,6 +65,7 @@
 7. 低代码
    - 背景 内部没有、外部暴漏公司用户信息、文档无法当 url 用
    - 技术 Function(`"use strict";const formData = ${JSON.stringify(formData)};return (${string})`)()
+   - 技术 动态关联
    - 成果 生成 url、10 分钟/人、4 期 7 个产品
 8. 性能优化
    - 加载指标：秒开率
@@ -89,9 +90,36 @@
      - 按需引入
      - KeepAlive
 
+## 小程序
+
+- 微信客户端（渲染层webview、逻辑层jsCore、Native）
+- 相比h5：运行环境内置解析器、更多系统权限、渲染机制（逻辑、渲染分开）
+- 随用随搜，用完即走
+- 微信流量入口
+- 安全
+- 开发门槛低
+- 降低兼容性限制
+- 缺点: 用户留存、体积受限（2M）、受控微信
+- 优化: 压缩代码、及时清理无用代码和文件、图片等 cdn、分包加载、onLoad加载请求、减少https、缓存、骨架屏、合并setData）
+
+## 混合开发
+
 ## JavaScript
 
 ## Vue
+
+- Vue里 template 到 render 经过哪些步骤
+  - 解析模板（Parsing Template） ——》AST
+  - 静态分析（Static Analysis）静态节点、动态节点
+  - 生成渲染函数（Generate Render Function）
+  - 创建虚拟DOM（Create Virtual DOM）
+  - 更新虚拟DOM（Update Virtual DOM）
+  - 实际DOM操作（Actual DOM Manipulation）
+- Object.defineProperty 有哪些缺陷，Vue3 为什么要用 proxy 重构
+  - 不能监听数组的变化 重写数组方法
+  - 不能监听对象属性新增和删除
+  - 深层监听困难
+  - 初始化阶段递归执行 Object.defineProperty 带来的性能负担
 
 ## ES6
 
@@ -101,19 +129,19 @@
   - WeakSet 结构与 Set 类似，也是不重复的值的集合。WeakSet 的成员只能是对象和 Symbol 值
   - WeakSet 中的对象都是弱引用
 - Proxy
-  ```js
-  var obj = new Proxy({}, {
-    get: function (target, propKey, receiver) {
-        console.log(`getting ${propKey}!`);
-        return Reflect.get(target, propKey, receiver);
-    },
-    set: function (target, propKey, value, receiver) {
-        console.log(`setting ${propKey}!`);
-        return Reflect.set(target, propKey, value, receiver);
-    }
-    });
-  ```
-- Promise
+
+```js
+var obj = new Proxy({}, {
+  get: function (target, propKey, receiver) {
+      console.log(`getting ${propKey}!`);
+      return Reflect.get(target, propKey, receiver);
+  },
+  set: function (target, propKey, value, receiver) {
+      console.log(`setting ${propKey}!`);
+      return Reflect.set(target, propKey, value, receiver);
+  }
+});
+```
 
 ## RN、Hybrid
 
@@ -137,6 +165,3 @@
 - 规范化：面向完成需求的整个研发流程，梳理需求管理、视觉交互设计、评审、开发、联调、测试验收、上线部署和质量监控等相关的规范，进一步建设工具来约束研发过程中的不确定性。
 - 平台化：将支撑研发的有关工具和系统聚合起来，通过套件和插件的设计模式，实现对不同场景的支撑，支持在线初始化项目，横向打通研发的整体链路。
 - 体系化：紧跟前沿技术，集成低代码、在线IDE、代码智能生成或推荐等能力，建设需求、设计、研发、运营一体化的云开发平台。
-
-
-

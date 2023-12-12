@@ -1,6 +1,6 @@
 # 数据处理手写题
 
-## 1. 实现日期格式化函数
+## 1. 日期格式化函数
 
 ```js
 function dateFormat = (date, format) => {
@@ -28,7 +28,7 @@ b = b + a // b 加上了这个差值，值就变成了 a
 a = b - a // 减去 这个差值 就是 b
 ```
 
-## 3. 实现数组的乱序输出
+## 3. 数组的乱序输出
 
 ```js
 for(let i=0; i<arr.length; i++){
@@ -38,7 +38,7 @@ for(let i=0; i<arr.length; i++){
 }
 ```
 
-## 4. 实现数组元素求和
+## 4. 数组元素求和
 
 ```js
 // 一维数组
@@ -54,7 +54,7 @@ function sums(arr){
 }
 ```
 
-## 5. 实现数组的扁平化
+## 5. 数组的扁平化
 
 ```js
 // 递归
@@ -116,7 +116,7 @@ function flatten(arr){
 }
 ```
 
-## 6. 实现数组去重
+## 6. 数组去重
 
 ```js
 // Set
@@ -140,7 +140,7 @@ function uniqueArray(arr){
 }
 ```
 
-## 7. 实现数组的 flat 方法
+## 7. 数组的 flat 方法
 
 ```js
 function flatArray(arr, depth){
@@ -154,7 +154,7 @@ function flatArray(arr, depth){
 }
 ```
 
-## 8. 实现数组的 push 方法
+## 8. 数组的 push 方法
 
 ```js
 Array.prototype.myPush = () => {
@@ -165,7 +165,7 @@ Array.prototype.myPush = () => {
 }
 ```
 
-## 9. 实现数组的 filter 方法
+## 9. 数组的 filter 方法
 
 ```js
 Array.prototype.myFilter = (fn) => {
@@ -182,7 +182,7 @@ Array.prototype.myFilter = (fn) => {
 }
 ```
 
-## 10. 实现数组的 map 方法
+## 10. 数组的 map 方法
 
 ```js
 Array.prototype.myMap = (fn) => {
@@ -199,7 +199,7 @@ Array.prototype.myMap = (fn) => {
 }
 ```
 
-## 11. 实现字符串的 repeat 方法
+## 11. 字符串的 repeat 方法
 
 ```js
 function repeat(str, n){
@@ -214,7 +214,7 @@ function repeat(str, n){
 }
 ```
 
-## 12. 实现字符串翻转
+## 12. 字符串翻转
 
 ```js
 function reverse(str){
@@ -222,7 +222,7 @@ function reverse(str){
 }
 ```
 
-## 13. 将数字每千分位用逗号隔开
+## 13. 将数字每千分位用逗号隔开，钱，金额，money
 
 ```js
 function format(num){
@@ -253,7 +253,7 @@ function format(num){
 }
 ```
 
-## 14. 实现类数组转化为数组
+## 14. 类数组转化为数组
 
 ```js
 Array.prototype.slice.call(arrayLike);
@@ -345,7 +345,7 @@ function parseQueryParam(url){
 }
 ```
 
-## 17. 实现数组元素偏移
+## 17. 数组元素偏移
 
 ```js
 const array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -363,7 +363,7 @@ function moveArray(arr, index, offset){
 console.log(moveArray(numbers, 3, -5));
 ```
 
-## 18. 实现一个函数 fn({start,success,fail}) 可以进行 catch/then 的链式调用
+## 18. 一个函数 fn({start,success,fail}) 可以进行 catch/then 的链式调用
 
 ```js
 function fn({ start, success, fail }) {
@@ -565,7 +565,7 @@ function add(){
 }
 ```
 
-## 25. loadsh  的 set 和 get
+## 25. lodash  的 set 和 get
 
 ```js
 let obj = {
@@ -643,7 +643,7 @@ function deleteLeast(str){
 }
 ```
 
-## 27. 实现一个批量请求函数，要求能够限制并发量
+## 27. 一个批量请求函数，要求能够限制并发量
 
 ```js
 function multiRequest(urls, max){
@@ -1035,11 +1035,25 @@ async function run(){
 
 ```js
 function filterArr(arr){
-  arr = arr.fliter(item => {
+  arr = arr.filter(item => {
     return /^[A-Za-z]+$/.test(item)
   })
   return arr.map(item => item.toUpperCase())
 }
 ```
 
-## 43. 
+## 43. 合并多个 Map
+
+```ts
+function mapConcat<T, U>(...maps: Map<T, U>[]): Map<T, U> {
+  const result = new Map<T, U>();
+
+  for (const map of maps) {
+    for (const [key, value] of map) {
+      result.set(key, value);
+    }
+  }
+
+  return result;
+}
+```
