@@ -1,10 +1,25 @@
 {
   "cSpell.words": [
+    "alloc",
+    "callbackify",
+    "Cipheriv",
+    "cnpm",
     "concat",
+    "Deno",
+    "extname",
+    "Hdvcmxk",
     "instanceof",
+    "nodeeventloop",
     "proto",
+    "readdir",
+    "readline",
     "reco",
+    "swno",
+    "taobao",
+    "tencent",
+    "tsup",
     "typeof",
-    "vuepress"
+    "vuepress",
+    "Weex"
   ]
 }
