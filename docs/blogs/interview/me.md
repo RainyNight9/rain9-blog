@@ -20,7 +20,14 @@
 
 1. 微前端
     - 背景 多项目合一，登录，公共模块，技术栈（公共模块升级和管理、技术栈差异、用户体验差）
+<<<<<<< HEAD
     - 调研 iframe、single-spa、qiankun、micro-app、无界
+=======
+    - 调研 iframe、single-spa、qiankun
+    - 问题 子应用资源访问全部通过主应用进行，主应用通过 activeRule 识别子应用，通过 fetch 的方式请求子应用对应的 html 文件，从而激活子应用，所以主应用的 main.js 等资源需要放到域名根目录下
+    - 问题 主应用未触发 fetch 的动作，也就不会去获取子应用的资源 由于路由配置规范不统一，子应用路由被网关的配置拦截
+    - 在一般的情况下，用 qiankun 的数据传递方式就可以，但是对于复杂数据，或者在自定义导航的情况下，qiankun 数据传递就会由于网速等原因在某些地方监听不到数据
+>>>>>>> a0ba90235492836a0fe6b10ec1ea8c1a5c036989
     - 问题 main.js 要放到域名根目录下、前端资源部署到OSS，前端访问不再走网关、依赖循环、联调问题、html缓存问题
     - 结果 多合一、共享公共能力
     - 原理 qiankun（single-spa + sandbox + import-html-entry）、Shadow DOM、Proxy
