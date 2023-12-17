@@ -69,7 +69,7 @@ async function step(){
 step()
 ```
 
-## 2. 实现每隔一秒打印 1,2,3,4
+## 2. 每隔一秒打印 1,2,3,4
 
 ```js
 // let
@@ -151,7 +151,7 @@ imgAsync(url).then(()=>{
 })
 ```
 
-## 5. 实现发布-订阅模式
+## 5. 发布-订阅模式
 
 ```js
 class EventCenter{
@@ -254,7 +254,7 @@ function sortVersion(arr){
 }
 ```
 
-## 8. 实现prototype继承
+## 8. prototype继承
 
 ```js
 function Super(flag1){
@@ -274,7 +274,7 @@ subInstance.flag1 // true
 subInstance.flag2 // false
 ```
 
-## 9. 实现双向数据绑定
+## 9. 双向数据绑定
 
 ```js
 let obj = {}
@@ -299,7 +299,7 @@ input.addEventListener('keyup', (e)=>{
 })
 ```
 
-## 10. 实现简单路由
+## 10. 简单路由
 
 ```js
 class Route{
@@ -324,7 +324,7 @@ class Route{
 }
 ```
 
-## 11. 实现斐波那契数列
+## 11. 斐波那契数列
 
 ```js
 // 递归
@@ -435,7 +435,7 @@ function isCircular(obj, visited = new Set()){
 }
 ```
 
-## 15. 手写高并发控制
+## 15. 高并发控制
 
 ```js
 // Promise模拟接口异步请求
