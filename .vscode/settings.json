@@ -9,6 +9,7 @@
     "extname",
     "Hdvcmxk",
     "instanceof",
+    "mpvue",
     "nodeeventloop",
     "proto",
     "readdir",
@@ -19,7 +20,10 @@
     "tencent",
     "tsup",
     "typeof",
+    "unionid",
     "vuepress",
-    "Weex"
+    "Weex",
+    "wxlogin",
+    "wxyl"
   ]
 }

@@ -18,4 +18,10 @@ next:
 
 ## vite
 
-  [vite 相关](./vite.md)
+[vite 相关](./vite.md)
+
+## 小程序
+
+[小程序相关](./minprogram.md)
+
+## 其他
