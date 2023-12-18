@@ -60,10 +60,10 @@
    - 交互到绘制延迟（Interaction to Next Paint，INP）200ms 500ms
    - 累积布局偏移 (Cumulative Layout Shift，CLS) 0.1 0.25
    - 第一字节时间 (Time to First Byte，TTFB) 800ms 1800ms
-   - 预取回 Prefetch
-   - 预加载 Preload
-   - 预连接 Preconnect
-   - DNS预取回 DNS-Prefetch
+   - 预取回 Prefetch <link rel="prefetch"
+   - 预加载 Preload <link rel="preload"
+   - 预连接 Preconnect <link rel="preconnect"
+   - DNS预取回 DNS-Prefetch <link rel="dns-prefetch"
    - 加载指标：秒开率
    - 稳定性指标：资源错误,JS报错,Crash,内存堆栈,接口报错等
    - 操作体验指标：响应延迟，卡顿，滚动流畅性，TTI（可交互时间） FID(用户首次和页面交互到页面响应交互的时间)
