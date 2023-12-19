@@ -1057,3 +1057,90 @@ function mapConcat<T, U>(...maps: Map<T, U>[]): Map<T, U> {
   return result;
 }
 ```
+
+## 44. 嵌套括号
+
+- 给你一个字符串，只包含{} [] (),字符串会随机嵌套，请你帮忙判断一下字符串是否闭合，是否合法；
+- 如果闭合且合法输出true，否则输出false
+- 合法规则：{} [] () 依次嵌套，可同级嵌套；
+
+- 示例 1：
+- 输入：arr = {[()]}  闭合且合法
+- 输出：true
+
+- 示例 2：
+- 输入：arr = {[(())]}  闭合且合法
+- 输出：true
+
+- 示例 3：
+- 输入：arr = {[()}  未闭合
+- 输出：false
+
+- 示例 4：
+- 输入：arr = {([()])}  出现（）嵌套[]的情况，不合法
+- 输出：false
+
+```js
+function isValid(s) {
+  const stack = [];
+  const map = {
+      '(': ')',
+      '[': ']',
+      '{': '}'
+  };
+
+  for (let i = 0; i < s.length; i++) {
+      const item = s[i]
+      if (item === '{' && !stack.includes('[') && !stack.includes('(')) {
+        stack.push(item);
+      } else if (item === '[' && !stack.includes('(')) {
+        stack.push(item);
+      } else if (item === '(') {
+        stack.push(item);
+      } else {
+          let topElement = stack.length !== 0 ? stack.pop() : '#';
+          if (item !== map[topElement]) {
+              return false;
+          }
+      }
+  }
+  return !stack.length;
+}
+
+console.log(isValid('{[()]}'));     // 输出：true
+console.log(isValid('{[(())]}'));   // 输出：true
+console.log(isValid('{[()}'));      // 输出：false
+console.log(isValid('{([()])}'));   // 输出：false 
+```
+
+## 45. 最长公共前缀
+
+- 编写一个函数来查找字符串数组中的最长公共前缀。
+- 如果不存在公共前缀，返回空字符串 ""。
+
+- 示例 1:
+- 输入: ["flower","flow","flight"]
+- 输出: "fl"
+
+- 示例 2:
+- 输入: ["dog","racecar","car"]
+- 输出: ""
+
+```js
+function longestCommonPrefix(strs) {
+  if (!strs.length) return "";
+  let prefix = strs[0];
+  
+  for (let i = 1; i < strs.length; i++) {
+    while (strs[i].indexOf(prefix) !== 0) {
+      prefix = prefix.substring(0, prefix.length - 1);
+      if (!prefix) return "";
+    }
+  }
+  return prefix;
+}
+
+// 测试用例
+console.log(longestCommonPrefix(["flower","flow","flight"])); // 输出: "fl"
+console.log(longestCommonPrefix(["dog","racecar","car"])); // 输出: ""
+```

@@ -1,3 +1,8 @@
+# 输出题
+
+## 1. window、obj、person1、person2
+
+```js
 var name = 'window'
 
 function Person(name) {
@@ -27,3 +32,4 @@ person1.obj.foo1().call(person2) // person2
 person1.obj.foo2()() // obj
 person1.obj.foo2.call(person2)() // person2
 person1.obj.foo2().call(person2) // obj
+```
