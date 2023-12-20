@@ -1144,3 +1144,97 @@ function longestCommonPrefix(strs) {
 console.log(longestCommonPrefix(["flower","flow","flight"])); // 输出: "fl"
 console.log(longestCommonPrefix(["dog","racecar","car"])); // 输出: ""
 ```
+
+## 46. deleteABCD
+
+输入是一个仅由大写英文字母组成的字符串。您需要把字符串中所有的连续 "AB" 和 "CD" 子串进行删除，直到不再包含连续 "AB" 和 "CD" 子串后，返回字符串的长度。
+
+注意：
+
+1.删除字符串后可能会导致新的连续"AB"和"CD"字符串，例如AABB，最终返回为0。
+2.只需要最后返回正确结果即可，不需要真正对字符串进行删除操作
+
+代码复杂度要求：o(n)
+
+例子： 
+- s = AAABCDBE
+- 删除AB
+- AACDBE
+- 删除CD
+- AABE
+- 删除AB
+- AE
+
+```js
+function remove(s) {
+    let stack = [];
+    for(let i=0; i<s.length; i++) {
+        if(stack.length > 0 && ((s[i] === 'B' && stack[stack.length-1] === 'A') || (s[i] === 'D' && stack[stack.length-1] === 'C'))) {
+            stack.pop();
+        } else {
+            stack.push(s[i]);
+        }
+    }
+    return stack.length;
+}
+let s = "AAABCDBE";
+console.log(remove(s)); // 输出：2
+```
+
+## 47. 数组中对称项有几个
+
+const arr = ['AB', 'BA', 'XX', 'BA', 'AB', 'CD', 'XX', 'AB']
+
+1. (i, j) i < j
+2. arr[i] 和 arr[j] 是对称的
+3. 输出有多少对？7
+
+```js
+function countPairs(arr) {
+    const map = new Map();
+    let count = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        const str = arr[i];
+        const reversedStr = str.split('').reverse().join('');
+
+        if (map.has(reversedStr)) {
+            count += map.get(reversedStr);
+        }
+
+        if (!map.has(str)) map.set(str, 0);
+        map.set(str, map.get(str) + 1);
+    }
+    return count;
+}
+
+const arr = ['AB', 'BA', 'XX', 'BA', 'AB', 'CD', 'XX', 'AB'];
+console.log(countPairs(arr)); // 输出结果为7
+```
+
+## 48. 股票最大利润
+
+- 数组
+- 输入：[7,1,5,3,6,4]
+- 输出：5
+- 解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+- 注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+
+```js
+function maxProfit(prices) {
+    let minPrice = Infinity;
+    let maxProfit = 0;
+
+    for (let i = 0; i < prices.length; i++) {
+        if (prices[i] < minPrice) {
+            minPrice = prices[i];
+        } else if (prices[i] - minPrice > maxProfit) {
+            maxProfit = prices[i] - minPrice;
+        }
+    }
+
+    return maxProfit;
+}
+
+console.log(maxProfit([7,1,5,3,6,4])); // 输出: 5
+```

@@ -33,3 +33,42 @@ person1.obj.foo2()() // obj
 person1.obj.foo2.call(person2)() // person2
 person1.obj.foo2().call(person2) // obj
 ```
+
+## 2. promise
+
+```js
+const promise = new Promise((resolve, reject) => {
+    console.log(1);
+    resolve();
+    console.log(2);
+    throw new Error('error')
+    reject('error');
+})
+promise.then(() => {
+    console.log(3);
+}).catch(e => console.log(e))
+
+
+console.log(4);
+
+// 1243
+```
+
+## 3. 
+
+```js
+var id = 'GLOBAL';
+var obj = {
+  id: 'OBJ',
+  a: function(){
+    console.log(this.id);
+  },
+  b: () => {
+    console.log(this.id);
+  }
+};
+obj.a(); // OBJ
+obj.b(); // GLOBAL
+new obj.a(); // undefined
+new obj.b(); // error
+```

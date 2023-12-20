@@ -1,29 +1,35 @@
-var name = 'window'
+const axios = require('axios');
 
-function Person(name) {
-  this.name = name
-  this.obj = {
-    name: 'obj',
-    foo1: function () {
-      return function () {
-        console.log(this.name)
-      }
-    },
-    foo2: function () {
-      return () => {
-        console.log(this.name)
-      }
-    }
-  }
-}
+const concurrency = (urls, limit) => {
+    const result = [];
+    let count = 0,
+        completed = 0;
+    const len = urls.length;
+    if (len === 0) return Promise.resolve([]);
+    
+    return new Promise(resolve => {
+        const next = () => {
+            if (count === len) return;
 
-var person1 = new Person('person1')
-var person2 = new Person('person2')
-
-person1.obj.foo1()()   // window
-person1.obj.foo1.call(person2)() // window
-person1.obj.foo1().call(person2) // person2
-
-person1.obj.foo2()() // obj
-person1.obj.foo2.call(person2)() // person2
-person1.obj.foo2().call(person2) // obj
+            let current = count++;
+            axios
+                .get(urls[current])
+                .then(res => {
+                    result[current] = { result: res.data };
+                })
+                .catch(err => {
+                    result[current] = { error: err };
+                })
+                .finally(() => {
+                    if (++completed === len) {
+                        resolve(result);
+                    } else {
+                        next();
+                    }
+                });
+        };
+        while (count < limit) {
+            next();
+        }
+    });
+};
