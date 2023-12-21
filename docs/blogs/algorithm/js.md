@@ -551,7 +551,7 @@ function deepCopy(obj){
 
   let newObj = Array.isArray(obj) ? [] : {}
   for(let key in obj){
-    if(obj.getOwnProperty(key)) {
+    if(obj.hasOwnProperty(key)) {
       let flag = typeof obj[key] === 'object'
       newObj[key] = flag ? deepCopy(obj[key]) : obj[key]
     }

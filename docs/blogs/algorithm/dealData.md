@@ -265,7 +265,7 @@ Array.prototype.concat.apply([], arrayLike);
 Array.from(arrayLike);
 ```
 
-## 15. 将 js 对象转化为树形结构
+## 15. js 对象转化为树形结构
 
 ```js
 // 转换前：
