@@ -354,4 +354,72 @@ function deleteDuplicates(head: ListNode | null): ListNode | null {
 };
 ```
 
+### 12. 删除链表中的一个节点
+
+```js
+function deleteNode(head, val){
+  if(head.val = val){
+    return head.next
+  }
+
+  let pre = head
+  let cur = head.next
+
+  while(cur){
+    if(cur.val === val){
+      pre.next = cur.next
+      cur = null
+      break
+    }else{
+      pre = cur
+      cur = cur.next
+    }
+  }
+
+  return head
+}
+```
+
+### 13. 链表中，环的入口节点
+
+```js
+function detectCycle(head){
+  let visited = new Set()
+
+  while(head){
+    if(visited.has(head)){
+      return head
+    }else{
+      visited.add(head)
+      head = head.next
+    }
+  }
+
+  return null
+}
+
+function detectCycle(head){
+  if(!head) return head
+
+  let slow = head
+  let fast = head
+  while(fast && fast.next){
+      slow = slow.next
+      fast = fast.next.next
+
+      if(fast===slow){
+          let cur = head
+          while(cur!== slow){
+              cur = cur.next
+              slow = slow.next
+          }
+          return cur
+      }
+  }
+
+  return null
+}
+```
+
+
 未完结，敬请期待！

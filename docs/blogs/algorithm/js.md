@@ -340,7 +340,7 @@ function throttle(fn, delay){
 }
 ```
 
-## 13. 手写类型判断函数
+## 13. 类型判断
 
 ```js
 function getType(value){
@@ -422,7 +422,7 @@ Function.prototype.myBind = (context) => {
 }
 ```
 
-## 17. 函数柯里化的实现
+## 17. 函数柯里化
 
 ```js
 function curry(fn, args) {
@@ -453,6 +453,23 @@ function curry(fn, args) {
 // es6 实现
 function curry(fn, ...args){
   return args.length >= fn.length ? fn(...args) : curry.bind(null, fn, ...args)
+}
+```
+
+```js
+// add(1)(2,3)(4).sum()
+function add(){
+  let total = [...arguments].reduce((a, b)=> a+b, 0)
+
+  function sum(){
+    total += [...arguments].reduce((a, b)=> a+b, 0)
+  }
+
+  sum.toString = function(){
+    return total
+  }
+
+  return sum
 }
 ```
 
@@ -489,7 +506,7 @@ xhr.setRequestHeader("Accept", "application/json")
 xhr.send(null)
 ```
 
-## 19. 使用 Promise 封装 AJAX 请求
+## 19. Promise 封装 AJAX
 
 ```js
 function getJSON(url){
@@ -573,5 +590,140 @@ Array.prototype.myReduce = function(callback, initValue=0){
         result = callback(result, this[i], i, this)
     }
     return result
+}
+```
+
+## 23. 手写 map
+
+```js
+// 用 reduce 实现 map
+Array.prototype.myMap = function(callback){
+    if(typeof callback !== 'function'){
+        throw new Error('bi xu shi hanshu')
+    }
+    return this.reduce((pre, cur, index) => {
+        pre.push(callback(cur, index, this))
+        return pre
+    }, [])
+}
+```
+
+```js
+Array.prototype.myMap = (fn) => {
+  if(typeof fn !== 'function') {
+    throw new Error('must be a function')
+  }
+
+  let arr = this
+  let res = []
+  for(let i=0; i<arr.length; i++){
+    res.push(fn(arr[i]))
+  }
+  return res
+}
+```
+
+## 24. 数组的 flat 方法
+
+```js
+// 递归
+function flatten(arr){
+  let res = []
+
+  for(let i=0; i<arr.length; i++){
+    if(Array.isArray(arr[i])){
+      res = res.concat(flatten(arr[i]))
+    }else{
+      res.push(arr[i])
+    }
+  }
+  
+  return res
+}
+```
+
+```js
+// reduce
+function flatten(arr){
+  return arr.reduce((prev, next) => {
+    return prev.concat(Array.isArray(next) ? flatten(next) : next)
+  }, [])
+}
+```
+
+```js
+// 扩展运算符
+function flatten(arr){
+  while(arr.some(item => Array.isArray(item))) {
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+```
+
+```js
+// toString 和 split
+function flatten(arr){
+  return arr.toString().split(',')
+}
+```
+
+```js
+// es6 的 flat
+function flatten(arr){
+  return arr.flat(Infinity)
+}
+```
+
+```js
+// 正则 和 JSON 方法
+function flatten(arr){
+  let str = JSON.stringify(arr)
+  str = str.replace(/(\[|\])/g, '')
+  str = '[' + str + ']'
+  return JSON.parse(str)
+}
+```
+
+## 25. 数组的 push 方法
+
+```js
+Array.prototype.myPush = () => {
+  for(let i=0; i<arguments.length; i++){
+    this[this.length] = arguments[i]
+  }
+  return this.length
+}
+```
+
+## 26. 数组的 filter 方法
+
+```js
+Array.prototype.myFilter = (fn) => {
+  if(typeof fn !== 'function') {
+    throw new Error('must be a function')
+  }
+
+  let arr = this
+  let res = []
+  for(let i=0; i<arr.length; i++){
+    fn(arr[i]) && res.push(arr[i])
+  }
+  return res
+}
+```
+
+## 27. 字符串的 repeat 方法
+
+```js
+function repeat(str, n){
+  return (new Array(n + 1)).join(str)
+}
+```
+
+```js
+// 递归
+function repeat(str, n){
+  return n > 0 ? str.concat(repeat(str, --n)) : str
 }
 ```

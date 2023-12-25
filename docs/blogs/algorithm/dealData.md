@@ -54,69 +54,7 @@ function sums(arr){
 }
 ```
 
-## 5. 数组的扁平化
-
-```js
-// 递归
-function flatten(arr){
-  let res = []
-
-  for(let i=0; i<arr.length; i++){
-    if(Array.isArray(arr[i])){
-      res = res.concat(flatten(arr[i]))
-    }else{
-      res.push(arr[i])
-    }
-  }
-  
-  return res
-}
-```
-
-```js
-// reduce
-function flatten(arr){
-  return arr.reduce((prev, next) => {
-    return prev.concat(Array.isArray(next) ? flatten(next) : next)
-  }, [])
-}
-```
-
-```js
-// 扩展运算符
-function flatten(arr){
-  while(arr.some(item => Array.isArray(item))) {
-    arr = [].concat(...arr)
-  }
-  return arr
-}
-```
-
-```js
-// toString 和 split
-function flatten(arr){
-  return arr.toString().split(',')
-}
-```
-
-```js
-// es6 的 flat
-function flatten(arr){
-  return arr.flat(Infinity)
-}
-```
-
-```js
-// 正则 和 JSON 方法
-function flatten(arr){
-  let str = JSON.stringify(arr)
-  str = str.replace(/(\[|\])/g, '')
-  str = '[' + str + ']'
-  return JSON.parse(str)
-}
-```
-
-## 6. 数组去重
+## 5. 数组去重
 
 ```js
 // Set
@@ -140,78 +78,232 @@ function uniqueArray(arr){
 }
 ```
 
-## 7. 数组的 flat 方法
-
 ```js
-function flatArray(arr, depth){
-  if(!Array.isArray(arr) || depth <= 0) {
-    return arr
+// js 实现有序数组原地去重
+function noRepeat(arr){
+  for(let i=0; i<arr.length-1; i++){
+    for(let j=i+1; j<arr.length; j++){
+      if(arr[j]===arr[i]){
+        arr.splice(j, 1)
+        j--
+      }
+    }
   }
-
-  return arr.reduce((prev, next) => {
-    return prev.concat(Array.isArray(next) ? flatArray(next, depth-1) : next)
-  }, [])
+  return arr
 }
-```
 
-## 8. 数组的 push 方法
-
-```js
-Array.prototype.myPush = () => {
-  for(let i=0; i<arguments.length; i++){
-    this[this.length] = arguments[i]
-  }
-  return this.length
-}
-```
-
-## 9. 数组的 filter 方法
-
-```js
-Array.prototype.myFilter = (fn) => {
-  if(typeof fn !== 'function') {
-    throw new Error('must be a function')
-  }
-
-  let arr = this
-  let res = []
+function noRepeat(arr){
   for(let i=0; i<arr.length; i++){
-    fn(arr[i]) && res.push(arr[i])
+    if(arr.indexOf(arr[i]) !== i){
+      arr.splice(i, 1)
+      i--
+    }
   }
-  return res
+  return arr
+}
+
+function noRepeat(arr){
+  return arr.filter((value, index)=>{
+    return arr.indexof(value) !== index
+  })
 }
 ```
 
-## 10. 数组的 map 方法
+## 6. 合并多个 Map
 
-```js
-Array.prototype.myMap = (fn) => {
-  if(typeof fn !== 'function') {
-    throw new Error('must be a function')
+```ts
+function mapConcat<T, U>(...maps: Map<T, U>[]): Map<T, U> {
+  const result = new Map<T, U>();
+
+  for (const map of maps) {
+    for (const [key, value] of map) {
+      result.set(key, value);
+    }
   }
 
-  let arr = this
-  let res = []
-  for(let i=0; i<arr.length; i++){
-    res.push(fn(arr[i]))
-  }
-  return res
+  return result;
 }
 ```
 
-## 11. 字符串的 repeat 方法
+## 7. 嵌套括号
+
+- 给你一个字符串，只包含{} [] (),字符串会随机嵌套，请你帮忙判断一下字符串是否闭合，是否合法；
+- 如果闭合且合法输出true，否则输出false
+- 合法规则：{} [] () 依次嵌套，可同级嵌套；
+
+- 示例 1：
+- 输入：arr = {[()]}  闭合且合法
+- 输出：true
+
+- 示例 2：
+- 输入：arr = {[(())]}  闭合且合法
+- 输出：true
+
+- 示例 3：
+- 输入：arr = {[()}  未闭合
+- 输出：false
+
+- 示例 4：
+- 输入：arr = {([()])}  出现（）嵌套[]的情况，不合法
+- 输出：false
 
 ```js
-function repeat(str, n){
-  return (new Array(n + 1)).join(str)
+function isValid(s) {
+  const stack = [];
+  const map = {
+      '(': ')',
+      '[': ']',
+      '{': '}'
+  };
+
+  for (let i = 0; i < s.length; i++) {
+      const item = s[i]
+      if (item === '{' && !stack.includes('[') && !stack.includes('(')) {
+        stack.push(item);
+      } else if (item === '[' && !stack.includes('(')) {
+        stack.push(item);
+      } else if (item === '(') {
+        stack.push(item);
+      } else {
+          let topElement = stack.length !== 0 ? stack.pop() : '#';
+          if (item !== map[topElement]) {
+              return false;
+          }
+      }
+  }
+  return !stack.length;
 }
+
+console.log(isValid('{[()]}'));     // 输出：true
+console.log(isValid('{[(())]}'));   // 输出：true
+console.log(isValid('{[()}'));      // 输出：false
+console.log(isValid('{([()])}'));   // 输出：false 
 ```
 
+## 8. 最长公共前缀
+
+- 编写一个函数来查找字符串数组中的最长公共前缀。
+- 如果不存在公共前缀，返回空字符串 ""。
+
+- 示例 1:
+- 输入: ["flower","flow","flight"]
+- 输出: "fl"
+
+- 示例 2:
+- 输入: ["dog","racecar","car"]
+- 输出: ""
+
 ```js
-// 递归
-function repeat(str, n){
-  return n > 0 ? str.concat(repeat(str, --n)) : str
+function longestCommonPrefix(strs) {
+  if (!strs.length) return "";
+  let prefix = strs[0];
+  
+  for (let i = 1; i < strs.length; i++) {
+    while (strs[i].indexOf(prefix) !== 0) {
+      prefix = prefix.substring(0, prefix.length - 1);
+      if (!prefix) return "";
+    }
+  }
+  return prefix;
 }
+
+// 测试用例
+console.log(longestCommonPrefix(["flower","flow","flight"])); // 输出: "fl"
+console.log(longestCommonPrefix(["dog","racecar","car"])); // 输出: ""
+```
+
+## 9. deleteABCD
+
+输入是一个仅由大写英文字母组成的字符串。您需要把字符串中所有的连续 "AB" 和 "CD" 子串进行删除，直到不再包含连续 "AB" 和 "CD" 子串后，返回字符串的长度。
+
+注意：
+
+1.删除字符串后可能会导致新的连续"AB"和"CD"字符串，例如AABB，最终返回为0。
+2.只需要最后返回正确结果即可，不需要真正对字符串进行删除操作
+
+代码复杂度要求：o(n)
+
+例子： 
+- s = AAABCDBE
+- 删除AB
+- AACDBE
+- 删除CD
+- AABE
+- 删除AB
+- AE
+
+```js
+function remove(s) {
+    let stack = [];
+    for(let i=0; i<s.length; i++) {
+        if(stack.length > 0 && ((s[i] === 'B' && stack[stack.length-1] === 'A') || (s[i] === 'D' && stack[stack.length-1] === 'C'))) {
+            stack.pop();
+        } else {
+            stack.push(s[i]);
+        }
+    }
+    return stack.length;
+}
+let s = "AAABCDBE";
+console.log(remove(s)); // 输出：2
+```
+
+## 10. 数组中对称项有几个
+
+const arr = ['AB', 'BA', 'XX', 'BA', 'AB', 'CD', 'XX', 'AB']
+
+1. (i, j) i < j
+2. arr[i] 和 arr[j] 是对称的
+3. 输出有多少对？7
+
+```js
+function countPairs(arr) {
+    const map = new Map();
+    let count = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        const str = arr[i];
+        const reversedStr = str.split('').reverse().join('');
+
+        if (map.has(reversedStr)) {
+            count += map.get(reversedStr);
+        }
+
+        if (!map.has(str)) map.set(str, 0);
+        map.set(str, map.get(str) + 1);
+    }
+    return count;
+}
+
+const arr = ['AB', 'BA', 'XX', 'BA', 'AB', 'CD', 'XX', 'AB'];
+console.log(countPairs(arr)); // 输出结果为7
+```
+
+## 11. 股票最大利润
+
+- 数组
+- 输入：[7,1,5,3,6,4]
+- 输出：5
+- 解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+- 注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+
+```js
+function maxProfit(prices) {
+    let minPrice = Infinity;
+    let maxProfit = 0;
+
+    for (let i = 0; i < prices.length; i++) {
+        if (prices[i] < minPrice) {
+            minPrice = prices[i];
+        } else if (prices[i] - minPrice > maxProfit) {
+            maxProfit = prices[i] - minPrice;
+        }
+    }
+
+    return maxProfit;
+}
+
+console.log(maxProfit([7,1,5,3,6,4])); // 输出: 5
 ```
 
 ## 12. 字符串翻转
@@ -222,7 +314,7 @@ function reverse(str){
 }
 ```
 
-## 13. 将数字每千分位用逗号隔开，钱，金额，money
+## 13. 千分位隔开，钱，金额，money
 
 ```js
 function format(num){
@@ -265,7 +357,7 @@ Array.prototype.concat.apply([], arrayLike);
 Array.from(arrayLike);
 ```
 
-## 15. js 对象转化为树形结构
+## 15. 对象转树形
 
 ```js
 // 转换前：
@@ -327,7 +419,68 @@ function jsonToTree(data){
 }
 ```
 
-## 16. 解析 URL Params 为对象
+## 16. 树转数组
+
+```js
+function treeToArray(tree){
+  let res = []
+  res = getItem(tree, res)
+  return res
+}
+
+function getItem(tree, res){
+  for(let i=0; i<tree.length; i++){
+    let item = tree[i]
+    if(item.children){
+      getItem(item.children, res)
+      delete item.children
+    }
+    res.push(item)
+  }
+  return res
+}
+```
+
+```js
+function treeToArray(tree){
+  let queue = []
+  queue = queue.concat(tree)
+  let res = []
+  while(queue.length){
+    let item = queue.shift()
+    if(item.children){
+      queue = queue.concat(item.children)
+      delete item.children
+    }
+    res.push(item)
+  }
+  return res
+}
+```
+
+## 17. 数组转树
+
+```js
+function arrayToTree(arr, pid){
+  let res = []
+  getItem(arr, pid, res)
+  return res
+}
+
+function getItem(arr, pid, res){
+  for(let i=0; i<arr.length; i++){
+    let item = arr[i]
+    if(item.pid === pid){
+      let newItem = { ...item, children: []}
+      res.push(newItem)
+      getItem(arr, item.id, newItem.children)
+    }
+  }
+}
+```
+
+
+## 18. 解析 URL Params 为对象
 
 ```js
 function parseQueryParam(url){
@@ -345,7 +498,7 @@ function parseQueryParam(url){
 }
 ```
 
-## 17. 数组元素偏移
+## 19. 数组元素偏移
 
 ```js
 const array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -363,7 +516,7 @@ function moveArray(arr, index, offset){
 console.log(moveArray(numbers, 3, -5));
 ```
 
-## 18. 一个函数 fn({start,success,fail}) 可以进行 catch/then 的链式调用
+## 20. 函数 fn({start,success,fail}) 可以 catch/then 的链式调用
 
 ```js
 function fn({ start, success, fail }) {
@@ -387,7 +540,7 @@ fn({
 });
 ```
 
-## 19. 一个有序的数组，给定一个目标值，找到两个数组中的元素相加为目标值。要求：一次循环
+## 21. 一个有序的数组，给定一个目标值，找到两个数组中的元素相加为目标值。要求：一次循环
 
 ```js
 function findTwoSum(nums, target) {
@@ -434,7 +587,7 @@ function findTwoSum(nums, target) {
 console.log(findTwoSum([3, 2, 4], 6)); // 输出：[1, 2]
 ```
 
-## 20. 求树的深度，先写一个树的结构
+## 22. 求树的深度，先写一个树的结构
 
 ```js
 class TreeNode {
@@ -457,7 +610,7 @@ function maxDepth(root) {
 }
 ```
 
-## 21. 最长不重复字符串
+## 23. 最长不重复字符串
 
 ```js
 function lengthOfLongestSubstring(s) {
@@ -501,33 +654,7 @@ function lengthOfLongestSubstring(s){
 }
 ```
 
-## 22. 旋转链表
-
-```js
-function rotateRight(head, k){
-  if(!head || !head.next) return head
-  
-  let p = head
-  let n = 1
-  while(p.next){
-    p = p.next
-    n++
-  }
-  p.next = head
-
-  k = k % n
-  k = n - k
-
-  while(k--){
-    p = p.next
-  }
-  head = p.next
-  p.next = null
-  return head
-}
-```
-
-## 23. 二分查找
+## 24. 二分查找
 
 ```js
 function search(nums, target){
@@ -544,24 +671,6 @@ function search(nums, target){
     }
   }
   return -1
-}
-```
-
-## 24. add(1)(2,3)(4).sum()
-
-```js
-function add(){
-  let total = [...arguments].reduce((a, b)=> a+b, 0)
-
-  function sum(){
-    total += [...arguments].reduce((a, b)=> a+b, 0)
-  }
-
-  sum.toString = function(){
-    return total
-  }
-
-  return sum
 }
 ```
 
@@ -643,291 +752,7 @@ function deleteLeast(str){
 }
 ```
 
-## 27. 一个批量请求函数，要求能够限制并发量
-
-```js
-function multiRequest(urls, max){
-  let len = urls.length
-  let count = 0
-  let res = new Array(len).fill(false)
-
-  return new Promise((relsove, reject)=>{
-    while(count<max){
-      next()
-    }
-
-    function next(){
-      let curNum = count++
-
-      if(curNum >= len){
-        if(!res.includes(false)){
-          resolve(res)
-          return
-        }
-      }
-      
-      fetch(urls[curNum]).then((value)=>{
-        res[curNum] = value
-        if(curNum<len){
-          next()
-        }
-      },err=>{
-        res[curNum] = err
-        if(curNum<len){
-          next()
-        }
-      })
-    }
-  })
-}
-```
-
-## 28. 树转数组
-
-```js
-function treeToArray(tree){
-  let res = []
-  res = getItem(tree, res)
-  return res
-}
-
-function getItem(tree, res){
-  for(let i=0; i<tree.length; i++){
-    let item = tree[i]
-    if(item.children){
-      getItem(item.children, res)
-      delete item.children
-    }
-    res.push(item)
-  }
-  return res
-}
-```
-
-```js
-function treeToArray(tree){
-  let queue = []
-  queue = queue.concat(tree)
-  let res = []
-  while(queue.length){
-    let item = queue.shift()
-    if(item.children){
-      queue = queue.concat(item.children)
-      delete item.children
-    }
-    res.push(item)
-  }
-  return res
-}
-```
-
-## 29. 数组转树
-
-```js
-function arrayToTree(arr, pid){
-  let res = []
-  getItem(arr, pid, res)
-  return res
-}
-
-function getItem(arr, pid, res){
-  for(let i=0; i<arr.length; i++){
-    let item = arr[i]
-    if(item.pid === pid){
-      let newItem = { ...item, children: []}
-      res.push(newItem)
-      getItem(arr, item.id, newItem.children)
-    }
-  }
-}
-```
-
-## 30. 删除链表中的一个节点
-
-```js
-function deleteNode(head, val){
-  if(head.val = val){
-    return head.next
-  }
-
-  let pre = head
-  let cur = head.next
-
-  while(cur){
-    if(cur.val === val){
-      pre.next = cur.next
-      cur = null
-      break
-    }else{
-      pre = cur
-      cur = cur.next
-    }
-  }
-
-  return head
-}
-```
-
-## 31. 实现一个函数，要求能在页面请求很多时候，尽可能的按照顺序的输出返回结果
-
-```js
-function processRequest(urls){
-  let limit = 3
-  let result = []
-
-  let queue = urls.slice(0)
-
-  async function sendRequest(){
-    if(queue.length===0){
-      return result
-    }
-
-    let url = queue.shift()
-    try{
-      let res = await fetch(url)
-      res.push(res)
-      sendRequest()
-    }catch(err){
-      sendRequest()
-    }
-  }
-
-  for(let i=0; i<limit; i++){
-    sendRequest()
-  }
-}
-```
-
-## 32. 自动重试 3 次，任意一次成功就直接返回
-
-```js
-function fetchWithRetry(url, max=3){
-  return new promise((resolve, reject)=>{
-    async function doFetch(count){
-      try{
-        let res = await fetch(url)
-        if(res.code===200){
-          resolve(res)
-        }else{
-          throw new Error()
-        }
-      }catch(err){
-        if(count<max){
-          doFetch(count++)
-        }else{
-          reject(err)
-        }
-      }
-    }
-
-    doFetch(0)
-  })
-}
-```
-
-## 33. 链表中，环的入口节点
-
-```js
-function detectCycle(head){
-  let visited = new Set()
-
-  while(head){
-    if(visited.has(head)){
-      return head
-    }else{
-      visited.add(head)
-      head = head.next
-    }
-  }
-
-  return null
-}
-
-function detectCycle(head){
-  if(!head) return head
-
-  let slow = head
-  let fast = head
-  while(fast && fast.next){
-      slow = slow.next
-      fast = fast.next.next
-
-      if(fast===slow){
-          let cur = head
-          while(cur!== slow){
-              cur = cur.next
-              slow = slow.next
-          }
-          return cur
-      }
-  }
-
-  return null
-}
-```
-
-## 34. 快速排序
-
-```js
-function quickSort(arr){
-  if(arr.length<=1){
-    return arr
-  }
-
-  let midIndex = Math.floor(arr.length/2)
-  let midNum = arr[midIndex]
-
-  let left = []
-  let right = []
-
-  for(let i=0; i<arr.length; i++){
-    if(arr[i]<midNum){
-      left.push(arr[i])
-    }else if(arr[i]>midNum){
-      right.push(arr[i])
-    }
-  }
-  return quickSort(left).concat(midNum, quickSort(right))
-}
-```
-
-## 35. 使用 js 实现有序数组原地去重
-
-```js
-function noRepeat(arr){
-  for(let i=0; i<arr.length-1; i++){
-    for(let j=i+1; j<arr.length; j++){
-      if(arr[j]===arr[i]){
-        arr.splice(j, 1)
-        j--
-      }
-    }
-  }
-  return arr
-}
-
-function noRepeat(arr){
-  for(let i=0; i<arr.length; i++){
-    if(arr.indexOf(arr[i]) !== i){
-      arr.splice(i, 1)
-      i--
-    }
-  }
-  return arr
-}
-
-function noRepeat(arr){
-  return arr.filter((value, index)=>{
-    return arr.indexof(value) !== index
-  })
-}
-
-function noRepeat(arr){
-  return Array.from(new Set(arr))
-}
-```
-
-## 36. 计算数组中时间的平均时间
+## 27. 计算数组中时间的平均时间
 
 ```js
 const arr = ['8:15', '6:35', '11:22']
@@ -946,7 +771,7 @@ function averageTime(arr){
 }
 ```
 
-## 37. 间隔执行函数
+## 28. 间隔执行函数
 
 ```js
 function createRepeat(fn, repeat, interval){
@@ -964,7 +789,7 @@ function createRepeat(fn, repeat, interval){
 }
 ```
 
-## 38. 不定长二维数组的全排列
+## 29. 不定长二维数组的全排列
 
 ```js
 const arr = [[A, B], [a, b], [1, 2]]
@@ -987,7 +812,7 @@ function permutate(arr){
 }
 ```
 
-## 39. 两个字符串对比，得出结论都做了什么操作？插入什么？删除什么？
+## 30. 两个字符串对比，得出结论都做了什么操作？插入什么？删除什么？
 
 ```js
 pre = 'abcde123'
@@ -999,7 +824,7 @@ function diffAction(pre, cur){
 }
 ```
 
-## 40. 从数组中，获取最小正数的索引值
+## 31. 从数组中，获取最小正数的索引值
 
 ```js
 function findMinIndex(arr){
@@ -1017,7 +842,7 @@ function findMinIndex(arr){
 }
 ```
 
-## 41. 实现一个等待函数，支持让 async 函数在执行时暂停一段时间，函数的入参为暂停的时间
+## 32. 实现一个等待函数，支持让 async 函数在执行时暂停一段时间，函数的入参为暂停的时间
 
 ```js
 function wait(time){
@@ -1031,7 +856,7 @@ async function run(){
 }
 ```
 
-## 42. 使用正则，筛选出数组中只包含大小写字母的字符串，并将结果转大写
+## 33. 使用正则，筛选出数组中只包含大小写字母的字符串，并将结果转大写
 
 ```js
 function filterArr(arr){
@@ -1042,199 +867,3 @@ function filterArr(arr){
 }
 ```
 
-## 43. 合并多个 Map
-
-```ts
-function mapConcat<T, U>(...maps: Map<T, U>[]): Map<T, U> {
-  const result = new Map<T, U>();
-
-  for (const map of maps) {
-    for (const [key, value] of map) {
-      result.set(key, value);
-    }
-  }
-
-  return result;
-}
-```
-
-## 44. 嵌套括号
-
-- 给你一个字符串，只包含{} [] (),字符串会随机嵌套，请你帮忙判断一下字符串是否闭合，是否合法；
-- 如果闭合且合法输出true，否则输出false
-- 合法规则：{} [] () 依次嵌套，可同级嵌套；
-
-- 示例 1：
-- 输入：arr = {[()]}  闭合且合法
-- 输出：true
-
-- 示例 2：
-- 输入：arr = {[(())]}  闭合且合法
-- 输出：true
-
-- 示例 3：
-- 输入：arr = {[()}  未闭合
-- 输出：false
-
-- 示例 4：
-- 输入：arr = {([()])}  出现（）嵌套[]的情况，不合法
-- 输出：false
-
-```js
-function isValid(s) {
-  const stack = [];
-  const map = {
-      '(': ')',
-      '[': ']',
-      '{': '}'
-  };
-
-  for (let i = 0; i < s.length; i++) {
-      const item = s[i]
-      if (item === '{' && !stack.includes('[') && !stack.includes('(')) {
-        stack.push(item);
-      } else if (item === '[' && !stack.includes('(')) {
-        stack.push(item);
-      } else if (item === '(') {
-        stack.push(item);
-      } else {
-          let topElement = stack.length !== 0 ? stack.pop() : '#';
-          if (item !== map[topElement]) {
-              return false;
-          }
-      }
-  }
-  return !stack.length;
-}
-
-console.log(isValid('{[()]}'));     // 输出：true
-console.log(isValid('{[(())]}'));   // 输出：true
-console.log(isValid('{[()}'));      // 输出：false
-console.log(isValid('{([()])}'));   // 输出：false 
-```
-
-## 45. 最长公共前缀
-
-- 编写一个函数来查找字符串数组中的最长公共前缀。
-- 如果不存在公共前缀，返回空字符串 ""。
-
-- 示例 1:
-- 输入: ["flower","flow","flight"]
-- 输出: "fl"
-
-- 示例 2:
-- 输入: ["dog","racecar","car"]
-- 输出: ""
-
-```js
-function longestCommonPrefix(strs) {
-  if (!strs.length) return "";
-  let prefix = strs[0];
-  
-  for (let i = 1; i < strs.length; i++) {
-    while (strs[i].indexOf(prefix) !== 0) {
-      prefix = prefix.substring(0, prefix.length - 1);
-      if (!prefix) return "";
-    }
-  }
-  return prefix;
-}
-
-// 测试用例
-console.log(longestCommonPrefix(["flower","flow","flight"])); // 输出: "fl"
-console.log(longestCommonPrefix(["dog","racecar","car"])); // 输出: ""
-```
-
-## 46. deleteABCD
-
-输入是一个仅由大写英文字母组成的字符串。您需要把字符串中所有的连续 "AB" 和 "CD" 子串进行删除，直到不再包含连续 "AB" 和 "CD" 子串后，返回字符串的长度。
-
-注意：
-
-1.删除字符串后可能会导致新的连续"AB"和"CD"字符串，例如AABB，最终返回为0。
-2.只需要最后返回正确结果即可，不需要真正对字符串进行删除操作
-
-代码复杂度要求：o(n)
-
-例子： 
-- s = AAABCDBE
-- 删除AB
-- AACDBE
-- 删除CD
-- AABE
-- 删除AB
-- AE
-
-```js
-function remove(s) {
-    let stack = [];
-    for(let i=0; i<s.length; i++) {
-        if(stack.length > 0 && ((s[i] === 'B' && stack[stack.length-1] === 'A') || (s[i] === 'D' && stack[stack.length-1] === 'C'))) {
-            stack.pop();
-        } else {
-            stack.push(s[i]);
-        }
-    }
-    return stack.length;
-}
-let s = "AAABCDBE";
-console.log(remove(s)); // 输出：2
-```
-
-## 47. 数组中对称项有几个
-
-const arr = ['AB', 'BA', 'XX', 'BA', 'AB', 'CD', 'XX', 'AB']
-
-1. (i, j) i < j
-2. arr[i] 和 arr[j] 是对称的
-3. 输出有多少对？7
-
-```js
-function countPairs(arr) {
-    const map = new Map();
-    let count = 0;
-
-    for (let i = 0; i < arr.length; i++) {
-        const str = arr[i];
-        const reversedStr = str.split('').reverse().join('');
-
-        if (map.has(reversedStr)) {
-            count += map.get(reversedStr);
-        }
-
-        if (!map.has(str)) map.set(str, 0);
-        map.set(str, map.get(str) + 1);
-    }
-    return count;
-}
-
-const arr = ['AB', 'BA', 'XX', 'BA', 'AB', 'CD', 'XX', 'AB'];
-console.log(countPairs(arr)); // 输出结果为7
-```
-
-## 48. 股票最大利润
-
-- 数组
-- 输入：[7,1,5,3,6,4]
-- 输出：5
-- 解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
-- 注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
-
-```js
-function maxProfit(prices) {
-    let minPrice = Infinity;
-    let maxProfit = 0;
-
-    for (let i = 0; i < prices.length; i++) {
-        if (prices[i] < minPrice) {
-            minPrice = prices[i];
-        } else if (prices[i] - minPrice > maxProfit) {
-            maxProfit = prices[i] - minPrice;
-        }
-    }
-
-    return maxProfit;
-}
-
-console.log(maxProfit([7,1,5,3,6,4])); // 输出: 5
-```

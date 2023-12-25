@@ -12,6 +12,8 @@ github 仓库：https://github.com/RainyNight9/dataStructure-algorithm
 
   [js手写题](./js.md)
 
+  [排序题](./sort.md)
+
   [数据处理手写题](./dealData.md)
 
   [场景应用题](./scene.md)
