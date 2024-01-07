@@ -488,3 +488,60 @@ multiRequest([
     console.log(result);
 });
 ```
+
+## 16. 实现一个函数，要求能在页面请求很多时候，尽可能的按照顺序的输出返回结果
+
+```js
+function processRequest(urls){
+  let limit = 3
+  let result = []
+
+  let queue = urls.slice(0)
+
+  async function sendRequest(){
+    if(queue.length===0){
+      return result
+    }
+
+    let url = queue.shift()
+    try{
+      let res = await fetch(url)
+      res.push(res)
+      sendRequest()
+    }catch(err){
+      sendRequest()
+    }
+  }
+
+  for(let i=0; i<limit; i++){
+    sendRequest()
+  }
+}
+```
+
+## 17. 自动重试 3 次，任意一次成功就直接返回
+
+```js
+function fetchWithRetry(url, max=3){
+  return new promise((resolve, reject)=>{
+    async function doFetch(count){
+      try{
+        let res = await fetch(url)
+        if(res.code===200){
+          resolve(res)
+        }else{
+          throw new Error()
+        }
+      }catch(err){
+        if(count<max){
+          doFetch(count++)
+        }else{
+          reject(err)
+        }
+      }
+    }
+
+    doFetch(0)
+  })
+}
+```
