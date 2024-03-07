@@ -867,3 +867,25 @@ function filterArr(arr){
 }
 ```
 
+## 34. 原始的扁平对象转换为如下的非扁平对象
+
+```js
+let obj = {
+  'a.b.c.d': 1
+};
+
+let result = {};
+
+for (let key in obj) {
+  let keys = key.split('.');
+  let temp = result;
+  for (let i = 0; i < keys.length - 1; i++) {
+    temp[keys[i]] = temp[keys[i]] || {};
+    temp = temp[keys[i]];
+  }
+  temp[keys[keys.length - 1]] = obj[key];
+}
+
+console.log(result);
+```
+

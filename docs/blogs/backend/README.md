@@ -8,7 +8,7 @@ nest
 
 next
 
-nuxt
+[nuxt](./nuxt.md)
 
 ## golang
 
