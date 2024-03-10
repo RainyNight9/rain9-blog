@@ -16,6 +16,8 @@ css 模块
 
 ## 浏览器
 
+[强制缓存和协商缓存](./huancun.md)
+
 ## vue
 
 vue 设计
@@ -37,6 +39,8 @@ vue 源码
 uni-app
 
 taro
+
+[移动端适配](./yidongduanshipei.md)
 
 ## 低代码
 
