@@ -1,6 +1,6 @@
-# jsBridge
+# JSBridge
 
-## 什么是JSBridge
+## 什么是 JSBridge
 
 主要是给 JavaScript 提供调用 Native 功能的接口，让混合开发中的前端部分可以方便地使用 Native 的功能（例如：地址位置、摄像头）。
 
