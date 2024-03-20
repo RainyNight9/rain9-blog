@@ -81,19 +81,19 @@ python node nest next
     - 2. 可以通过 addEventListener 给 window 添加事件监听器来解决该问题：
     - 3. window.addEventListener('eventName', eventHandler);
 
-   - 问题：微应用文件更新之后，访问的还是旧版文件，老是让用户清缓存。
-   - 服务器需要给微应用的 index.html 配置一个响应头：Cache-Control no-cache，意思就是每次请求都检查是否更新。
-   - location = /index.html {
-      add_header Cache-Control no-cache;
-   }
+    - 问题：微应用文件更新之后，访问的还是旧版文件，老是让用户清缓存。
+    - 服务器需要给微应用的 index.html 配置一个响应头：Cache-Control no-cache，意思就是每次请求都检查是否更新。
+    - location = /index.html {
+         add_header Cache-Control no-cache;
+      }
 
-   - 问题：微应用打包之后 css 中的字体文件和图片加载 404
-   - 原因是 qiankun 将外链样式改成了内联样式，但是字体文件和背景图片的加载路径是相对路径。
-   - 而 css 文件一旦打包完成，就无法通过动态修改 publicPath 来修正其中的字体文件和背景图片的路径。
-   - 1. 所有图片等静态资源上传至 cdn，css 中直接引用 cdn 地址（推荐）
-   - 2. 借助 webpack 的 url-loader 将字体文件和图片打包成 base64（适用于字体文件和图片体积小的项目）（推荐）
-   - 3. 借助 webpack 的 file-loader ，在打包时给其注入完整路径（适用于字体文件和图片体积比较大的项目）
-   - 4. 将两种方案结合起来，小文件转 base64 ，大文件注入路径前缀
+    - 问题：微应用打包之后 css 中的字体文件和图片加载 404
+    - 原因是 qiankun 将外链样式改成了内联样式，但是字体文件和背景图片的加载路径是相对路径。
+    - 而 css 文件一旦打包完成，就无法通过动态修改 publicPath 来修正其中的字体文件和背景图片的路径。
+    - 1. 所有图片等静态资源上传至 cdn，css 中直接引用 cdn 地址（推荐）
+    - 2. 借助 webpack 的 url-loader 将字体文件和图片打包成 base64（适用于字体文件和图片体积小的项目）（推荐）
+    - 3. 借助 webpack 的 file-loader ，在打包时给其注入完整路径（适用于字体文件和图片体积比较大的项目）
+    - 4. 将两种方案结合起来，小文件转 base64 ，大文件注入路径前缀
 
     - 问题：微前端主应用部署在 k8s容器 上（自依赖），
     - 问题：容器平台前端部署在对象存储 oss，对象存储又部署在 k8s容器 上（循环依赖）
