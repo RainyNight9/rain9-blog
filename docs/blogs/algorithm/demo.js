@@ -1,42 +1,22 @@
-function myFlat(arr){
-  let res = []
+function formatMoney(num){
+  // num = num.toFixed && num.toFixed(2) || num
+  // let [int, dec] = num.toString().split('.')
+  // int = int.split('')
 
-  for(let i=0; i<arr.length; i++){
-    let item = arr[i]
-    if(Array.isArray(item)){
-      res = res.concat(myFlat(item))
-    } else {
-      res.push(item)
-    }
-  }
-  return res
+  // let res = ''
+  // int.reverse().forEach((item, index) => {
+  //   if(index % 3 === 0 && index !== 0){
+  //     res = item + ',' + res
+  //   }else{
+  //     res = item + res
+  //   }
+  // })
+  // return res + '.' + dec
+
+  // return num.toLocaleString()
+
+  return new Intl.NumberFormat().format(num)
 }
 
-function myFlat(arr){
-  return arr.reduce((pre, cur)=>{
-    return pre.concat(Array.isArray(cur) ? myFlat(cur) : cur)
-  }, [])
-}
 
-function myFlat(arr){
-  while(arr.some(item=> Array.isArray(item))){
-    arr = [].concat(...arr)
-  }
-
-  return arr
-}
-
-function myFlat(arr){
-  return arr.toString().split(',')
-}
-
-function myFlat(arr){
-  return arr.flat(Infinity)
-}
-
-function myFlat(arr){
-  let str = JSON.stringify(arr)
-  str = str.replace(/(\[|\])/g, '')
-  str = '[' + str + ']'
-  return JSON.parse(str)
-}
+console.log(formatMoney(1234567.891))

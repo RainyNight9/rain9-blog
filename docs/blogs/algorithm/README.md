@@ -8,7 +8,11 @@ github 仓库：https://github.com/RainyNight9/dataStructure-algorithm
 
 ## 相关内容
 
+  [输出题](./out.md)
+
   [js手写题](./js.md)
+
+  [排序题](./sort.md)
 
   [数据处理手写题](./dealData.md)
 

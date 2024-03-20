@@ -28,12 +28,16 @@ export default defineUserConfig({
         link: '/blogs/algorithm/',
       },
       {
-        text: 'Vim',
-        link: '/blogs/vim/',
+        text: 'webgl',
+        link: '/blogs/webgl/',
       },
       {
         text: 'web3',
         link: '/blogs/web3/',
+      },
+      {
+        text: 'Vim',
+        link: '/blogs/vim/',
       },
       {
         text: 'Rain9 的博客',

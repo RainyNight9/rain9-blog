@@ -138,7 +138,7 @@ myPromise.prototype.then = (onResolve, onReject) => {
 }
 ```
 
-## 5. 手写 Promise.then
+## 5. Promise.then
 
 ```js
 function then(onResolve, onReject) {
@@ -179,12 +179,12 @@ function then(onResolve, onReject) {
 }
 ```
 
-## 6. 手写 Promise.all
+## 6. Promise.all
 
 ```js
 function promiseAll(promises){
   if(!Array.isArray(promises)){
-    throw new Error('must be a array')
+    throw new Error('must be an array')
   }
   return new Promise((resolve, reject) => {
     const count = promises.length
@@ -196,32 +196,106 @@ function promiseAll(promises){
         num++
         res[i] = value
         if(res.length === count){
-          return resolve(res)
+          resolve(res)
         }
-      }, (err)=>{
-        return reject(err)
-      })
+      }).catch(error => {
+        reject(error);
+      });
     }
   })
 }
 ```
 
-## 7. 手写 Promise.race
+## 7. Promise.race
 
 ```js
 function promiseRace(promises){
   if(!Array.isArray(promises)){
-    throw new Error('must be a array')
+    throw new Error('must be an array')
   }
   return new Promise((resolve, reject)=>{
     for(let i=0; i<promises.length; i++){
-      promises[i].then(resolve, reject)
+      promises[i].then(value => {
+          resolve(value);
+        })
+        .catch(error => {
+          reject(error);
+        });
     }
   })
 }
 ```
 
-## 8. 手写防抖函数
+## 8. Promise.any
+
+```js
+function promiseAny(promises) {
+  return new Promise((resolve, reject) => {
+    if (!Array.isArray(promises)) {
+      reject(new TypeError('promises must be an array'));
+    }
+
+    const errors = [];
+
+    promises.forEach(promise => {
+      Promise.resolve(promise)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(error => {
+          errors.push(error);
+          if (errors.length === promises.length) {
+            reject(new AggregateError('All promises were rejected', errors));
+          }
+        });
+    });
+  });
+}
+```
+
+## 9. Promise.allSettled
+
+```js
+function promiseAllSettled(promises) {
+  return new Promise(resolve => {
+    if (!Array.isArray(promises)) {
+      reject(new TypeError('promises must be an array'));
+    }
+
+    const results = [];
+    let completedPromises = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then(result => {
+          results[index] = { status: 'fulfilled', value: result };
+        })
+        .catch(reason => {
+          results[index] = { status: 'rejected', reason: reason };
+        })
+        .finally(() => {
+          completedPromises++;
+          if (completedPromises === promises.length) {
+            resolve(results);
+          }
+        });
+    });
+  });
+}
+```
+
+## 10. promise.finally
+
+```js
+Promise.prototype.finally = (cb) => {
+  return this.then(
+    value => Promise.resolve(cb()).then(()=>value),
+    err => Promise.reject(cb()).then(()=> throw new Error(err))
+  )
+}
+```
+
+## 11. 手写防抖函数
 
 防抖是指在事件被触发 n 秒后再执行回调，如果在这 n 秒内事件又被触发，则重新计时。这可以使用在一些点击请求的事件上，避免因为用户的多次点击向后端发送多次请求。
 
@@ -245,7 +319,7 @@ function debounce(fn, wait){
 }
 ```
 
-## 9. 手写节流函数
+## 12. 手写节流函数
 
 节流是指规定一个单位时间，在这个单位时间内，只能有一次触发事件的回调函数执行，如果在同一个单位时间内某事件被触发多次，只有一次能生效。节流可以使用在 scroll 函数的事件监听上，通过事件节流来降低事件调用的频率。
 
@@ -266,7 +340,7 @@ function throttle(fn, delay){
 }
 ```
 
-## 10. 手写类型判断函数
+## 13. 类型判断
 
 ```js
 function getType(value){
@@ -285,7 +359,7 @@ function getType(value){
 }
 ```
 
-## 11. 手写 call 函数
+## 14. 手写 call 函数
 
 ```js
 Function.prototype.myCall = (context) => {
@@ -305,7 +379,7 @@ Function.prototype.myCall = (context) => {
 }
 ```
 
-## 12. 手写 apply 函数
+## 15. 手写 apply 函数
 
 ```js
 Function.prototype.myApply = (context) => {
@@ -328,7 +402,7 @@ Function.prototype.myApply = (context) => {
 }
 ```
 
-## 13. 手写 bind 函数
+## 16. 手写 bind 函数
 
 ```js
 Function.prototype.myBind = (context) => {
@@ -348,7 +422,7 @@ Function.prototype.myBind = (context) => {
 }
 ```
 
-## 14. 函数柯里化的实现
+## 17. 函数柯里化
 
 ```js
 function curry(fn, args) {
@@ -382,7 +456,24 @@ function curry(fn, ...args){
 }
 ```
 
-## 15. 实现 AJAX
+```js
+// add(1)(2,3)(4).sum()
+function add(){
+  let total = [...arguments].reduce((a, b)=> a+b, 0)
+
+  function sum(){
+    total += [...arguments].reduce((a, b)=> a+b, 0)
+  }
+
+  sum.toString = function(){
+    return total
+  }
+
+  return sum
+}
+```
+
+## 18. 实现 AJAX
 
 创建AJAX请求的步骤：
 
@@ -415,7 +506,7 @@ xhr.setRequestHeader("Accept", "application/json")
 xhr.send(null)
 ```
 
-## 16. 使用 Promise 封装 AJAX 请求
+## 19. Promise 封装 AJAX
 
 ```js
 function getJSON(url){
@@ -443,7 +534,7 @@ function getJSON(url){
 }
 ```
 
-## 17. 实现浅拷贝
+## 20. 实现浅拷贝
 
 1. Object.assign()
 2. 扩展运算符
@@ -466,7 +557,7 @@ function shallowCopy(obj){
 }
 ```
 
-## 18. 实现深拷贝
+## 21. 实现深拷贝
 
 1. JSON.parse(JSON.stringify(obj))
 2. 函数库 lodash 的 _.cloneDeep 方法
@@ -477,7 +568,7 @@ function deepCopy(obj){
 
   let newObj = Array.isArray(obj) ? [] : {}
   for(let key in obj){
-    if(obj.getOwnProperty(key)) {
+    if(obj.hasOwnProperty(key)) {
       let flag = typeof obj[key] === 'object'
       newObj[key] = flag ? deepCopy(obj[key]) : obj[key]
     }
@@ -487,15 +578,152 @@ function deepCopy(obj){
 }
 ```
 
-## 19. 实现 promise.finally
+## 22. 手写 reduce
 
 ```js
-Promise.prototypeFinally = (cb) => {
-  let p = this.constructor()
+Array.prototype.myReduce = function(callback, initValue=0){
+    if(typeof callback !== 'function'){
+        throw new Error('bi xu shi hanshu')
+    }
+    let result = initValue
+    for (let i = 0; i < this.length; i++) {
+        result = callback(result, this[i], i, this)
+    }
+    return result
+}
+```
 
-  return this.then(
-    value => p.resolve(cb()).then(()=>value),
-    err => p.reject(cb()).then(()=> throw new Error(err))
-  )
+## 23. 手写 map
+
+```js
+// 用 reduce 实现 map
+Array.prototype.myMap = function(callback){
+    if(typeof callback !== 'function'){
+        throw new Error('bi xu shi hanshu')
+    }
+    return this.reduce((pre, cur, index) => {
+        pre.push(callback(cur, index, this))
+        return pre
+    }, [])
+}
+```
+
+```js
+Array.prototype.myMap = (fn) => {
+  if(typeof fn !== 'function') {
+    throw new Error('must be a function')
+  }
+
+  let arr = this
+  let res = []
+  for(let i=0; i<arr.length; i++){
+    res.push(fn(arr[i]))
+  }
+  return res
+}
+```
+
+## 24. 数组的 flat 方法
+
+```js
+// 递归
+function flatten(arr){
+  let res = []
+
+  for(let i=0; i<arr.length; i++){
+    if(Array.isArray(arr[i])){
+      res = res.concat(flatten(arr[i]))
+    }else{
+      res.push(arr[i])
+    }
+  }
+  
+  return res
+}
+```
+
+```js
+// reduce
+function flatten(arr){
+  return arr.reduce((prev, next) => {
+    return prev.concat(Array.isArray(next) ? flatten(next) : next)
+  }, [])
+}
+```
+
+```js
+// 扩展运算符
+function flatten(arr){
+  while(arr.some(item => Array.isArray(item))) {
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+```
+
+```js
+// toString 和 split
+function flatten(arr){
+  return arr.toString().split(',')
+}
+```
+
+```js
+// es6 的 flat
+function flatten(arr){
+  return arr.flat(Infinity)
+}
+```
+
+```js
+// 正则 和 JSON 方法
+function flatten(arr){
+  let str = JSON.stringify(arr)
+  str = str.replace(/(\[|\])/g, '')
+  str = '[' + str + ']'
+  return JSON.parse(str)
+}
+```
+
+## 25. 数组的 push 方法
+
+```js
+Array.prototype.myPush = () => {
+  for(let i=0; i<arguments.length; i++){
+    this[this.length] = arguments[i]
+  }
+  return this.length
+}
+```
+
+## 26. 数组的 filter 方法
+
+```js
+Array.prototype.myFilter = (fn) => {
+  if(typeof fn !== 'function') {
+    throw new Error('must be a function')
+  }
+
+  let arr = this
+  let res = []
+  for(let i=0; i<arr.length; i++){
+    fn(arr[i]) && res.push(arr[i])
+  }
+  return res
+}
+```
+
+## 27. 字符串的 repeat 方法
+
+```js
+function repeat(str, n){
+  return (new Array(n + 1)).join(str)
+}
+```
+
+```js
+// 递归
+function repeat(str, n){
+  return n > 0 ? str.concat(repeat(str, --n)) : str
 }
 ```

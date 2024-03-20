@@ -69,7 +69,7 @@ async function step(){
 step()
 ```
 
-## 2. 实现每隔一秒打印 1,2,3,4
+## 2. 每隔一秒打印 1,2,3,4
 
 ```js
 // let
@@ -151,7 +151,7 @@ imgAsync(url).then(()=>{
 })
 ```
 
-## 5. 实现发布-订阅模式
+## 5. 发布-订阅模式
 
 ```js
 class EventCenter{
@@ -254,7 +254,7 @@ function sortVersion(arr){
 }
 ```
 
-## 8. 实现prototype继承
+## 8. prototype继承
 
 ```js
 function Super(flag1){
@@ -274,7 +274,7 @@ subInstance.flag1 // true
 subInstance.flag2 // false
 ```
 
-## 9. 实现双向数据绑定
+## 9. 双向数据绑定
 
 ```js
 let obj = {}
@@ -299,7 +299,7 @@ input.addEventListener('keyup', (e)=>{
 })
 ```
 
-## 10. 实现简单路由
+## 10. 简单路由
 
 ```js
 class Route{
@@ -324,7 +324,7 @@ class Route{
 }
 ```
 
-## 11. 实现斐波那契数列
+## 11. 斐波那契数列
 
 ```js
 // 递归
@@ -435,16 +435,17 @@ function isCircular(obj, visited = new Set()){
 }
 ```
 
-## 15. 手写高并发控制
+## 15. 高并发控制
 
 ```js
 // Promise模拟接口异步请求
 function fetch(url) {
     return new Promise(resolve => {
+        const random = Math.random()
         setTimeout(() => {
             console.log(url);
             resolve('data:' + url);
-        }, 2000);
+        }, random * 10000);
     });
 }
 
@@ -455,7 +456,7 @@ function multiRequest(urls, max) {
     let count = 0;
 
     return new Promise(resolve => {
-        // 首次并发max个请求
+        // 首次并发 max 个请求
         while (count < max) {
             next();
         }
@@ -487,4 +488,279 @@ multiRequest([
     console.log('所有请求处理完毕');
     console.log(result);
 });
+```
+
+## 16. 实现一个函数，要求能在页面请求很多时候，尽可能的按照顺序的输出返回结果
+
+```js
+function processRequest(urls){
+  let limit = 3
+  let result = []
+
+  let queue = urls.slice(0)
+
+  async function sendRequest(){
+    if(queue.length===0){
+      return result
+    }
+
+    let url = queue.shift()
+    try{
+      let res = await fetch(url)
+      res.push(res)
+      sendRequest()
+    }catch(err){
+      sendRequest()
+    }
+  }
+
+  for(let i=0; i<limit; i++){
+    sendRequest()
+  }
+}
+```
+
+## 17. 自动重试 3 次，任意一次成功就直接返回
+
+```js
+function fetchWithRetry(url, max=3){
+  return new promise((resolve, reject)=>{
+    async function doFetch(count){
+      try{
+        let res = await fetch(url)
+        if(res.code===200){
+          resolve(res)
+        }else{
+          throw new Error()
+        }
+      }catch(err){
+        if(count<max){
+          doFetch(count++)
+        }else{
+          reject(err)
+        }
+      }
+    }
+
+    doFetch(0)
+  })
+}
+```
+
+## 18. 高并发控制 一次最多输出 n 个结果
+
+```js
+function creator(count) {
+  const arr = [];
+  let flag = true;
+
+  function setup(fn) {
+      arr.push(fn);
+      // 包一层异步，让同步调用全部进来
+      flag && setTimeout(() => {
+          // 并发执行容器，初始化长度为 count
+          const promises = arr.splice(0, count).map((item, index) => {
+              // 返回下标，用于执行容器的替换
+              return item().then(() => index);
+          })
+
+          // 真正执行过程开始,此时 arr 中为第一轮排不上的异步任务
+          arr.reduce((pres, curFn) => {
+              return pres.then(() => {
+                  return Promise.race(promises); // 返回先完成的下标
+              }).then(fastestIndex => {
+                  // 要继续将这个下标返回，以便下一次遍历
+                  promises[fastestIndex] = curFn().then(() => fastestIndex);
+              })
+          }, Promise.resolve());
+      }, 0) && (flag = false);// flag 控制异步只调用一次
+  }
+  return setup
+}
+const setup = creator(2)
+
+
+
+setup(fn)
+setup(fn)
+setup(fn)
+setup(fn)
+setup(fn)
+
+function fn() {
+  return new Promise((resolve) => {
+      setTimeout(() => {
+          console.log(Date())
+          resolve(1)
+      }, 2000)
+  })
+}
+```
+
+## 19. 字节高并发面试题
+
+```js
+// 分批请求，一次并发 limit 个，完了再并发下一批
+async function fetchWithLimit(fetchList, limit) {
+    const results = [];
+    let completedCount = 0;
+    let errorOccurred = false;
+
+    async function fetchOne(fetchItem) {
+        try {
+            const result = await fetchItem();
+            console.log('Request succeeded:', result);
+            results.push(result);
+        } catch (error) {
+            console.error('Request failed:', error);
+            errorOccurred = true;
+        } finally {
+            completedCount++;
+        }
+    }
+
+    // 按并发限制逐个处理请求
+    while (completedCount < fetchList.length && !errorOccurred) {
+        const currentBatch = fetchList.slice(completedCount, completedCount + limit);
+        await Promise.all(currentBatch.map(fetchOne));
+    }
+
+    // 如果有请求失败，则抛出错误
+    if (errorOccurred) {
+        throw new Error('One or more requests failed');
+    }
+
+    return results;
+}
+
+// 限制并发，请求完一个进入下一个
+async function fetchWithLimit(fetchList, limit) {
+    let results = [];
+    let currentIndex = 0;
+    let runningCount = 0;
+    let errorOccurred = false;
+
+    async function fetchAndHandle(index) {
+        try {
+            const result = await fetchList[index]();
+            results.push(result);
+        } catch (error) {
+            errorOccurred = true;
+            throw error;
+        } finally {
+            runningCount--;
+            if (!errorOccurred && currentIndex < fetchList.length) {
+                fetchAndHandle(currentIndex);
+                runningCount++;
+                currentIndex++;
+            }
+        }
+    }
+
+    while (currentIndex < fetchList.length && runningCount < limit) {
+        fetchAndHandle(currentIndex);
+        runningCount++;
+        currentIndex++;
+    }
+
+    while (runningCount > 0) {
+        await new Promise(resolve => setTimeout(resolve, 0)); // 等待当前请求完成
+    }
+
+    if (errorOccurred) {
+        throw new Error('One or more requests failed.');
+    }
+
+    return results;
+}
+
+// 示例的异步请求方法
+function asyncFetch(url) {
+    return new Promise((resolve, reject) => {
+        const random = Math.random();
+        setTimeout(() => {
+            if (random < 1) {
+                console.log(url)
+                resolve(`Request to ${url} succeeded: ${random}`);
+            } else {
+                reject(`Request to ${url} failed: ${random}`);
+            }
+        }, random * 10000);
+    });
+}
+
+// 示例 fetchList
+const fetchList = [
+    async () => asyncFetch('http://example.com/1'),
+    async () => asyncFetch('http://example.com/2'),
+    async () => asyncFetch('http://example.com/3'),
+    async () => asyncFetch('http://example.com/4'),
+    async () => asyncFetch('http://example.com/5'),
+    async () => asyncFetch('http://example.com/6'),
+    async () => asyncFetch('http://example.com/7'),
+    async () => asyncFetch('http://example.com/8'),
+    async () => asyncFetch('http://example.com/9'),
+    async () => asyncFetch('http://example.com/10'),
+    async () => asyncFetch('http://example.com/11')
+];
+
+const limit = 2;
+
+(async () => {
+    try {
+        const result = await fetchWithLimit(fetchList, limit);
+        console.log('All requests succeeded:', result);
+    } catch (error) {
+        console.error('Request failed:', error.message);
+    }
+})();
+```
+
+```js
+// 限制并发请求
+function gets(ids, max) {
+  return new Promise((resolve) => {
+    const res = [];
+    let completedCount = 0;
+
+    function load(id, index) {
+      get(id)
+        .then((data) => {
+          res[index] = data;
+        })
+        .catch((err) => {
+          res[index] = err;
+        })
+        .finally(() => {
+          completedCount++;
+          if (completedCount === ids.length) {
+            resolve(res);
+          } else if (index < ids.length - 1) {
+            load(ids[index + max], index + max);
+          }
+        });
+    }
+
+    for (let i = 0; i < max && i < ids.length; i++) {
+      load(ids[i], i);
+    }
+  });
+}
+```
+
+```js
+// 优雅的 RXJS 实现
+function gets(ids, max) {
+  return from(ids).pipe(
+    mergeMap((id) => get(id), max), // 使用mergeMap一次性处理max个请求
+    toArray(), // 将结果转换为数组
+    map((results) => {
+      const resultMap = new Map();
+      results.forEach((result, index) => {
+        resultMap.set(ids[index], result); // 将结果映射到id上
+      });
+      return ids.map((id) => resultMap.get(id)); // 根据ids顺序返回结果数组
+    })
+  );
+}
 ```

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机运动、颜色的小球</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .app {
+            width: 700px;
+            height: 400px;
+            background-color: gray;
+            position: relative;
+        }
+
+        .ball {
+            width: 20px;
+            height: 20px;
+            background-color: tomato;
+            border-radius: 50%;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 逻辑思维 -->
+    <!-- 1、创建一个父盒子  父盒子设置相对定位、宽高、背景色 -->
+    <!-- 2、在父盒子中动态添加子盒子  子盒子设置绝对定位、宽高、随机背景色、随即出现的位置以及保留上一个移动坐标  -->
+    <!-- 3、准备一个按钮，点击按钮在父盒子中添加子盒子 -->
+    <!--  -->
+
+    <!-- 准备父盒子 并设置好样式以及准备好子盒子的样式-->
+    <div class="app">
+        <!-- <div class="ball"></div> -->
+    </div>
+    <button id="btn">Run</button>
+
+    <script>
+        // 1、获取元素
+        var app = document.querySelector('.app');
+        var btn = document.getElementById('btn')
+        // 2、点击按钮添加小球
+        btn.onclick = () => {
+            // 检测btn是否生效
+            // alert('skja')
+            // 封装一个随机函数方便调用
+            function ran(max, min) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            // 因为需要颜色随机生成，所以使用封装搞得随机函数完成
+            function getRandomColor() {
+                var c1 = ran(0, 255);
+                var c2 = ran(0, 255);
+                var c3 = ran(0, 255);
+                return 'rgb(' + c1 + ',' + c2 + ',' + c3 + ')'
+            }
+
+            function vv() {
+                // 因为是随机出现的，所以使用封装好的随机函数
+                var x = ran(0, 680);
+                var y = ran(0, 380)
+                //    向x、y轴移动距离
+                var xDis = 10;
+                var yDis = 10
+                setInterval(() => {
+                    // 在定时器内创建小球并将准备好的样式赋给它
+                    var ball = document.createElement('div')
+                    ball.className = 'ball'
+
+
+                    var maxWidth = 680 - ball.offsetWidth,
+                        maxHeight = 380 - ball.offsetHeight
+                        // 向x、y轴移动距离范围
+                    x += ran(xDis, 0);
+                    y += ran(yDis, 0);
+                    // 在x轴正方向（左=>右）上运动超出所允许的最大范围时移动范围变为负值与 X 相加，避免超出
+                    if (x >= maxWidth) {
+                        x = maxWidth;
+                        xDis = -xDis
+                    }
+                    // 在x轴反方向（右=>左）上运动超出所允许的最大范围时移动范围变为负值与 X 相加，避免超出
+                    if (x <= 0) {
+                        x = 0
+                        xDis = -xDis
+                    }
+                    // 在y轴反方向（上=>下）上运动超出所允许的最大范围时移动范围变为负值与 Y 相加，避免超出
+                    if (y >= maxHeight) {
+                        y = maxHeight;
+                        yDis = -yDis
+                    }
+                    // 在y轴反方向（下=>上）上运动超出所允许的最大范围时移动范围变为负值与 Y 相加，避免超出
+                    if (y <= 0) {
+                        y = 0;
+                        yDis = -yDis;
+                    }
+                    // 将得到的想x，y值赋给如下
+                    ball.style.left = x + 'px';
+                    ball.style.top = y + 'px'
+                    // 调用随机颜色变化
+                    ball.style.backgroundColor = getRandomColor();
+                    // 追加到指定位置
+                    app.appendChild(ball)
+                }, 100)
+            }
+            vv() //一定要记得自调用
+        }
+    </script>
+
+</body>
+
+</html>
