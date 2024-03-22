@@ -45,7 +45,7 @@ css 模块
 5. [浏览器渲染机制](./liulanqixuanran.md)
 6. [前端网络安全整理](https://juejin.cn/post/7110591286825975845)
 
-## vue
+## Vue
 
 1. [通过 Vue3 来学习框架的设计思路](https://juejin.cn/post/7339104098898018367)
 2. [通过 vue3 学习响应系统的设计思想](https://juejin.cn/post/7339743984099835945)
@@ -63,7 +63,7 @@ css 模块
 14. [自定义指令使用分享](https://juejin.cn/post/7215043206035357752)
 
 
-## react
+## React
 
 1. [React 的笔记](https://juejin.cn/post/6896856146410209288)
 2. [React17核心原理（一）](https://juejin.cn/post/6933096899037790215)
@@ -71,14 +71,14 @@ css 模块
 4. [React 的虚拟 DOM 和 fiber](https://juejin.cn/post/7105389073161781278)
 5. [react 面试题](./react.md)
 
-## webpack
+## Webpack
 
 1. [webpack](./webpack.md)
 2. [webpack-merge ](https://juejin.cn/post/7304531203745972264)
 3. [前端编译原理——Babel 篇](https://juejin.cn/post/7200366809409159205)
 4. [前端 JS 库的构建](https://juejin.cn/post/7199643079283294267)
 
-## vite
+## Vite
 
 1. [vite 相关](./vite.md)
 2. [Esbuild](https://juejin.cn/spost/7182495384197922873)
