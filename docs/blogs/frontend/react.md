@@ -491,13 +491,12 @@ function Counter() {
 - 在Promise的状态更新、js原生事件、setTimeout、setInterval..中是同步的。
 - 在react的合成事件中，是异步的。
 
->setState的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形式了所谓的“异步”，当然可以通过第二个参数 setState(partialState, callback) 中的callback拿到更新后的结果。
+>setState的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形式了所谓的“异步”，当然可以通过第二个参数 `setState(partialState, callback)` 中的callback拿到更新后的结果。
 
 **react 18 之后：**
 - setState都会表现为异步（即批处理）。
 
-## 18. React-Router 的 <Link /> 组件和 <a> 有什么区别？
-
+## 18. React-Router 的 `<Link /> `组件和 `<a>` 有什么区别？
 Link 的 “跳转” 行为只会触发相匹配的对应的页面内容更新，而不会刷新整个页面。
 
 Link 跳转做了三件事情：

@@ -889,3 +889,49 @@ for (let key in obj) {
 console.log(result);
 ```
 
+## 35. js 实现数组去重
+
+输入 `const arr = ['null', null, null, undefined, {}, { name: 'ImeanAi' }, { name: 'ImeanAi' }, { name: undefined }, {}]`;
+
+输出  `const result = ['null', null, undefined, { name: 'ImeanAi' }, { name: undefined }, {}]` 结果
+
+```js
+const arr = ['null', null, null, undefined, {}, { name: 'ImeanAi' }, { name: 'ImeanAi' }, { name: undefined }, {}];
+
+function compareObjects(obj1, obj2) {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+
+    keys1.sort();
+    keys2.sort();
+
+    return keys1.every((key, index) => {
+        if (typeof obj1[key] === 'object' && obj1[key] !== null) {
+            return compareObjects(obj1[key], obj2[key]);
+        }
+        return obj1[key] === obj2[key];
+    });
+}
+
+const uniqueArr = arr.filter((item, index) => {
+    if (typeof item === 'object' && item !== null) {
+        return (
+            index === arr.findIndex(obj => {
+                if (typeof obj === 'object' && obj !== null) {
+                    return compareObjects(obj, item);
+                }
+                return false;
+            })
+        );
+    } else {
+        return arr.indexOf(item) === index;
+    }
+});
+
+console.log(uniqueArr);
+```
+
