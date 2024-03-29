@@ -51,7 +51,85 @@
 
 ![webpack-liucheng](./images/webpack-liucheng.png)
 
+### 配置结构详解
 
+Webpack 还支持以`数组、函数`方式配置运行参数，以适配不同场景应用需求，它们之间大致上区别：
+
+- `单个配置对象`：比较常用的一种方式，逻辑简单，适合大多数业务项目；
+- `配置对象数组`：每个数组项都是一个完整的配置对象，每个对象都会触发一次单独的构建，通常用于需要为同一份代码构建多种产物的场景，如 Library；
+- `函数`：Webpack 启动时会执行该函数获取配置，我们可以在函数中根据环境参数(如 NODE_ENV)动态调整配置对象。
+
+**使用数组方式时**，Webpack 会在启动后创建多个 `Compilation` 实例，并行执行构建工作，但需要注意，`Compilation` 实例间基本上不作通讯，这意味着这种并行构建对运行性能并没有任何正向收益，例如某个 Module 在 Compilation 实例 A 中完成解析、构建后，在其它 Compilation 中依然需要完整经历构建流程，无法直接复用结果。
+
+数组方式主要用于应对 **“同一份代码打包出多种产物”** 的场景，例如在`构建 Library` 时，我们通常需要同时构建出 `ESM/CMD/UMD` 等模块方案的产物。
+
+**配置函数方式**要求在配置文件中导出一个函数，并在函数中返回 Webpack 配置对象，或配置数组，或 Promise 对象。
+
+```js
+module.exports = function(env, argv) {
+  // ...
+  return {
+    entry: './src/index.js',
+    // 其它配置...
+  }
+}
+```
+- `env`：通过 --env 传递的命令行参数，适用于自定义参数
+- `argv`：命令行 Flags 参数，支持 entry/output-path/mode/merge 等
+
+“配置函数”这种方式的意义在于，**允许用户根据命令行参数动态创建配置对象，可用于实现简单的多环境治理策略**。
+
+“配置函数”这种方式缺点：
+- 一是因为需要在配置函数内做许多逻辑判断，复杂场景下可能可读性会很低，维护成本高；
+- 二是强依赖于命令行参数，可能最终需要写出一串很长的运行命令，应用体验较差。
+
+### 环境治理策略
+
+根据部署环境需求，对同一份代码执行各有侧重的打包策略，例如：
+- 开发环境需要使用 `webpack-dev-server` 实现 `Hot Module Replacement`；
+- 测试环境需要带上完整的 `Soucemap` 内容，以帮助更好地定位问题；
+- 生产环境需要尽可能打包出更快、更小、更好的应用代码，确保用户体验。
+
+### 核心配置项
+
+- `entry`：声明项目入口文件，Webpack 会从这个文件开始递归找出所有文件依赖；
+  - `字符串`：指定入口文件路径；
+  - `对象`：对象形态功能比较完备，除了可以指定入口文件列表外，还可以指定入口依赖、Runtime 打包方式等；
+    - `import`：声明入口文件，支持路径字符串或路径数组(多入口)；
+    - `dependOn`：声明该入口的前置依赖 Bundle；
+    - `runtime`：设置该入口的 Runtime Chunk，若该属性不为空，Webpack 会将该入口的运行时代码抽离成单独的 Bundle；
+    - `filename`：效果与 output.filename 类同，用于声明该模块构建产物路径；
+    - `library`：声明该入口的 output.library 配置，一般在构建 NPM Library 时使用；
+    - `publicPath`：效果与 output.publicPath 相同，用于声明该入口文件的发布 URL；
+    - `chunkLoading`：效果与 output.chunkLoading 相同，用于声明异步模块加载的技术方案，支持 false/jsonp/require/import 等值；
+    - `asyncChunks`：效果与 output.asyncChunks 相同，用于声明是否支持异步模块加载，默认值为 true。
+  - `函数`：动态生成 Entry 配置信息，函数中可返回字符串、对象或数组；
+  - `数组`：指明多个入口文件，数组项可以为上述介绍的文件路径字符串、对象、函数形式，Webpack 会将数组指明的入口全部打包成一个 Bundle。
+- `output`：声明构建结果的存放位置；
+  - `output.path`：声明产物放在什么文件目录下；
+  - `output.filename`：声明产物文件名规则，支持 [name]/[hash] 等占位符；
+  - `output.publicPath`：文件发布路径，在 Web 应用中使用率较高；
+  - `output.clean`：是否自动清除 path 目录下的内容，调试时特别好用；
+  - `output.library`：NPM Library 形态下的一些产物特性，例如：Library 名称、模块化(UMD/CMD 等)规范；
+  - `output.chunkLoading`：声明加载异步模块的技术方案，支持 false/jsonp/require 等方式。
+- `target`：用于配置编译产物的目标运行环境，支持 web、node、electron 等值，不同值最终产物会有所差异；
+  - `node[[X].Y]`：编译为 Node 应用，此时将使用 Node 的 require 方法加载其它 Chunk，支持指定 Node 版本，如：node12.13；
+  - `async-node[[X].Y]`：编译为 Node 应用，与 node 相比主要差异在于：async-node 方式将以异步(Promise)方式加载异步模块(node 时直接使用 require)。支持指定 Node 版本，如：async-node12.13；
+  - `nwjs[[X].Y]`：编译为 NW.js 应用；
+  - `node-webkit[[X].Y]`：同 nwjs；
+  - `electron[[X].Y]-main`：构建为 Electron 主进程；
+  - `electron[[X].Y]-renderer`：构建为 Electron 渲染进程；
+  - `electron[[X].Y]-preload`：构建为 Electron Preload 脚本；
+  - `web`：构建为 Web 应用；
+  - `esX`：构建为特定版本 ECMAScript 兼容的代码，支持 es5、es2020 等；
+  - `browserslist`：根据浏览器平台与版本，推断需要兼容的 ES 特性，数据来源于 Browserslist 项目，用法如：browserslist: 'last 2 major versions'。
+- `mode`：编译模式短语，支持 development、production 等值，Webpack 会根据该属性推断默认配置；
+  - `production`：默认值，生产模式，使用该值时 Webpack 会自动帮我们开启一系列优化措施：Three-Shaking、Terser 压缩代码、SplitChunk 提起公共代码，通常用于生产环境构建；
+  - `development`：开发模式，使用该值时 Webpack 会保留更语义化的 Module 与 Chunk 名称，更有助于调试，通常用于开发环境构建；
+  - `none`：关闭所有内置优化规则。
+- `optimization`：用于控制如何优化产物包体积，内置 Dead Code Elimination、Scope Hoisting、代码混淆、代码压缩等功能；
+- `module`：用于声明模块加载规则，例如针对什么类型的资源需要使用哪些 Loader 进行处理；
+- `plugin`：Webpack 插件列表。
 
 ## Babel+TS+ESLint
 
@@ -585,4 +663,167 @@ Webpack 4 只能处理标准 JavaScript 模块，因此需要借助 Loader —�
 
 Webpack 中有不少能够自动生成响应式图片的组件，例如：`resize-image-loader、html-loader-srcset、responsive-loader` 等。
 
+## Webpack 与 性能优化
+
+### 核心流程
+
+Webpack 最最核心的功能：
+- 一是使用适当 Loader 将任意类型文件转译为 JavaScript 代码
+- 二是将这些经过 Loader 处理的文件资源合并、打包成向下兼容的产物文件。
+
+为了实现这些功能，Webpack 底层的工作流程大致可以总结为这么几个阶段：
+
+1. 初始化阶段：
+  - `初始化参数`：从配置文件、 配置对象、Shell 参数中读取，与默认配置结合得出**最终的参数**；
+  - `创建编译器对象`：用上一步得到的参数**创建 Compiler 对象**；
+  - `初始化编译环境`：包括注入内置插件、注册各种模块工厂、初始化 RuleSet 集合、加载配置的插件等；
+  - `开始编译`：执行 `compiler` 对象的 `run` 方法，**创建 Compilation 对象**；
+  - `确定入口`：根据配置中的 `entry` 找出所有的入口文件，调用 `compilation.addEntry` 将入口文件转换为 `dependence` 对象。
+2. 构建阶段：
+  - `编译模块(make)`：从 `entry` 文件开始，调用 `loader` 将模块转译为标准 JS 内容，调用 JS 解析器将内容转换为 AST 对象，从中找出该模块依赖的模块，再 **递归** 处理这些依赖模块，直到所有入口依赖的文件都经过了本步骤的处理；
+  - `完成模块编译`：上一步递归处理所有能触达到的模块后，得到了每个模块被翻译后的内容以及它们之间的**依赖关系图**。
+3. 封装阶段：
+  - `合并(seal)`：根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 `Chunk`；
+  - `优化(optimization)`：对上述 Chunk 施加一系列优化操作，包括：`tree-shaking、terser、scope-hoisting、压缩、Code Split` 等；
+  - `写入文件系统(emitAssets)`：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。
+
+在这个过程中有不少可能造成性能问题的地方：
+
+- 构建阶段：
+  - 首先需要将文件的相对引用路径转换为绝对路径，这个过程可能涉及多次 IO 操作，执行效率取决于 **文件层次深度**；
+  - 找到具体文件后，需要读入文件内容并调用 `loader-runner` 遍历 `Loader` 数组完成内容转译，这个过程需要执行较密集的 CPU 操作，执行效率取决于 **Loader 的数量与复杂度**；
+  - 需要将模块内容解析为 AST 结构，并遍历 AST 找出模块的依赖资源，这个过程同样需要较密集的 CPU 操作，执行效率取决于 **代码复杂度**；
+  - 递归处理依赖资源，执行效率取决于 **模块数量**。
+- 封装阶段：
+  - 根据 `splitChunks` 配置、`entry` 配置、动态模块引用语句等，确定模块与 `Chunk` 的映射关系，其中 `splitChunks` 相关的分包算法非常复杂，涉及大量 CPU 计算；
+  - 根据 `optimization` 配置执行一系列产物优化操作，特别是 `Terser` 插件需要执行大量 AST 相关的运算，执行效率取决于 **产物代码量**；
+
+Webpack 需要执行非常密集的 IO 与 CPU 操作，计算成本高，再加上 Webpack 以及大多数组件都使用 JavaScript 编写，无法充分利用多核 CPU 能力，所以在中大型项性能通常表现较差。
+
+### 性能分析
+
+如何收集、分析 Webpack 打包过程的性能数据？
+
+收集数据的方法很简单 —— Webpack 内置了 `stats` 接口，专门用于统计模块构建耗时、模块依赖关系等信息，推荐用法：
+
+```js
+// webpack.config.js
+module.exports = {
+  // ...
+  profile: true
+}
+```
+
+```bash
+npx webpack --json=stats.json
+```
+
+```json
+// stats.json
+{
+  "hash": "2c0b66247db00e494ab8",
+  "version": "5.36.1",
+  "time": 81,
+  "builtAt": 1620401092814,
+  "publicPath": "",
+  "outputPath": "/Users/rain/learn-webpack/hello-world/dist",
+  "assetsByChunkName": { "main": ["index.js"] },
+  "assets": [
+    // ...
+  ],
+  "chunks": [
+    // ...
+  ],
+  "modules": [
+    // ...
+  ],
+  "entrypoints": {
+    // ...
+  },
+  "namedChunkGroups": {
+    // ...
+  },
+  "errors": [
+    // ...
+  ],
+  "errorsCount": 0,
+  "warnings": [
+    // ...
+  ],
+  "warningsCount": 0,
+  "children": [
+    // ...
+  ]
+}
+```
+
+stats 对象收集了 Webpack 运行过程中许多值得关注的信息，包括：
+
+- `modules`：本次打包处理的所有模块列表，内容包含模块的大小、所属 chunk、构建原因、依赖模块等，特别是 modules.profile 属性，包含了构建该模块时，解析路径、编译、打包、子模块打包等各个环节所花费的时间，非常有用；
+- `chunks`：构建过程生成的 chunks 列表，数组内容包含 chunk 名称、大小、包含了哪些模块等；
+- `assets`：编译后最终输出的产物列表、文件路径、文件大小等；
+- `entrypoints`：entry 列表，包括动态引入所生产的 entry 项也会包含在这里面；
+- `children`：子 Compiler 对象的性能数据，例如 extract-css-chunk-plugin 插件内部就会调用 compilation.createChildCompiler 函数创建出子 Compiler 来做 CSS 抽取的工作。
+
+推荐官网：https://webpack.docschina.org/api/stats/
+
+Webpack 社区还提供了许多优秀的分析工具，能够将这些数据转换各种风格的可视化图表，帮助我们更高效地找出性能卡点，包括：
+
+- `Webbpack Analysis` ：Webpack 官方提供的，功能比较全面的 stats 可视化工具；
+- `Statoscope`：主要侧重于模块与模块、模块与 chunk、chunk 与 chunk 等，实体之间的关系分析；
+- `Webpack Visualizer`：一个简单的模块体积分析工具，真的很简单！
+- `Webpack Bundle Analyzer`：应该是使用率最高的性能分析工具之一，主要实现以 Tree Map 方式展示各个模块的体积占比；
+- `Webpack Dashboard`：能够在编译过程实时展示编译进度、模块分布、产物信息等；
+- `Unused Webpack Plugin`：能够根据 stats 数据反向查找项目中未被使用的文件。
+
+### Webpack Analysis
+
+官方地址：https://webpack.github.io/analyse/ 
+
+官方的上手难度稍高，信息噪音比较多。
+
+社区版本：https://mshustov.github.io/webpack-deps-tree/static/
+
+社区版本用法简单、信息简洁，但功能相对简单。
+
+### Statoscope
+
+官方地址：https://github.com/statoscope/statoscope
+
+- 完整的依赖关系视图，涵盖 modules/chunks/assets/entrypoints/packages 维度；
+- entrypoints/chunks/packages/module 体积分析；
+- 重复包检测；
+- 多份 stats 数据对比；
+
+### Webpack Bundle Analyzer
+
+官方地址：https://www.npmjs.com/package/webpack-bundle-analyzer
+
+![WBA](./images/WBA.png)
+
+### Webpack Visualizer
+
+官方地址：https://chrisbateman.github.io/webpack-visualizer/
+
+![WV](./images/WV.png)
+
+### Webpack Dashboard
+
+官方地址：https://www.npmjs.com/package/webpack-dashboard
+
+![WD](./images/WD.png)
+
+### Speed Measure Plugin
+
+官方地址：https://www.npmjs.com/package/speed-measure-webpack-plugin
+
+![SMP](./images/SMP.png)
+
+### UnusedWebpackPlugin
+
+官方地址：https://www.npmjs.com/package/unused-webpack-plugin
+
+![UWP](./images/UWP.png)
+
+## Webpack 与 持久化缓存
 
