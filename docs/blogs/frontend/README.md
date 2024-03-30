@@ -73,7 +73,7 @@ css 模块
 
 ## Webpack
 
-1. [webpack](./webpack.md)
+1. [webpack5](./webpack.md)
 2. [webpack-merge ](https://juejin.cn/post/7304531203745972264)
 3. [前端编译原理——Babel 篇](https://juejin.cn/post/7200366809409159205)
 4. [前端 JS 库的构建](https://juejin.cn/post/7199643079283294267)

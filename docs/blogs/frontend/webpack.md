@@ -1,4 +1,4 @@
-# Webpack
+# Webpack 5
 
 ## Webpack 配置项
 
@@ -826,4 +826,698 @@ Webpack 社区还提供了许多优秀的分析工具，能够将这些数据转
 ![UWP](./images/UWP.png)
 
 ## Webpack 与 持久化缓存
+
+`持久化缓存` 算得上是 Webpack 5 最令人振奋的特性之一，它能够将首次构建的过程与结果数据持久化保存到本地文件系统，在下次执行构建时跳过解析、链接、编译等一系列非常消耗性能的操作，直接复用上次的 Module/ModuleGraph/Chunk 对象数据，迅速构建出最终产物。
+
+配置 `babel-loader、eslint-loader` 后，在我机器上测试，未使用 `cache` 特性时构建耗时大约在 `11000ms 到 18000ms` 之间；启动 cache 功能后，第二次构建耗时降低到 `500ms 到 800ms` 之间，两者相差接近 **50 倍**！
+
+而这接近 50 倍的性能提升，仅仅需要在 Webpack5 中设置 `cache.type = 'filesystem'` 即可开启：
+
+```js
+module.exports = {
+    //...
+    cache: {
+        type: 'filesystem'
+    },
+    //...
+};
+```
+
+此外，cache 还提供了若干用于配置缓存效果、缓存周期的配置项，包括：
+
+- `cache.type`：缓存类型，支持 `'memory' | 'filesystem'`，需要设置为 `filesystem` 才能开启持久缓存；
+- `cache.cacheDirectory`：缓存文件路径，默认为 `node_modules/.cache/webpack`；
+- `cache.buildDependencies`：额外的依赖文件，当这些文件内容发生变化时，缓存会完全失效而执行完整的编译构建，通常可设置为各种配置文件，如：
+
+```js
+module.exports = {
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [
+        path.join(__dirname, 'webpack.dll_config.js'),
+        path.join(__dirname, '.babelrc')
+      ],
+    },
+  },
+};
+```
+
+- `cache.managedPaths`：受控目录，Webpack 构建时会跳过新旧代码哈希值与时间戳的对比，直接使用缓存副本，默认值为 ['./node_modules']；
+- `cache.profile`：是否输出缓存处理过程的详细日志，默认为 `false`；
+- `cache.maxAge`：缓存失效时间，默认值为 5184000000 。
+
+### 缓存原理
+
+Webpack5 会将首次构建出的 `Module、Chunk、ModuleGraph` 等对象序列化后保存到硬盘中，后面再运行的时候，就可以跳过许多耗时的编译动作，直接复用缓存数据。
+
+![webpack-gj](./images/webpack-gj.png)
+
+- 初始化，主要是根据配置信息设置内置的各类插件。
+- Make - 构建阶段，从 entry 模块开始，执行：
+  - 读入文件内容；
+  - 调用 Loader 转译文件内容；
+  - 调用 acorn 生成 AST 结构；
+  - 分析 AST，确定模块依赖列表；
+  - 遍历模块依赖列表，对每一个依赖模块重新执行上述流程，直到生成完整的模块依赖图 —— ModuleGraph 对象。
+- Seal - 生成阶段，过程：
+  - 遍历模块依赖图，对每一个模块执行：
+    - 代码转译，如 import 转换为 require 调用；
+    - 分析运行时依赖。
+  - 合并模块代码与运行时代码，生成 chunk；
+  - 执行产物优化操作，如 Tree-shaking；
+  - 将最终结果写出到产物文件。
+
+过程中存在许多 CPU 密集型操作，例如调用 Loader 链加载文件时，遇到 babel-loader、eslint-loader、ts-loader 等工具时可能需要重复生成 AST；分析模块依赖时则需要遍历 AST，执行大量运算；Seal 阶段也同样存在大量 AST 遍历，以及代码转换、优化操作，等等。假设业务项目中有 1000 个文件，则每次执行 npx webpack 命令时，都需要从 0 开始执行 1000 次构建、生成逻辑。
+
+而 Webpack5 的持久化缓存功能则将构建结果保存到文件系统中，在下次编译时对比每一个文件的内容哈希或时间戳，未发生变化的文件跳过编译操作，直接使用缓存副本，减少重复计算；发生变更的模块则重新执行编译流程。缓存执行时机如下图：
+
+![webpack-gj2](./images/webpack-gj2.png)
+
+如图，Webpack 在首次构建完毕后将 Module、Chunk、ModuleGraph 三类对象的状态序列化并记录到缓存文件中；在下次构建开始时，尝试读入并恢复这些对象的状态，从而跳过执行 Loader 链、解析 AST、解析依赖等耗时操作，提升编译性能。
+
+### Webpack4：使用 cache-loader
+
+Webpack4 只能借助一些第三方组件实现持久化缓存的类似效果，包括：
+
+- 使用 [cache-loader](https://www.npmjs.com/package/cache-loader)；
+- 使用 [hard-source-webpack-plugin](https://github.com/mzgoddard/hard-source-webpack-plugin)；
+- 使用 Loader（如 babel-loader、eslint-loader)）自带的缓存能力。
+
+`cache-loader` 能够将 Loader 处理结果保存到硬盘，下次运行时若文件内容没有发生变化则直接返回缓存结果。
+
+`cache-loader` 只缓存了 Loader 执行结果，缓存范围与精度不如 Webpack5 内置的缓存功能，所以性能效果相对较低，以 ThreeJS 为例，production 模式下构建耗时从 10602ms 降低到 1540ms；development 模式从 11130ms 降低到 4247ms，多次测试性能提升稳定在 60% ~ 80% 之间。虽然比不上 Webpack5 的持久化缓存，但在 Webpack4 中不失为一种简单而有效的性能优化手段。
+
+此外，`cache-loader` 还提供了一系列控制缓存逻辑的配置属性，特别是 `read/write` 可以用于改变缓存数据的持久化逻辑，借助这两个属性我们甚至能够实现多台机器间的缓存共享：
+
+```js
+const redis = require("redis");
+const client = redis.createClient();
+
+// 读数据
+async function read(key, callback) {
+  // ...
+  const result = await client.get(key);
+  const data = JSON.parse(result);
+  callback(null, data);
+}
+
+// 写数据
+async function write(key, data, callback) {
+  // ...
+  await client.set(key, JSON.stringify(data));
+  callback();
+}
+
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: "cache-loader",
+            // 传入 read、write 函数
+            options: { read, write },
+          },
+          "babel-loader",
+        ],
+      },
+    ],
+  },
+};
+```
+
+借助这种能力，我们可以打通本地与线上 CI/CD 环境，实现开发与生产环境构建的构建性能优化。
+
+### Webpack4：使用 hard-source-webpack-plugin
+
+`hard-source-webpack-plugin` 也是一种实现缓存功能的第三方组件，与 `cache-loader` 不同的是，它并不仅仅缓存了 Loader 运行结果，还保存了 Webpack 构建过程中许多中间数据，包括：`模块、模块关系、模块 Resolve 结果、Chunks、Assets` 等，效果几乎与 Webpack5 自带的 Cache 对齐。
+
+### 使用组件自带的缓存功能
+
+我们还可以使用 Webpack 组件自带的缓存能力提升特定领域的编译性能，这一类组件有：
+
+- babel-loader；
+- eslint-loader：旧版本 ESLint Webpack 组件，官方推荐使用 eslint-webpack-plugin 代替；
+- eslint-webpack-plugin；
+- stylelint-webpack-plugin。
+
+## Webpack 与 并行构建
+
+社区出现了一些以多进程方式运行 Webpack，或 Webpack 构建过程某部分工作的方案(从而提升单位时间利用率)，例如：
+
+- `HappyPack`：多进程方式运行资源加载(Loader)逻辑；
+- `Thread-loader`：Webpack 官方出品，同样以多进程方式运行资源加载逻辑；
+- `Parallel-Webpack`：多进程方式运行多个 Webpack 构建实例；
+- `TerserWebpackPlugin`：支持多进程方式执行代码压缩、uglify 功能。
+
+这些方案的核心设计都很类似：针对某种计算任务创建子进程，之后将运行所需参数通过 IPC 传递到子进程并启动计算操作，计算完毕后子进程再将结果通过 IPC 传递回主进程，寄宿在主进程的组件实例，再将结果提交给 Webpack。
+
+### 使用 HappyPack
+
+`HappyPack` 能够将耗时的文件加载（Loader）操作拆散到多个子进程中并发执行，子进程执行完毕后再将结果合并回传到 Webpack 进程，从而提升构建性能。不过，HappyPack 的用法稍微有点难以理解，需要同时：
+
+- 使用 `happypack/loader` 代替原本的 Loader 序列；
+- 使用 `HappyPack` 插件注入代理执行 Loader 序列的逻辑。
+
+但默认情况下，HappyPack 插件实例 自行管理 自身所消费的进程，需要导致频繁创建、销毁进程实例 —— 这是非常昂贵的操作，反而会带来新的性能损耗。
+
+为此，HappyPack 提供了一套简单易用的共享进程池接口，只需要创建 HappyPack.ThreadPool 对象，并通过 size 参数限定进程总量，之后将该例配置到各个 HappyPack 插件的 threadPool 属性上即可。
+
+```js
+const os = require('os')
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({
+  // 设置进程池大小
+  size: os.cpus().length - 1
+});
+
+module.exports = {
+  // ...
+  plugins: [
+    new HappyPack({
+      id: 'js',
+      // 设置共享进程池
+      threadPool: happyThreadPool,
+      loaders: ['babel-loader', 'eslint-loader']
+    }),
+    new HappyPack({
+      id: 'styles',
+      threadPool: happyThreadPool,
+      loaders: ['style-loader', 'css-loader', 'less-loader']
+    })
+  ]
+};
+```
+
+使用 `HappyPack.ThreadPool` 接口后，HappyPack 会预先创建好一组工作进程，所有插件实例的资源转译任务会通过内置的 `HappyThread` 对象转发到空闲进程做处理，避免频繁创建、销毁进程。
+
+HappyPack 的执行流程：
+
+![HP](./images/HP.png)
+
+核心步骤：
+
+- `happlypack/loader` 接受到转译请求后，从 Webpack 配置中读取出相应 HappyPack 插件实例；
+- 调用插件实例的 `compile` 方法，创建 `HappyThread` 实例（或从 `HappyThreadPool` 取出空闲实例）；
+- `HappyThread` 内部调用 `child_process.fork` 创建子进程，并执行 `HappyWorkerChannel` 文件；
+- `HappyWorkerChannel` 创建 HappyWorker ，开始执行 Loader 转译逻辑；
+
+中间流程辗转了几层，最终由 `HappyWorker` 类重新实现了一套与 `Webpack Loader` 相似的转译逻辑，代码复杂度较高，大家稍作了解即可。
+
+`HappyPack` 虽然确实能有效提升 Webpack 的打包构建速度，但它有一些明显的缺点：
+
+- 作者已经明确表示不会继续维护，扩展性与稳定性缺乏保障，随着 Webpack 本身的发展迭代，可以预见总有一天 HappyPack 无法完全兼容 Webpack；
+- `HappyPack` 底层以自己的方式重新实现了加载器逻辑，源码与使用方法都不如 `Thread-loader` 清爽简单，而且会导致一些意想不到的兼容性问题，如 `awesome-typescript-loader`；
+- `HappyPack` 主要作用于文件加载阶段，并不会影响后续的产物生成、合并、优化等功能，性能收益有限。
+
+### 使用 Thread-loader
+
+`Thread-loader` 与 `HappyPack` 功能类似，都是以多进程方式加载文件的 Webpack 组件，两者主要区别：
+
+- `Thread-loader` 由 Webpack 官方提供，目前还处于持续迭代维护状态，理论上更可靠；
+- `Thread-loader` 只提供了一个 Loader 组件，用法简单很多；
+- `HappyPack` 启动后会创建一套 Mock 上下文环境 —— 包含 `emitFile` 等接口，并传递给 Loader，因此对大多数 Loader 来说，运行在 HappyPack 与运行在 Webpack 原生环境相比没有太大差异；但 Thread-loader 并不具备这一特性，所以要求 Loader 内不能调用特定上下文接口，兼容性较差。
+
+启动后，`Thread-loader` 会在加载文件时创建新的进程，在子进程中使用 loader-runner 库运行 thread-loader 之后的 Loader 组件，执行完毕后再将结果回传到 Webpack 主进程，从而实现性能更佳的文件加载转译效果。
+
+此外，Thread-loader 还提供了一系列用于控制并发逻辑的配置项，包括：
+
+- `workers`：子进程总数，默认值为 require('os').cpus() - 1；
+- `workerParallelJobs`：单个进程中并发执行的任务数；
+- `poolTimeout`：子进程如果一直保持空闲状态，超过这个时间后会被关闭；
+- `poolRespawn`：是否允许在子进程关闭后重新创建新的子进程，一般设置为 false 即可；
+- `workerNodeArgs`：用于设置启动子进程时，额外附加的参数。
+
+与 `HappyPack` 相比，`Thread-loader` 有两个突出的优点，
+- 一是产自 Webpack 官方团队，后续有长期维护计划，稳定性有保障；
+- 二是用法更简单。
+
+但它不可避免的也存在一些问题：
+
+- 在 Thread-loader 中运行的 Loader 不能调用 `emitAsset` 等接口，这会导致 `style-loader` 这一类加载器无法正常工作，解决方案是将这类组件放置在 `thread-loader` 之前，如 `['style-loader', 'thread-loader', 'css-loader']`；
+- Loader 中不能获取 `compilation、compiler` 等实例对象，也无法获取 Webpack 配置。
+
+### 使用 Parallel-Webpack
+
+`Thread-loader、HappyPack` 这类组件所提供的并行能力都仅作用于文件加载过程，对后续 AST 解析、依赖收集、打包、优化代码等过程均没有影响，理论收益还是比较有限的。对此，社区还提供了另一种并行度更高，以多个独立进程运行 Webpack 实例的方案 —— `Parallel-Webpack`。
+
+`Parallel-Webpack` 会为配置文件中导出的每个 Webpack 配置对象启动一个独立的构建进程，从而实现并行编译的效果。底层原理很简单，基本上就是在 Webpack 上套了个壳：
+
+- 根据传入的配置项数量，调用 `worker-farm` 创建复数个工作进程；
+- 工作进程内调用 Webpack 执行构建；
+- 工作进程执行完毕后，调用 `node-ipc` 向主进程发送结束信号。
+
+这种技术实现，对单 entry 的项目没有任何收益，只会徒增进程创建成本；但特别适合 `MPA 等多 entry 场景`，或者需要`同时编译出 esm、umd、amd 等多种产物`形态的类库场景。
+
+### 并行压缩
+
+Webpack4 默认使用 `Uglify-js` 实现代码压缩，Webpack5 之后则升级为 `Terser` —— 一种性能与兼容性更好的 JavaScript 代码压缩混淆工具，两种组件都原生实现了多进程并行压缩能力。
+
+以 `Terser` 为例，`TerserWebpackPlugin` 插件默认已开启并行压缩，开发者也可以通过 `parallel` 参数（默认值为 `require('os').cpus() - 1`）设置具体的并发进程数量，如：
+
+```js
+const TerserPlugin = require("terser-webpack-plugin");
+
+module.exports = {
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            parallel: 2 // number | boolean
+            // 可设定最大并行进程数为 2
+        })],
+    },
+};
+```
+
+- 对于 Webpack4 之前的项目，可以使用 `HappyPack` 实现并行文件加载；
+- Webpack4 之后则建议使用 `Thread-loader`；
+- 多实例并行构建场景建议使用 `Parallel-Webpack` 实现并行；
+- 生产环境下还可配合 `terser-webpack-plugin` 的并行压缩功能，提升整体效率。
+
+## 优化构建性能
+
+### 使用最新版本
+
+### 使用 lazyCompilation
+
+Webpack 5.17.0 之后引入实验特性 lazyCompilation，用于实现 entry 或异步引用模块的按需编译，这是一个非常实用的新特性！
+
+启动 `lazyCompilation` 后，代码中通过异步引用语句如 `import('./xxx')` 导入的模块（以及未被访问到的 entry）都不会被立即编译，而是直到页面正式请求该模块资源（例如切换到该路由）时才开始构建，效果与 Vite 相似，能够极大提升冷启速度。
+
+此外，`lazyCompilation` 支持如下参数：
+
+- `backend`：设置后端服务信息，一般保持默认值即可；
+- `entries`：设置是否对 entry 启动按需编译特性；
+- `imports`：设置是否对异步模块启动按需编译特性；
+- `test`：支持正则表达式，用于声明对那些异步模块启动按需编译特性。
+
+### 约束 Loader 执行范围
+
+ Loader 组件用于将各式文件资源转换为可被 Webpack 理解、构建的标准 JavaScript 代码，正是这一特性支撑起 Webpack 强大的资源处理能力。不过，Loader 在执行内容转换的过程中可能需要比较密集的 CPU 运算，如 `babel-loader、eslint-loader、vue-loader` 等，需要反复执行代码到 AST，AST 到代码的转换。
+
+因此开发者可以根据实际场景，使用 `module.rules.include、module.rules.exclude` 等配置项，限定 Loader 的执行范围 —— 通常可以排除 node_module 文件夹，如：
+
+```js
+// webpack.config.js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ["babel-loader", "eslint-loader"],
+      },
+    ],
+  },
+};
+```
+
+配置 exclude: /node_modules/ 属性后，Webpack 在处理 node_modules 中的 js 文件时会直接跳过这个 rule 项，不会为这些文件执行 Loader 逻辑。
+
+此外，exclude 与 include 还支持类似 MongoDB 参数风格的值，也就是通过 and/not/or 属性配置组合过滤逻辑，如：
+
+```js
+const path = require("path");
+module.exports = {
+  // ...
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: {
+        and: [/node_modules/],
+        not: [/node_modules\/lodash/]
+      },
+      use: ["babel-loader", "eslint-loader"]
+    }],
+  }
+};
+```
+
+### 使用 noParse 跳过文件编译
+
+有不少 NPM 库已经提前做好打包处理（文件合并、Polyfill、ESM 转 CJS 等），不需要二次编译就可以直接放在浏览器上运行，例如：
+
+- Vue2 的 `node_modules/vue/dist/vue.runtime.esm.js` 文件；
+- React 的 `node_modules/react/umd/react.production.min.js` 文件；
+- Lodash 的 `node_modules/lodash/lodash.js` 文件。
+
+对我们来说，这些资源文件都是独立、内聚的代码片段，没必要重复做代码解析、依赖分析、转译等操作，此时可以使用 `module.noParse` 配置项跳过这些资源，例如：
+
+```js
+// webpack.config.js
+module.exports = {
+  //...
+  module: {
+    noParse: /lodash|react/,
+  },
+};
+```
+
+配置后，所有匹配该正则的文件都会跳过前置的构建、分析动作，直接将内容合并进 Chunk，从而提升构建速度。不过，使用 `noParse` 时需要注意：
+
+- 由于跳过了前置的 AST 分析动作，构建过程无法发现文件中可能存在的语法错误，需要到运行（或 `Terser` 做压缩）时才能发现问题，所以必须确保 `noParse` 的文件内容正确性；
+- 由于跳过了依赖分析的过程，所以文件中，建议不要包含 `import/export/require/define` 等模块导入导出语句 —— 换句话说，`noParse` 文件不能存在对其它文件的依赖，除非运行环境支持这种模块化方案；
+- 由于跳过了内容分析过程，Webpack 无法标记该文件的导出值，也就无法实现 `Tree-shaking`。
+
+### 开发模式禁用产物优化
+
+开发模式下建议关闭这一类优化功能，具体措施：
+
+- 确保 `mode='development'` 或 `mode = 'none'`，关闭默认优化策略；
+- `optimization.minimize` 保持默认值或 `false`，关闭代码压缩；
+- `optimization.concatenateModules` 保持默认值或 `false`，关闭模块合并；
+- `optimization.splitChunks` 保持默认值或 `false`，关闭代码分包；
+- `optimization.usedExports` 保持默认值或 `false`，关闭 `Tree-shaking` 功能；
+
+### 最小化 watch 监控范围
+
+在 `watch` 模式下（通过 `npx webpack --watch` 命令启动），Webpack 会持续监听项目目录中所有代码文件，发生变化时执行 `rebuild` 命令。
+
+不过，通常情况下前端项目中部分资源并不会频繁更新，例如 `node_modules` ，此时可以设置 `watchOptions.ignored` 属性忽略这些文件，例如：
+
+```js
+// webpack.config.js
+module.exports = {
+  //...
+  watchOptions: {
+    ignored: /node_modules/
+  },
+};
+```
+
+### 跳过 TS 类型检查
+
+类型检查涉及 AST 解析、遍历以及其它非常消耗 CPU 的操作，会给工程化流程带来比较大的性能负担，因此我们可以选择关闭 `ts-loader` 的类型检查功能：
+
+```js
+module.exports = {
+  // ...
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: [
+        {
+          loader: 'ts-loader',
+          options: {
+            // 设置为“仅编译”，关闭类型检查
+            transpileOnly: true
+          }
+        }
+      ],
+    }],
+  }
+};
+```
+
+- 可以借助编辑器的 TypeScript 插件实现代码检查；
+- 使用 `fork-ts-checker-webpack-plugin` 插件将类型检查能力剥离到 子进程 执行，例如：
+
+```js
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
+module.exports = {
+  // ...
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: [
+        {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true
+          }
+        }
+      ],
+    }, ],
+  },
+  plugins:[
+    // fork 出子进程，专门用于执行类型检查
+    new ForkTsCheckerWebpackPlugin()
+  ]
+};
+```
+
+### 优化 ESLint 性能
+
+ESLint 能帮助我们极低成本发现代码风格问题，维护代码质量，但若使用不当 —— 例如在开发模式下使用 `eslint-loader` 实现实时代码检查，会带来比较高昂且不必要的性能成本，我们可以选择其它更聪明的方式接入 ESLint。
+
+例如，使用新版本组件 `eslint-webpack-plugin` 替代旧版 `eslint-loader`，两者差异在于，`eslint-webpack-plugin` 在模块构建完毕（`compilation.hooks.succeedModule` 钩子）后执行检查，不会阻断文件加载流程，性能更优。
+
+或者，可以选择在特定条件、场景下执行 ESLint，减少对构建流程的影响，如：
+
+- 使用编辑器插件完成 `ESLint` 检查、错误提示、自动 Fix，如 VS Code 的 `dbaeumer.vscode-eslint` 插件；
+- 使用 `husky`，仅在代码提交前执行 ESLint 代码检查；
+- 仅在 `production` 构建中使用 `ESLint`，能够有效提高开发阶段的构建效率。
+
+### 慎用 source-map
+
+`source-map` 是一种将经过编译、压缩、混淆的代码映射回源码的技术，它能够帮助开发者迅速定位到更有意义、更结构化的源码中，方便调试。不过，`source-map` 操作本身也有很大构建性能开销，建议读者根据实际场景慎重选择最合适的 `source-map` 方案。
+
+针对 `source-map` 功能，Webpack 提供了 `devtool` 选项，可以配置 `eval、source-map、cheap-source-map` 等值，不考虑其它因素的情况下，最佳实践：
+
+- 开发环境使用 `eval` ，确保最佳编译速度；
+- 生产环境使用 `source-map`，获取最高质量。
+
+### 设置 resolve 缩小搜索范围
+
+Webpack 默认提供了一套同时兼容 `CMD、AMD、ESM` 等模块化方案的资源搜索规则 —— `enhanced-resolve`，它能将各种模块导入语句准确定位到模块对应的物理资源路径。例如：
+
+- `import 'lodash'` 这一类引入 NPM 包的语句会被 `enhanced-resolve` 定位到对应包体文件路径 `node_modules/lodash/index.js` ；
+- `import './a'` 这类不带文件后缀名的语句，则可能被定位到 `./a.js` 文件；
+- `import '@/a'` 这类化名路径的引用，则可能被定位到 `$PROJECT_ROOT/src/a.js` 文件。
+
+需要注意，这类增强资源搜索体验的特性背后涉及许多 IO 操作，本身可能引起较大的性能消耗，开发者可根据实际情况调整 `resolve` 配置，缩小资源搜索范围，包括：
+
+1. `resolve.extensions` 配置：
+
+例如，当模块导入语句未携带文件后缀时，如 `import './a'` ，Webpack 会遍历 `resolve.extensions` 项定义的后缀名列表，尝试在 `'./a'` 路径追加后缀名，搜索对应物理文件。
+
+在 Webpack5 中，`resolve.extensions` 默认值为 `['.js', '.json', '.wasm']` ，这意味着 Webpack 在针对不带后缀名的引入语句时，可能需要执行三次判断逻辑才能完成文件搜索，针对这种情况，可行的优化措施包括：
+
+- 修改 `resolve.extensions` 配置项，减少匹配次数；
+- 代码中尽量补齐文件后缀名；
+- 设置 `resolve.enforceExtension = true` ，强制要求开发者提供明确的模块后缀名，不过这种做法侵入性太强，不太推荐。
+
+2. `resolve.modules` 配置：
+
+类似于 Node 模块搜索逻辑，当 Webpack 遇到 `import 'lodash'` 这样的 npm 包导入语句时，会先尝试在当前项目 `node_modules` 目录搜索资源，如果找不到，则按目录层级尝试逐级向上查找 `node_modules` 目录，如果依然找不到，则最终尝试在全局 `node_modules` 中搜索。
+
+在一个依赖管理良好的系统中，我们通常会尽量将 NPM 包安装在有限层级内，因此 Webpack 这一逐层查找的逻辑大多数情况下实用性并不高，开发者可以通过修改 `resolve.modules` 配置项，主动关闭逐层搜索功能。
+
+3. `resolve.mainFiles` 配置：
+
+与 `resolve.extensions` 类似，`resolve.mainFiles` 配置项用于定义文件夹默认文件名，例如对于 `import './dir'` 请求，假设 `resolve.mainFiles = ['index', 'home']` ，Webpack 会按依次测试 `./dir/index` 与 `./dir/home` 文件是否存在。
+
+因此，实际项目中应控制 `resolve.mainFiles` 数组数量，减少匹配次数。
+
+## SplitChunks
+
+Webpack 默认会将尽可能多的模块代码打包在一起，优点是能减少最终页面的 HTTP 请求数，但缺点也很明显：
+
+- 页面初始代码包过大，影响首屏渲染性能；
+- 无法有效应用浏览器缓存，特别对于 NPM 包这类变动较少的代码，业务代码哪怕改了一行都会导致 NPM 包缓存失效。
+
+为此，Webpack 提供了 `SplitChunksPlugin` 插件，专门用于根据产物包的体积、引用次数等做分包优化，规避上述问题，特别适合生产环境使用。
+
+### 深入理解 Chunk
+
+`Chunk` 是 Webpack 内部一个非常重要的底层设计，用于组织、管理、优化最终产物，在构建流程进入生成(Seal)阶段后：
+
+1. Webpack 首先根据 `entry` 配置创建若干 `Chunk` 对象；
+2. 遍历构建(Make)阶段找到的所有 Module 对象，同一 Entry 下的模块分配到 Entry 对应的 Chunk 中；
+3. 遇到异步模块则创建新的 Chunk 对象，并将异步模块放入该 Chunk；
+4. 分配完毕后，根据 `SplitChunksPlugin` 的启发式算法进一步对这些 Chunk 执行裁剪、拆分、合并、代码调优，最终调整成运行性能(可能)更优的形态；
+5. 最后，将这些 Chunk 一个个输出成最终的产物(Asset)文件，编译工作到此结束。
+
+Chunk 在构建流程中起着承上启下的关键作用:
+- 一方面作为 `Module 容器`，根据一系列默认 分包策略 决定哪些模块应该合并在一起打包；
+- 另一方面根据 `splitChunks` 设定的 策略 优化分包，决定最终输出多少产物文件。
+
+Chunk 分包结果的好坏直接影响了最终应用性能，Webpack 默认会将以下三种模块做分包处理：
+
+- `Initial Chunk`：entry 模块及相应子模块打包成 Initial Chunk；
+- `Async Chunk`：通过 `import('./xx')` 等语句导入的异步模块及相应子模块组成的 Async Chunk；
+- `Runtime Chunk`：运行时代码抽离成 Runtime Chunk，可通过 entry.runtime 配置项实现。
+
+1. 模块重复打包：
+
+假如多个 Chunk 同时依赖同一个 Module，那么这个 Module 会被不受限制地重复打包进这些 Chunk。
+
+2. 资源冗余 & 低效缓存：
+
+Webpack 会将 Entry 模块、异步模块所有代码都打进同一个单独的包，这在小型项目通常不会有明显的性能问题，但伴随着项目的推进，包体积逐步增长可能会导致应用的响应耗时越来越长。归根结底这种将所有资源打包成一个文件的方式存在两个弊端：
+
+- `资源冗余`：客户端必须等待整个应用的代码包都加载完毕才能启动运行，但可能用户当下访问的内容只需要使用其中一部分代码
+- `缓存失效`：将所有资源打成一个包后，所有改动 —— 即使只是修改了一个字符，客户端都需要重新下载整个代码包，缓存命中率极低
+
+这两个问题都可以通过更科学的分包策略解决，例如：
+
+- 将被多个 Chunk 依赖的包分离成独立 Chunk，防止资源重复；
+- `node_modules` 中的资源通常变动较少，可以抽成一个独立的包，业务代码的频繁变动不会导致这部分第三方库资源缓存失效，被无意义地重复加载。
+
+为此，Webpack 专门提供了 `SplitChunksPlugin` 插件，用于实现更灵活、可配置的分包，提升应用性能。
+
+### SplitChunksPlugin 简介
+
+`SplitChunksPlugin` 是 Webpack 4 之后内置实现的最新分包方案，与 Webpack3 时代的 `CommonsChunkPlugin` 相比，它能够基于一些更灵活、合理的启发式规则将 `Module` 编排进不同的 Chunk，最终构建出性能更佳，缓存更友好的应用产物。
+
+`SplitChunksPlugin` 的用法比较抽象，算得上 Webpack 的一个难点，主要能力有：
+
+- `SplitChunksPlugin` 支持根据 Module 路径、Module 被引用次数、Chunk 大小、Chunk 请求数等决定是否对 Chunk 做进一步拆解，这些决策都可以通过 `optimization.splitChunks` 相应配置项调整定制，基于这些能力我们可以实现：
+  - 单独打包某些特定路径的内容，例如 `node_modules` 打包为 `vendors`；
+  - 单独打包使用频率较高的文件；
+- `SplitChunksPlugin` 还提供了 `optimization.splitChunks.cacheGroup` 概念，用于对不同特点的资源做分组处理，并为这些分组设置更有针对性的分包规则；
+- `SplitChunksPlugin` 还内置了 `default` 与 `defaultVendors` 两个 `cacheGroup`，提供一些开箱即用的分包特性：
+  - `node_modules` 资源会命中 `defaultVendors` 规则，并被单独打包；
+  - 只有包体超过 20kb 的 Chunk 才会被单独打包；
+  - 加载 Async Chunk 所需请求数不得超过 30；
+  - 加载 Initial Chunk 所需请求数不得超过 30。
+
+`splitChunks` 主要有两种类型的配置：
+
+- `minChunks/minSize/maxInitialRequest` 等分包条件，满足这些条件的模块都会被执行分包；
+- `cacheGroup` ：用于为特定资源声明特定分包条件，例如可以为 `node_modules` 包设定更宽松的分包条件。
+
+### 设置分包范围
+
+`SplitChunksPlugin` 默认情况下只对 Async Chunk 生效，我们可以通过 `splitChunks.chunks` 调整作用范围，该配置项支持如下值：
+
+- 字符串 `'all'` ：对 Initial Chunk 与 Async Chunk 都生效，建议优先使用该值；
+- 字符串 `'initial'` ：只对 Initial Chunk 生效；
+- 字符串 `'async'` ：只对 Async Chunk 生效；
+- 函数 `(chunk) => boolean` ：该函数返回 true 时生效；
+
+### 根据 Module 使用频率分包
+
+`SplitChunksPlugin 支持按 Module 被 Chunk 引用的次数决定是否分包，借助这种能力我们可以轻易将那些被频繁使用的模块打包成独立文件，减少代码重复。
+
+### 限制分包数量
+
+在 `minChunks` 基础上，为防止最终产物文件数量过多导致 HTTP 网络请求数剧增，反而降低应用性能，Webpack 还提供了 `maxInitialRequest/maxAsyncRequest` 配置项，用于限制分包数量：
+
+- `maxInitialRequest`：用于设置 Initial Chunk 最大并行请求数；
+- `maxAsyncRequests`：用于设置 Async Chunk 最大并行请求数。
+
+这里所说的“请求数”，是指加载一个 Chunk 时所需要加载的所有分包数。例如对于一个 Chunk A，如果根据分包规则(如模块引用次数、第三方包)分离出了若干子 Chunk A[¡]，那么加载 A 时，浏览器需要同时加载所有的 A[¡]，此时并行请求数等于 ¡ 个分包加 A 主包，即 ¡+1。
+
+并行请求数关键逻辑总结如下：
+
+- Initial Chunk 本身算一个请求；
+- Async Chunk 不算并行请求；
+- 通过 `runtimeChunk` 拆分出的 `runtime` 不算并行请求；
+- 如果同时有两个 Chunk 满足拆分规则，但是 `maxInitialRequests(或 maxAsyncRequest)` 的值只能允许再拆分一个模块，那么体积更大的模块会被优先拆解。
+
+### 限制分包体积
+
+当包体过大时尝试对 Chunk 再做拆解 —— 避免单个 Chunk 过大。这一规则相关的配置项有：
+
+- `minSize`： 超过这个尺寸的 Chunk 才会正式被分包；
+- `maxSize`： 超过这个尺寸的 Chunk 会尝试进一步拆分出更小的 Chunk；
+- `maxAsyncSize`： 与 maxSize 功能类似，但只对异步引入的模块生效；
+- `maxInitialSize`： 与 maxSize 类似，但只对 entry 配置的入口模块生效；
+- `enforceSizeThreshold`： 超过这个尺寸的 Chunk 会被强制分包，忽略上述其它 Size 限制。
+
+那么，结合前面介绍的两种规则，`SplitChunksPlugin` 的主体流程如下：
+
+1. `SplitChunksPlugin` 尝试将命中 `minChunks` 规则的 Module 统一抽到一个额外的 Chunk 对象；
+2. 判断该 Chunk 是否满足 `maxInitialRequests` 阈值，若满足则进行下一步；
+3. 判断该 Chunk 资源的体积是否大于上述配置项 `minSize` 声明的下限阈值；
+  - 如果体积小于 `minSize` 则取消这次分包，对应的 Module 依然会被合并入原来的 Chunk
+  - 如果 Chunk 体积大于 `minSize` 则判断是否超过 `maxSize、maxAsyncSize、maxInitialSize` 声明的上限阈值，如果超过则尝试将该 Chunk 继续分割成更小的部分
+
+>提示：虽然 maxSize 等阈值规则会产生更多的包体，但缓存粒度会更小，命中率相对也会更高，配合持久缓存与 HTTP2 的多路复用能力，网络性能反而会有正向收益。
+
+>提示：注意，这些条件的优先级顺序为： `maxInitialRequest/maxAsyncRequests < maxSize < minSize`。而命中 `enforceSizeThreshold` 阈值的 Chunk 会直接跳过这些条件判断，强制进行分包。
+
+### 缓存组 cacheGroups 简介
+
+`SplitChunksPlugin` 还提供了 `cacheGroups` 配置项用于为不同文件组设置不同的规则，例如：
+
+```JS
+module.exports = {
+  //...
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            minChunks: 1,
+            minSize: 0
+        }
+      },
+    },
+  },
+};
+```
+
+示例通过 `cacheGroups` 属性设置 `vendors` 缓存组，所有命中 `vendors.test` 规则的模块都会被归类 `vendors` 分组，优先应用该组下的 `minChunks、minSize` 等分包配置。
+
+`cacheGroups` 支持上述 `minSice/minChunks/maxInitialRequest` 等条件配置，此外还支持一些与分组逻辑强相关的属性，包括：
+
+- `test`：接受正则表达式、函数及字符串，所有符合 test 判断的 Module 或 Chunk 都会被分到该组；
+- `type`：接受正则表达式、函数及字符串，与 test 类似均用于筛选分组命中的模块，区别是它判断的依据是文件类型而不是文件名，例如 `type = 'json'` 会命中所有 JSON 文件；
+- `idHint`：字符串型，用于设置 Chunk ID，它还会被追加到最终产物文件名中，例如 `idHint = 'vendors'` 时，输出产物文件名形如 `vendors-xxx-xxx.js` ；
+- `priority`：数字型，用于设置该分组的优先级，若模块命中多个缓存组，则优先被分到 `priority` 更大的组。
+
+缓存组的作用在于能为不同类型的资源设置更具适用性的分包规则，一个典型场景是将所有 `node_modules` 下的模块统一打包到 `vendors` 产物，从而实现第三方库与业务代码的分离。
+
+Webpack 提供了两个开箱即用的 `cacheGroups`，分别命名为 `default` 与 `defaultVendors`，默认配置：
+
+```JS
+module.exports = {
+  //...
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        default: {
+          idHint: "",
+          reuseExistingChunk: true,
+          minChunks: 2,
+          priority: -20
+        },
+        defaultVendors: {
+          idHint: "vendors",
+          reuseExistingChunk: true,
+          test: /[\\/]node_modules[\\/]/i,
+          priority: -10
+        }
+      },
+    },
+  },
+};
+```
+
+这两个配置组能帮助我们：
+
+- 将所有 `node_modules` 中的资源单独打包到 `vendors-xxx-xx.js` 命名的产物
+- 对引用次数大于等于 2 的模块 —— 也就是被多个 Chunk 引用的模块，单独打包
+
+开发者也可以将默认分组设置为 false，关闭分组配置。
+
+### 配置项与最佳实践
+
+`SplitChunksPlugin` 支持的配置项：
+
+- `minChunks`：用于设置引用阈值，被引用次数超过该阈值的 Module 才会进行分包处理；
+- `maxInitialRequest/maxAsyncRequests`：用于限制 Initial Chunk(或 Async Chunk) 最大并行请求数，本质上是在限制最终产生的分包数量；
+- `minSize`： 超过这个尺寸的 Chunk 才会正式被分包；
+- `maxSize`： 超过这个尺寸的 Chunk 会尝试继续做分包；
+- `maxAsyncSize`： 与 maxSize 功能类似，但只对异步引入的模块生效；
+- `maxInitialSize`： 与 maxSize 类似，但只对 entry 配置的入口模块生效；
+- `enforceSizeThreshold`： 超过这个尺寸的 Chunk 会被强制分包，忽略上述其它 size 限制；
+- `cacheGroups`：用于设置缓存组规则，为不同类型的资源设置更有针对性的分包策略。
+
+结合这些特性，业界已经总结了许多惯用的最佳分包策略，包括：
+
+- 针对 `node_modules` 资源：
+  - 可以将 `node_modules` 模块打包成单独文件(通过 `cacheGroups` 实现)，防止业务代码的变更影响 NPM 包缓存，同时建议通过 `maxSize` 设定阈值，防止 `vendor` 包体过大；
+  - 更激进的，如果生产环境已经部署 HTTP2/3 一类高性能网络协议，甚至可以考虑将每一个 NPM 包都打包成单独文件；
+- 针对业务代码：
+  - 设置 `common` 分组，通过 `minChunks` 配置项将使用率较高的资源合并为 `Common` 资源；
+  - 首屏用不上的代码，尽量以异步方式引入；
+  - 设置 `optimization.runtimeChunk` 为 true，将运行时代码拆分为独立资源。
 
