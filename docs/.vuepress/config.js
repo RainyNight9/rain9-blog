@@ -8,6 +8,7 @@ export default defineUserConfig({
   title: 'Rain9',
   description: 'Rain9 的站点',
   theme: defaultTheme({
+    hostname: 'https://raingpt.top',
     logo: '/images/lover.png',
     repo: 'https://github.com/RainyNight9/rain9-blog',
     navbar: [
@@ -28,11 +29,11 @@ export default defineUserConfig({
         link: '/blogs/algorithm/',
       },
       {
-        text: 'webgl',
+        text: 'WebGL',
         link: '/blogs/webgl/',
       },
       {
-        text: 'web3',
+        text: 'Web3',
         link: '/blogs/web3/',
       },
       {
