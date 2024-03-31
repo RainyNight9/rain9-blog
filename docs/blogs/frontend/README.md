@@ -105,28 +105,36 @@ uni-app
 3. [微前端实战中的一些疑难问题](https://juejin.cn/post/7224400777217097784)
 4. [微前端——qiankun 主要特点](https://juejin.cn/post/7168794776882544676)
 
-## 其他
+## 其它工程化
 
-1. [埋点SDK](./log_sdk.md)
-2. [日志中心](./logcenter.md)
-3. [录音与压缩编码](./luyin.md)
-4. [站内信](./mail.md)
-5. [video](./video.md)
-6. [智能 KQL 查询](https://juejin.cn/post/7210593177820676154)
-7. [拖拉拽图表可视化](https://juejin.cn/post/7208472817459789885)
-8. [前端最常见的设计模式——发布订阅篇](https://juejin.cn/post/7323126379813765132)
-9. [状态管理库](https://juejin.cn/post/7322275119593799743)
-10. [RxJS](https://juejin.cn/post/7248466120364752933)
-11. [数据可视化入门（canvas、echarts、大屏）](https://juejin.cn/post/7017730990244102151)
-12. [前端项目必备的代码规范](https://juejin.cn/post/7068281322296803358)
-13. [高德地图](https://juejin.cn/post/7070049626555940871)
-14. [Slidev](https://juejin.cn/post/7082013881878446087)
-15. [前端团队需要的工程规范](https://juejin.cn/post/7091202054680985630)
-16. [my-lerna](https://juejin.cn/post/7104587297487585310)
-17. [前端性能优化（一）](https://juejin.cn/post/7109475119214362638)
-18. [前端监控](https://juejin.cn/post/7112064558889435143)
-19. [了解可视化框架](https://juejin.cn/post/7114124821696348197)
-20. [JavaScript 单元测试覆盖率的实现原理](https://juejin.cn/post/7167182382330544136)
-21. [你知道 top-layer 吗？](https://juejin.cn/post/7168381474792538142)
+1. [前端项目必备的代码规范](https://juejin.cn/post/7068281322296803358)
+2. [前端团队需要的工程规范](https://juejin.cn/post/7091202054680985630)
+3. [my-lerna](https://juejin.cn/post/7104587297487585310)
+4. [前端性能优化（一）](https://juejin.cn/post/7109475119214362638)
+5. [前端监控](https://juejin.cn/post/7112064558889435143)
+6. [JavaScript 单元测试覆盖率的实现原理](https://juejin.cn/post/7167182382330544136)
+7. [埋点SDK](./log_sdk.md)
+
+
+## 项目
+
+1. [日志中心](./logcenter.md)
+2. [站内信](./mail.md)
+3. [智能 KQL 查询](https://juejin.cn/post/7210593177820676154)
+4. [拖拉拽图表可视化](https://juejin.cn/post/7208472817459789885)
+
+
+## 其它
+
+1. [录音与压缩编码](./luyin.md)
+2. [video](./video.md)
+3. [前端最常见的设计模式——发布订阅篇](https://juejin.cn/post/7323126379813765132)
+4. [状态管理库](https://juejin.cn/post/7322275119593799743)
+5. [RxJS](https://juejin.cn/post/7248466120364752933)
+6. [数据可视化入门（canvas、echarts、大屏）](https://juejin.cn/post/7017730990244102151)
+7. [高德地图-画圈](https://juejin.cn/post/7070049626555940871)
+8. [Slidev PPT](https://juejin.cn/post/7082013881878446087)
+9. [了解可视化框架](https://juejin.cn/post/7114124821696348197)
+10. [你知道 top-layer 吗？](https://juejin.cn/post/7168381474792538142)
 
 
