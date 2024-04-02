@@ -58,58 +58,58 @@ python node nest next
 
 ### 1. 微前端
 
-    - 背景 多项目合一，登录，公共模块，技术栈（公共模块升级和管理、技术栈差异、用户体验差）
-    - 调研 iframe、single-spa、qiankun、micro-app、无界
+- 背景 多项目合一，登录，公共模块，技术栈（公共模块升级和管理、技术栈差异、用户体验差）
+- 调研 iframe、single-spa、qiankun、micro-app、无界
 
-    - iframe 性能问题、路由管理困难、通信机制限制等
+- iframe 性能问题、路由管理困难、通信机制限制等
 
-    - `single-spa` 只是实现了加载器、路由托管
-    
-    - `无界 和 Micro App` 通过 `webComponent` 动态加载子应用
-    - 无界采用 iframe 做为沙箱方案
-    - micro-app 0.x 版本采用 with 沙箱，1.x 支持 vite 后，支持和无界同样的 ifame 沙箱。
+- `single-spa` 只是实现了加载器、路由托管
 
-    - 问题：需要在主应用的某个路由页面加载微应用？
-    - 1. 必须保证微应用加载时主应用这个路由页面也加载了。vue + vue-router 技术栈的主应用：
-    - 2. 主应用注册这个路由时给 path 加一个 *，
-    - 需要注意：如果这个路由有其他子路由，需要另外注册一个路由，仍然使用这个组件即可。
-    - 3. 微应用的 activeRule 需要包含主应用的这个路由 path。
-    - 4. 在这个组件的 mounted 周期调用 start 函数，需要注意：不要重复调用。
+- `无界 和 Micro App` 通过 `webComponent` 动态加载子应用
+- 无界采用 iframe 做为沙箱方案
+- micro-app 0.x 版本采用 with 沙箱，1.x 支持 vite 后，支持和无界同样的 ifame 沙箱。
 
-    - 问题：如何解决子应用给 window 对象添加事件处理函数不生效的问题？
-    - 1. 由于子应用访问的 window 对象是被 qiankun 代理后的对象，因此直接给 window 对象添加事件处理函数是无效的，
-    - 2. 可以通过 addEventListener 给 window 添加事件监听器来解决该问题：
-    - 3. window.addEventListener('eventName', eventHandler);
+- 问题：需要在主应用的某个路由页面加载微应用？
+- 1. 必须保证微应用加载时主应用这个路由页面也加载了。vue + vue-router 技术栈的主应用：
+- 2. 主应用注册这个路由时给 path 加一个 *，
+- 需要注意：如果这个路由有其他子路由，需要另外注册一个路由，仍然使用这个组件即可。
+- 3. 微应用的 activeRule 需要包含主应用的这个路由 path。
+- 4. 在这个组件的 mounted 周期调用 start 函数，需要注意：不要重复调用。
 
-    - 问题：微应用文件更新之后，访问的还是旧版文件，老是让用户清缓存。
-    - 服务器需要给微应用的 index.html 配置一个响应头：Cache-Control no-cache，意思就是每次请求都检查是否更新。
-    - location = /index.html {
-         add_header Cache-Control no-cache;
-      }
+- 问题：如何解决子应用给 window 对象添加事件处理函数不生效的问题？
+- 1. 由于子应用访问的 window 对象是被 qiankun 代理后的对象，因此直接给 window 对象添加事件处理函数是无效的，
+- 2. 可以通过 addEventListener 给 window 添加事件监听器来解决该问题：
+- 3. window.addEventListener('eventName', eventHandler);
 
-    - 问题：微应用打包之后 css 中的字体文件和图片加载 404
-    - 原因是 qiankun 将外链样式改成了内联样式，但是字体文件和背景图片的加载路径是相对路径。
-    - 而 css 文件一旦打包完成，就无法通过动态修改 publicPath 来修正其中的字体文件和背景图片的路径。
-    - 1. 所有图片等静态资源上传至 cdn，css 中直接引用 cdn 地址（推荐）
-    - 2. 借助 webpack 的 url-loader 将字体文件和图片打包成 base64（适用于字体文件和图片体积小的项目）（推荐）
-    - 3. 借助 webpack 的 file-loader ，在打包时给其注入完整路径（适用于字体文件和图片体积比较大的项目）
-    - 4. 将两种方案结合起来，小文件转 base64 ，大文件注入路径前缀
+- 问题：微应用文件更新之后，访问的还是旧版文件，老是让用户清缓存。
+- 服务器需要给微应用的 index.html 配置一个响应头：Cache-Control no-cache，意思就是每次请求都检查是否更新。
+- location = /index.html {
+   add_header Cache-Control no-cache;
+}
 
-    - 问题：微前端主应用部署在 k8s容器 上（自依赖），
-    - 问题：容器平台前端部署在对象存储 oss，对象存储又部署在 k8s容器 上（循环依赖）
-    - 1. 将微前端主应用在容器和阿里云都部署了一份，容器平台前端资源部署在阿里云。
-    - 2. 访问容器平台的链路如图中蓝色箭头所示，通过网关匹配到 k8s-fe 路由将流量转发到阿里云主应用，主应用再请求阿里云的容器平台资源。
-    - 3. 其他平台访问链路不变，如图红色箭头所示，通过网关将流量转发到容器的主应用，主应用拉取对象存储上各产品的资源。
-    - 4. 主应用和所有子应用都在容器平台发布更新版本，主应用发布时会同时上传一份资源到阿里云，容器平台资源会上传阿里云，其他产品资源上传对象存储。
+- 问题：微应用打包之后 css 中的字体文件和图片加载 404
+- 原因是 qiankun 将外链样式改成了内联样式，但是字体文件和背景图片的加载路径是相对路径。
+- 而 css 文件一旦打包完成，就无法通过动态修改 publicPath 来修正其中的字体文件和背景图片的路径。
+- 1. 所有图片等静态资源上传至 cdn，css 中直接引用 cdn 地址（推荐）
+- 2. 借助 webpack 的 url-loader 将字体文件和图片打包成 base64（适用于字体文件和图片体积小的项目）（推荐）
+- 3. 借助 webpack 的 file-loader ，在打包时给其注入完整路径（适用于字体文件和图片体积比较大的项目）
+- 4. 将两种方案结合起来，小文件转 base64 ，大文件注入路径前缀
 
-    - 结果 多合一、共享公共能力
-    - 原理 qiankun（single-spa + sandbox + import-html-entry）、Shadow DOM、Proxy
-    - 1、`监视路由 window.location.pathname` 等相关变化，触发接下来的匹配逻辑
-    - 2、`匹配子应用 重写路由 window.popState, replaceState`，在保留原有功能的基础上，
-    - 增加子应用 entry 映射相关逻辑针对变化的路由，匹配子应用
-    - 3、`加载子应用 import-html-entry` 解析入口文件中的 html 和 script, 
-    - 动态创建script去执行jsCode, 通过umd模块获取子应用，调用子应用 mount 方法，render 子应用
-    - 4、`渲染子应用 把 js 和 html`，渲染到提前预留的#app容器中
+- 问题：微前端主应用部署在 k8s容器 上（自依赖），
+- 问题：容器平台前端部署在对象存储 oss，对象存储又部署在 k8s容器 上（循环依赖）
+- 1. 将微前端主应用在容器和阿里云都部署了一份，容器平台前端资源部署在阿里云。
+- 2. 访问容器平台的链路如图中蓝色箭头所示，通过网关匹配到 k8s-fe 路由将流量转发到阿里云主应用，主应用再请求阿里云的容器平台资源。
+- 3. 其他平台访问链路不变，如图红色箭头所示，通过网关将流量转发到容器的主应用，主应用拉取对象存储上各产品的资源。
+- 4. 主应用和所有子应用都在容器平台发布更新版本，主应用发布时会同时上传一份资源到阿里云，容器平台资源会上传阿里云，其他产品资源上传对象存储。
+
+- 结果 多合一、共享公共能力
+- 原理 qiankun（single-spa + sandbox + import-html-entry）、Shadow DOM、Proxy
+- 1、`监视路由 window.location.pathname` 等相关变化，触发接下来的匹配逻辑
+- 2、`匹配子应用 重写路由 window.popState, replaceState`，在保留原有功能的基础上，
+- 增加子应用 entry 映射相关逻辑针对变化的路由，匹配子应用
+- 3、`加载子应用 import-html-entry` 解析入口文件中的 html 和 script, 
+- 动态创建script去执行jsCode, 通过umd模块获取子应用，调用子应用 mount 方法，render 子应用
+- 4、`渲染子应用 把 js 和 html`，渲染到提前预留的#app容器中
     
 ### 2. 埋点
    
