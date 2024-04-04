@@ -1961,13 +1961,32 @@ module.exports = {
 
 `Tree-Shaking` 是一种基于 ES Module 规范的 `Dead Code Elimination` 技术，它会在运行过程中静态分析模块之间的导入导出，判断哪些模块导出值没有被其它模块使用 —— 相当于模块层面的 Dead Code，并将其删除。
 
-在 Webpack 中，启动 Tree Shaking 功能必须同时满足两个条件：
+在 Webpack 中，启动 Tree Shaking 功能必须同时满足三个条件：
 
-- 配置 `optimization.usedExports` 为 true，标记模块导入导出列表；
+- 使用 ESM 规范编写模块代码；
+- 配置 `optimization.usedExports` 为 `true`，标记模块导入导出列表；
 - 启动代码优化功能，可以通过如下方式实现：
   - 配置 `mode = production`
   - 配置 `optimization.minimize = true`
   - 提供 `optimization.minimizer` 数组
+
+```js
+// webpack.config.js
+module.exports = {
+  entry: "./src/index",
+  mode: "production",
+  devtool: false,
+  optimization: {
+    usedExports: true,
+  },
+};
+```
+
+#### 核心原理
+
+Tree-shaking 的实现，
+- 一是需要先 `「标记」` 出模块导出值中哪些没有被用过；
+- 二是使用代码压缩插件 —— 如 `Terser` 删掉这些没被用到的导出变量。
 
 ### 使用 Scope Hoisting 合并模块
 
@@ -3232,5 +3251,7 @@ module.exports = function selectBlock (
 - 执行时，Webpack 会按照 `use` 定义的顺序从前到后执行 `Pitch Loader`，从后到前执行 `Normal Loader`，我们可以将一些预处理逻辑放在 Pitch 中(如 vue-loader)；
 
 ## Plugin 开发
+
+## Tree-shaking
 
 
