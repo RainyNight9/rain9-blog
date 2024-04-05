@@ -4,7 +4,8 @@
 
 ## 系统的
 
-1. [链表](./lianbiao.md)
+1. [数组、列表](https://juejin.cn/post/73538775623035945)
+2. [链表](./lianbiao.md)
 
 [相关代码 github 仓库](https://github.com/RainyNight9/dataStructure-algorithm)
 
