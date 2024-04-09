@@ -17,7 +17,7 @@ theme: channing-cyan
 
 浏览器是如何判断是否使用缓存的
 
-![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8606ad3db0c4514bb24a94f2e956fe4~tplv-k3u1fbpfcp-watermark.image?)
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f8606ad3db0c4514bb24a94f2e956fe4~tplv-k3u1fbpfcp-watermark.png)
 
 ### 浏览器缓存的优点
 

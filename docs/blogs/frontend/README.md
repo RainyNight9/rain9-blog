@@ -60,7 +60,7 @@ css 模块
 2. [React17核心原理（一）](https://juejin.cn/post/6933096899037790215)
 3. [React17核心原理（二）](https://juejin.cn/post/6933505441636810760)
 4. [React 的虚拟 DOM 和 fiber](https://juejin.cn/post/7105389073161781278)
-5. [React 面试题](./react.md)
+5. [React 面试题](https://juejin.cn/post/7348651815759282226)
 
 ## 浏览器
 
