@@ -1,11 +1,23 @@
 import { defineUserConfig } from 'vuepress'
 import { defaultTheme } from '@vuepress/theme-default'
 import { searchPlugin } from '@vuepress/plugin-search'
-import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 
 export default defineUserConfig({
   lang: 'zh-CN',
-  head: [['link', { rel: 'icon', href: '/images/lover.png' }]],
+  head: [
+    ['link', { rel: 'icon', href: '/images/lover.png' }],
+    [
+      'script', {}, `
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?87d26d5dfc581ba7870114f705815bcd";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+      `
+    ]
+  ],
   title: 'Rain9',
   description: 'Rain9 的站点',
   theme: defaultTheme({
@@ -58,9 +70,6 @@ export default defineUserConfig({
           placeholder: '搜索',
         }
       },
-    }),
-    googleAnalyticsPlugin({
-      id: 'G-W5BY8N51Z2',
-    }),
+    })
   ],
 })
