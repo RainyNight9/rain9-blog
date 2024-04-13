@@ -1,6 +1,7 @@
 import { defineUserConfig } from 'vuepress'
 import { defaultTheme } from '@vuepress/theme-default'
 import { searchPlugin } from '@vuepress/plugin-search'
+import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 
 export default defineUserConfig({
   lang: 'zh-CN',
@@ -57,6 +58,9 @@ export default defineUserConfig({
           placeholder: '搜索',
         }
       },
+    }),
+    googleAnalyticsPlugin({
+      id: 'G-W5BY8N51Z2',
     }),
   ],
 })
