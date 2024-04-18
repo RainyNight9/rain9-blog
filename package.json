@@ -3,20 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs:dev": "vuepress-vite dev blog",
+    "docs:build": "vuepress-vite build blog",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:clean-dev": "vuepress-vite dev blog --clean-cache",
+    "docs:update-package": "pnpm dlx vp-update"
   },
   "keywords": [],
-  "author": "",
+  "author": "Rain9",
   "license": "ISC",
   "devDependencies": {
     "@vuepress/client": "2.0.0-beta.67",
     "@vuepress/plugin-register-components": "2.0.0-rc.21",
     "@vuepress/plugin-search": "2.0.0-beta.67",
     "@vuepress/theme-default": "2.0.0-beta.67",
-    "vue": "^3.3.7",
-    "vuepress": "2.0.0-beta.67"
+    "vue": "^3.4.21",
+    "vuepress": "2.0.0-rc.9",
+    "@vuepress/bundler-vite": "2.0.0-rc.9",
+    "vuepress-theme-hope": "2.0.0-rc.36"
   }
 }
