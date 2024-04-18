@@ -12,7 +12,9 @@
 
 谢谢你们的支持，让我们一起在前端开发的世界里探索、学习、成长！ 
 
+
 1. https://zh.annas-archive.org/  人类历史上最大的完全开放的图书馆
 2. https://microsoft.github.io/generative-ai-for-beginners/#/translations/cn/ 微软 AI 课程
 3. https://elasticsearch.cn/ 搜索课
 4. https://www.udio.com/ make your music
+

@@ -1,8 +1,8 @@
 <template>
-  <div>asdsadsadasds</div>
+  <div>asdsadsadasdsadsadasdasdsad</div>
 </template>
 
-<script>
+<script setup>
 export default {
 
 }
