@@ -23,7 +23,7 @@ export default defineUserConfig({
   theme: defaultTheme({
     hostname: 'https://raingpt.top',
     logo: '/images/lover.png',
-    repo: 'https://github.com/RainyNight9/rain9-blog',
+    // repo: 'https://github.com/RainyNight9/rain9-blog',
     navbar: [
       {
         text: '首页',
