@@ -12,6 +12,8 @@ next
 
 ## Golang
 
+1. [go](./go.md)
+
 ## Python
 
 ## Java
