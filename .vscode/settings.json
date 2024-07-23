@@ -15,6 +15,7 @@
     "readdir",
     "readline",
     "reco",
+    "strconv",
     "swno",
     "taobao",
     "tencent",
