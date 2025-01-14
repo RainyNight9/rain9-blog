@@ -1,0 +1,1 @@
+import{_ as r,o as n,c as t,b as a,d}from"./app-c18f5c51.js";const i={};function o(s,e){return n(),t("div",null,e[0]||(e[0]=[a("h1",{id:"rain9",tabindex:"-1"},[a("a",{class:"header-anchor",href:"#rain9","aria-hidden":"true"},"#"),d(" Rain9")],-1)]))}const l=r(i,[["render",o],["__file","index.html.vue"]]);export{l as default};
