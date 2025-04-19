@@ -3,6 +3,7 @@
     "alloc",
     "callbackify",
     "Cipheriv",
+    "clickhouse",
     "cnpm",
     "concat",
     "Deno",
@@ -17,6 +18,7 @@
     "reco",
     "rustc",
     "Rustup",
+    "skia",
     "strconv",
     "swno",
     "taobao",
@@ -26,6 +28,7 @@
     "typeof",
     "unionid",
     "vuepress",
+    "Webassembly",
     "Weex",
     "wxlogin",
     "wxyl"

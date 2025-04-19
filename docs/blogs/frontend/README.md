@@ -96,6 +96,7 @@ css 模块
 5. [前端监控](https://juejin.cn/post/7112064558889435143)
 6. [JavaScript 单元测试覆盖率的实现原理](https://juejin.cn/post/7167182382330544136)
 7. [埋点 SDK](./log_sdk.md)
+8. [Webassembly](./Webassembly.md)
 
 ## 小程序等跨端
 
