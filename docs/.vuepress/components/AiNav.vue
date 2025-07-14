@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>🚀 AI 导航 - 卡片式网站集合</h2>
     <div class="card-grid">
       <div class="card" v-for="site in sites" :key="site.title">
         <div class="card-emoji">{{ site.emoji }}</div>
