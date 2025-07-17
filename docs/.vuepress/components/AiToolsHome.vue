@@ -1,7 +1,7 @@
 <template>
   <div class="ai-tools-home">
     <div class="banner">
-      <img src="/logo.png" alt="AI工具集" class="logo" />
+      <img src="" alt="AI工具集" class="logo" />
       <h1>AI工具集</h1>
       <div class="search-bar">
         <input placeholder="输入AI工具名称/关键词..." />
