@@ -128,6 +128,12 @@ uni-app
 2. [站内信](./mail.md)
 3. [智能 KQL 查询](https://juejin.cn/post/7210593177820676154)
 4. [拖拉拽图表可视化](https://juejin.cn/post/7208472817459789885)
+5. [Coco App](./2026/CocoApp.md)
+6. [英文官网项目](./2026/OfficialWebsiteEN.md)
+7. [EasySearch 前端管理项目](./2026/EasySearch.md)
+8. [Coco 官网项目](./2026/CocoWebsite.md)
+9. [开发工具控制台 项目](./2026/UI-WEB-CLI.md)
+10. [UI-Common 项目](./2026/UI-Common.md)
 
 ## 其它
 
