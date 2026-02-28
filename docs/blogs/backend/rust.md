@@ -38,6 +38,26 @@ rustc -o output_filename filename.rs
 rustc --crate-type lib filename.rs
 ```
 
+```bash
+# 初始化项目
+cargo init
+
+# 新建项目（会创建新文件夹）
+cargo new rust-demo
+
+# 运行项目
+cargo run
+
+# 构建
+cargo build
+
+# 新增依赖
+cargo add
+
+# rustc 编译
+rustc xxx
+```
+
 ### 1.3 获取 Rust 的库、自内涵以及 Windows 与 Linux 和 Mac 的不同
 
 ## 2. 变量与常见数据类型
