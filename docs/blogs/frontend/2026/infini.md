@@ -1,4 +1,4 @@
-# 2026 前端项目经验
+# INFINI 项目经验
 
 ## 🚀 核心业务项目
 
@@ -31,9 +31,19 @@
 *   **智能补全引擎**：维护复杂的上下文感知补全逻辑，支持根据 HTTP Method 和 API Path 动态推荐 ES 聚合与查询语法，极大降低了用户的使用门槛。
 *   **防御性编程**：解决了在 iframe 及严格 CSP 环境下 Clipboard API 与本地存储的兼容性问题，确保组件在第三方宿主环境中的稳定性。
 
+### 4. INFINI Cloud (混合云管理控制台)
+
+**技术栈**：React 16, UmiJS v2, Wujie (微前端), BizCharts
+**项目描述**：基于微前端架构的企业级混合云管理平台，集成了 Coco Server、Easysearch 等多个子应用，实现统一的身份认证与资源管控。
+**核心职责**：
+*   **混合微前端架构落地**：采用 **Wujie (无界)** 方案重构单体应用，基于 **WebComponent + iframe** 实现了极致的样式隔离与 JS 沙箱，解决了 AntD 3/4 多版本共存的样式污染难题。
+*   **动态权限路由**：设计了运行时路由 Patch 机制，根据用户角色与部署环境（SaaS/On-Premise）动态计算路由表，配合 **Authorized** 组件实现细粒度的按钮级权限控制。
+*   **实时日志流监控**：封装 `WebsocketLogViewer` 组件，通过 WebSocket 实时推送 K8s Pod 日志，支持 ANSI 颜色渲染与自动滚动，提供类原生终端的监控体验。
+*   **跨应用通信与隔离**：实现了基于 `localStorage` 的**命名空间隔离代理**，防止子应用间缓存冲突；设计了主子应用间的通信总线，确保跨应用鉴权状态的实时同步。
+
 ## 🛠️ 基础设施与官网项目
 
-### 4. UI-Common —— AI 垂直领域通用组件库
+### 5. UI-Common —— AI 垂直领域通用组件库
 
 **技术栈**：React, Vite, pnpm, UnoCSS, Elastic EUI
 **项目描述**：服务于全系产品的 Monorepo 组件库，包含 AI 聊天、数据可视化及通用业务组件。
@@ -42,7 +52,7 @@
 *   **构建体系建设**：解决 ESM 与 CommonJS 依赖混用的构建难题，配置 Vite 库模式打包，实现了组件库的 **Tree-shaking 友好**与类型定义自动生成。
 *   **设计系统统一**：融合 Ant Design 与 Elastic EUI 两套设计体系，建立统一的 Token 系统，确保了跨产品线一致的**深色模式（Dark Mode）**体验。
 
-### 5. Coco 官网与插件市场 (Coco Portal)
+### 6. Coco 官网与插件市场 (Coco Portal)
 **技术栈**：Next.js 15, TypeScript, Tailwind CSS, Framer Motion
 **项目描述**：Coco AI 产品的官方门户与插件生态市场，兼顾 SEO 流量获取与动态应用交互。
 **核心职责**：
@@ -50,10 +60,11 @@
 *   **泛型组件设计**：设计高扩展性的列表渲染架构，通过泛型组件一套代码适配 Assistant、Connector、Datasource 等 **6 种资源类型**，新业务接入仅需配置参数。
 *   **用户体验优化**：实现了自定义路由进度感知系统，解决了 Next.js App Router 在静态导出模式下路由跳转无反馈的体验痛点。
 
-### 6. Infinilabs 英文官网 (High-Performance Official Site)
+### 7. Infinilabs 英文官网 (High-Performance Official Site)
 **技术栈**：Next.js (SSG), React Three Fiber (WebGL), Shadergradient
 **项目描述**：面向全球市场的企业官网，主打高性能与沉浸式 3D 视觉体验。
 **核心职责**：
 *   **极致性能优化**：基于 `output: 'export'` 构建纯静态站点，结合 CDN 全球分发，实现 **TTFB < 50ms**；优化第三方脚本（GTM/Hotjar）加载策略，TBT 降至近乎 0ms。
 *   **3D 视觉工程化**：攻克 WebGL 在 SSG 环境下的水合（Hydration）难题，设计 **"View Tunneling" (视图隧道)** 架构，实现 3D 背景在路由切换时的无缝过渡，**GPU 内存占用降低 40%**。
-。
+
+
