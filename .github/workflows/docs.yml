@@ -18,10 +18,10 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           # 选择要使用的 node 版本
-          node-version: '21'
+          node-version: '24'
 
       # 缓存 node_modules
       - name: Cache dependencies
