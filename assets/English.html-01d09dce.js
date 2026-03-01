@@ -1,0 +1,1 @@
+const a=JSON.parse('{"key":"v-8425cdee","path":"/blogs/yan/English.html","title":"English","lang":"zh-CN","frontmatter":{},"headers":[],"git":{"updatedTime":1719299726000,"contributors":[{"name":"Rain9","email":"15911122312@163.com","commits":1},{"name":"rain","email":"15911122312@163.com","commits":1}]},"filePathRelative":"blogs/yan/English.md"}');export{a as data};

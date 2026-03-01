@@ -1,0 +1,1 @@
+import{_ as n,o as a,c as r,a as e,b as s}from"./app-f89883cd.js";const o={};function c(l,t){return a(),r("div",null,[...t[0]||(t[0]=[e("h1",{id:"next-js",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#next-js","aria-hidden":"true"},"#"),s(" Next.js")],-1),e("p",null,"https://nextjs.org/",-1)])])}const x=n(o,[["render",c],["__file","next.html.vue"]]);export{x as default};

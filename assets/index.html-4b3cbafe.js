@@ -1,0 +1,1 @@
+import{_ as r,o as n,c as t,a,b as i}from"./app-f89883cd.js";const o={};function s(c,e){return n(),t("div",null,[...e[0]||(e[0]=[a("h1",{id:"rain9",tabindex:"-1"},[a("a",{class:"header-anchor",href:"#rain9","aria-hidden":"true"},"#"),i(" Rain9")],-1)])])}const l=r(o,[["render",s],["__file","index.html.vue"]]);export{l as default};
