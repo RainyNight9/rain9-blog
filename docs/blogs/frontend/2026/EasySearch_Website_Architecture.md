@@ -99,6 +99,7 @@ categories:
 
 **模板实现 (`layouts/_default/infini/knowledge-base.html`)：**
 ```html
+{% raw %}
 {{ range .Site.Data.knowledge_base.categories }}
   <div class="col-sm-12 col-md-6 col-lg-4">
     <a class="kb-card" href="{{ .link }}">
@@ -110,6 +111,7 @@ categories:
     </a>
   </div>
 {{ end }}
+{% endraw %}
 ```
 通过 `$.Site.GetPage` 获取对应分类的页面对象，再通过 `len` 和 `where` 函数动态计算该分类下的文章总数，实现了数据的实时更新。
 
@@ -120,6 +122,7 @@ categories:
 在 `knowledge-base.html` 中，我们遍历所有知识库文章，生成一个包含标题、链接和分类信息的 JSON 对象：
 
 ```html
+{% raw %}
 {{ $allKbPages := slice }}
 {{ $kbSection := .Site.GetPage "knowledge-base" }}
 {{ range where $kbSection.RegularPagesRecursive "Type" "ne" "section" }}
@@ -129,6 +132,7 @@ categories:
 <script>
   window.allKbPages = {{ $allKbPages | jsonify | safeJS }};
 </script>
+{% endraw %}
 ```
 
 **运行时搜索逻辑：**
@@ -149,6 +153,7 @@ function onKbSearch() {
 为了避免与博客或其他板块的标签混淆，我们在展示“热门标签”时进行了**领域隔离**。通过检查 `Page.Section` 属性，只筛选出属于 `knowledge-base` 的标签。
 
 ```html
+{% raw %}
 {{ range $term, $weightedPages := .Site.Taxonomies.tags }}
   {{ $count := 0 }}
   {{ range $weightedPages }}
@@ -158,16 +163,19 @@ function onKbSearch() {
   {{ end }}
   <!-- 仅展示计数大于0的标签 -->
 {{ end }}
+{% endraw %}
 ```
 
 #### 2.4 分页机制
 在知识库列表页 (`knowledge-list.html`)，我们使用了 Hugo 内置的 Pagination 功能，设定每页展示 20 篇文章：
 
 ```html
+{% raw %}
 {{ $paginator := .Paginate (where .Data.Pages "Type" "ne" "section") 20 }}
 {{ range $paginator.Pages }}
   <!-- 文章列表项 -->
 {{ end }}
+{% endraw %}
 ```
 
 ### 3. 极致的用户体验优化
@@ -178,7 +186,7 @@ function onKbSearch() {
 #### 3.2 面包屑导航与目录
 在文章详情页，我们自动生成了**面包屑导航**（Breadcrumbs）和**右侧目录**（Table of Contents）。
 - **面包屑**：`Home > 知识库 > 分类 > 文章标题`，清晰展示路径。
-- **目录**：通过 Hugo 的 `{{ .TableOfContents }}` 自动生成，配合 ScrollSpy 实现滚动高亮，方便长文阅读。
+- **目录**：通过 Hugo 的 `{% raw %}{{ .TableOfContents }}{% endraw %}` 自动生成，配合 ScrollSpy 实现滚动高亮，方便长文阅读。
 
 ## 总结
 
