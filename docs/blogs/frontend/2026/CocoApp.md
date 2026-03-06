@@ -44,6 +44,34 @@ Coco App 是一款集成了 **RAG（检索增强生成）** 与 **MCP（Model Co
 
 ---
 
+### 3.2 平台端（Server）架构概览
+
+为支撑桌面与 Web 侧的统一智能能力，平台端采用前后端分离的设计：**桌面端基于 Tauri/Rust 提供本地能力与高性能聚合**，**服务端基于 Go 提供 Agent 编排、RAG 索引与 LLM 适配**。
+
+- 后端（Go）分层
+  - Core Domain：`Assistant`、`Session`、`Message`、`DataSource`、`MCPServer` 等核心实体
+  - Modules：`assistant`（编排，含 `deep_research`/`deep_search`）、`llm`（统一适配）、`connector`（数据源连接）
+  - Plugins：丰富的连接器生态（GitHub/GitLab/Jira/Notion/S3/SQL 等），为 RAG 提供数据支撑
+
+### 3.3 前端 Monorepo 组件生态
+
+为复用 Agent 能力于不同宿主形态（独立搜索页、嵌入式挂件），前端以 Monorepo 管理组件：
+- `@infinilabs/ai-chat`：对话交互组件，封装流式响应与会话管理
+- `@infinilabs/chat-message`：复杂消息渲染引擎，支持 Markdown、思维链（Think）、工具调用（CallTools）、深度研究报告（DeepResearch）
+- `@infinilabs/ai-answer`：面向即时问答的轻量组件
+
+### 3.4 Agent 核心能力补充
+
+- 深度研究（Deep Research）：多步推理、搜索与思考的编排，前端以 `<Think />` 可视化思维链并输出结构化研究报告
+- MCP 支持：原生集成 Model Context Protocol，标准化工具调用，易于扩展第三方 MCP Server
+- RAG 引擎：多源接入（代码仓库、文档协作、对象存储、结构化数据库），统一索引与语义检索
+
+### 3.5 前端交互与产品形态
+
+- 流式响应与增量渲染：在 `streamFetch` 管理 SSE/Fetch 流，实时解析 Chunk 并逐步更新 UI，降低感知延迟
+- 复杂消息体渲染：渲染工具调用状态、引用溯源（`<Citation />`）、多模态附件
+- 模块化产品形态：可快速组合为全屏搜索、悬浮助手（Copilot）、命令中心（Launcher/Spotlight）
+
 ## 4. 核心难点与解决方案 (Key Challenges - STAR)
 
 ### 难点一：AI Agent 的流式编排与体验优化
@@ -54,6 +82,11 @@ Coco App 是一款集成了 **RAG（检索增强生成）** 与 **MCP（Model Co
   - `Reasoning`：思考过程（UI 折叠显示，减少屏幕占用）。
   - `ToolCall`：工具调用（UI 显示 Loading/Success/Error 状态卡片）。
   - `Content`：最终文本（Markdown 增量渲染）。
+  - **技术选型 (Why SSE vs WebSocket?)**：
+    - **场景匹配度**：AI Agent 的生成过程是典型的“一次请求，多次响应”单向流。WebSocket 的全双工通信在此场景下是冗余的。
+    - **协议轻量化**：SSE 基于标准 HTTP 长连接，无 WebSocket 的复杂握手与心跳保活开销。
+    - **鲁棒性**：浏览器原生 `EventSource` 自带断线自动重连机制，而 WebSocket 需要手动实现心跳与重连逻辑。
+    - **架构统一**：MCP (Model Context Protocol) 标准原生支持 SSE 传输，直接复用协议栈，无需额外的协议转换层。
 - **乐观更新与回退**：在工具调用发起时立即在 UI 占位，异步等待 MCP Server 返回结果后再更新状态，消除等待感。
 **Result**: 实现了类 Claude/OpenAI 的流畅对话体验，用户可清晰感知 AI 的“思考-行动-反馈”闭环。
 
@@ -99,21 +132,3 @@ Coco App 是一款集成了 **RAG（检索增强生成）** 与 **MCP（Model Co
 - **性能指标**：聚合搜索 P99 延迟 < 200ms；首字渲染延迟（TTFB）降低 40%。
 - **研发效率**：跨端代码复用率 100%，Web SDK 交付周期缩短 50%。
 - **质量保障**：构建门禁拦截了 10+ 次潜在的跨端依赖泄露事故。
-
----
-
-## 6. 附录：关键数据与代码索引
-
-> 面试时可用于佐证技术深度的具体细节。
-
-### 6.1 项目规模
-- **Tauri Commands**: 81 个（Rust 接口面）
-- **Rust Tests**: 144 个（后端测试覆盖）
-- **Frontend Components**: 152 个（组件规模）
-- **Zustand Stores**: 14 个（状态复杂度）
-
-### 6.2 关键代码位置
-- **流式解析与 UI**: [Chat.tsx](https://github.com/infinilabs/coco-app/src/components/Assistant/Chat.tsx)
-- **平台适配接口**: [platform.ts](https://github.com/infinilabs/coco-app/src/types/platform.ts)
-- **Rust 聚合搜索**: [search/mod.rs](https://github.com/infinilabs/coco-app/src-tauri/src/search/mod.rs)
-- **Web 构建门禁**: [tsup.config.ts](https://github.com/infinilabs/coco-app/tsup.config.ts)
