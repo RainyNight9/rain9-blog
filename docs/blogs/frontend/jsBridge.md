@@ -1,4 +1,4 @@
-# JSBridge
+# JSBridge·
 
 ## 什么是 JSBridge
 

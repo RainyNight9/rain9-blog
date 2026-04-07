@@ -57,6 +57,10 @@ export default defineUserConfig({
         link: "/blogs/vim/",
       },
       {
+        text: "AI Agent",
+        link: "/blogs/2026/AI-Agent-Data-Analyzer/",
+      },
+      {
         text: "Rain9 的博客",
         children: [
           { text: "Github", link: "https://github.com/RainyNight9" },
@@ -71,6 +75,48 @@ export default defineUserConfig({
         ],
       },
     ],
+    sidebar: {
+      "/blogs/2026/AI-Agent-Data-Analyzer/": [
+        {
+          text: "AI Agent Data Analyst",
+          children: [
+            "/blogs/2026/AI-Agent-Data-Analyzer/",
+            {
+              text: "01-Fundamentals",
+              collapsible: true,
+              children: [
+                "/blogs/2026/AI-Agent-Data-Analyzer/01-fundamentals/",
+                "/blogs/2026/AI-Agent-Data-Analyzer/01-fundamentals/lab/",
+              ],
+            },
+            {
+              text: "02-Intermediate",
+              collapsible: true,
+              children: [
+                "/blogs/2026/AI-Agent-Data-Analyzer/02-intermediate/",
+                "/blogs/2026/AI-Agent-Data-Analyzer/02-intermediate/lab/",
+              ],
+            },
+            {
+              text: "03-Project",
+              collapsible: true,
+              children: [
+                "/blogs/2026/AI-Agent-Data-Analyzer/03-project/",
+                "/blogs/2026/AI-Agent-Data-Analyzer/03-project/lab/",
+              ],
+            },
+            {
+              text: "04-Deployment",
+              collapsible: true,
+              children: [
+                "/blogs/2026/AI-Agent-Data-Analyzer/04-deployment/",
+                "/blogs/2026/AI-Agent-Data-Analyzer/04-deployment/lab/",
+              ],
+            },
+          ],
+        },
+      ],
+    },
   }),
   plugins: [
     searchPlugin({

@@ -1,4 +1,4 @@
-# Coco App - AI Agent 桌面端工作台（面试复盘）
+# Coco App - AI Agent 桌面端工作台去
 
 ## 1. 项目简介 (Project Overview)
 
@@ -71,6 +71,53 @@ Coco App 是一款集成了 **RAG（检索增强生成）** 与 **MCP（Model Co
 - 流式响应与增量渲染：在 `streamFetch` 管理 SSE/Fetch 流，实时解析 Chunk 并逐步更新 UI，降低感知延迟
 - 复杂消息体渲染：渲染工具调用状态、引用溯源（`<Citation />`）、多模态附件
 - 模块化产品形态：可快速组合为全屏搜索、悬浮助手（Copilot）、命令中心（Launcher/Spotlight）
+
+### 3.6 RAG 全栈实现（Frontend + Backend）
+
+- 数据摄取与切片
+  - 来源：Git/S3/SQL/Notion/本地 FS
+  - 切片策略：固定长度 + 语义分段 + 滑窗，生成 `chunk_id` 与 `doc_id`
+  - 元数据：`source`, `path`, `author`, `created_at`, `acl`, `tenant_id`
+- 向量与索引
+  - Embedding：BGE/Instructor/`text-embedding-3-large` 按租户隔离
+  - 向量库：Milvus/PGVector/ES Dense Vector；倒排索引用于精确过滤
+  - 版本化：`index_version` 与增量更新；失效与重建策略
+- 查询与重排
+  - Query Builder：keyword + semantic 混合检索，`filter` 负责权限与精确条件
+  - Rerank：Cross‑Encoder 重排，提升 Top‑K 质量
+  - 拼接上下文：按窗口预算与来源多样性，生成 `context_blocks` 与 `citations`
+- 提示组装与生成
+  - 模板：`system` + `fewshot` + `context` + `user`
+  - 安全：上下文标记与注入边界、输出结构化 JSON（JSON Mode）
+  - 成本控制：窗口预算、复用缓存、基于问题类型走轻重不同路径
+- 前端职责
+  - Query DSL 构造与 Source 权重治理；`<Citation />` 展示引用与可回溯
+  - 结果公平性：限制单源展示占比；慢源熔断不阻塞快源
+  - 流式体验：SSE 增量渲染，细粒度 Loading 与占位
+- 评测与可观测
+  - 指标：命中率、覆盖度、正确性、依据充分度与引用一致性
+  - 观测：检索命中、重排耗时、窗口使用、模型费用
+
+#### 后端检索通路（Go 伪代码）
+```go
+type Query struct{ Text string; Filters map[string]string; K int }
+type Hit struct{ ChunkID string; Score float64; Meta map[string]string; Text string }
+func Search(q Query) ([]Hit, error) {
+  vec := Embed(q.Text)
+  hits := VectorSearch(vec, q.K, q.Filters)
+  reranked := CrossEncode(q.Text, hits)
+  return reranked, nil
+}
+```
+
+#### 提示组装（TypeScript 伪代码）
+```ts
+type Block = { text: string; citation: { source: string; path: string } }
+function buildPrompt(system: string, context: Block[], user: string) {
+  const ctx = context.map(b => b.text).join("\n\n")
+  return [{ role: "system", content: system }, { role: "user", content: `${ctx}\n\n${user}` }]
+}
+```
 
 ## 4. 核心难点与解决方案 (Key Challenges - STAR)
 
