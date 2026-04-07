@@ -1060,3 +1060,95 @@ async function connectWallet() {
 2. **模块化与拖拽（可扩展性）**：如果未来业务需要支持用户手动编辑报告，我会引入类似 `ProseMirror` 或 `Yjs` 的 CRDT 算法来实现协同编辑；在视图层，可以基于 `Slate.js` 或类似富文本框架，把图表作为一种自定义 Node 嵌入到文档流中。
 3. **性能考量**：对于包含成百上千行数据的金融报表，原生的 DOM 渲染会造成严重的内存泄漏和滚动卡顿。我会使用**虚拟滚动 (Virtual Scrolling)** 技术，只渲染可视区域内的 DOM 节点，确保编辑器在极大数据量下依然如丝般顺滑。”
 
+## ying
+
+### 资深 Web 端全栈工程师 (高并发/大模型/多智能体架构方向)
+
+#### 1. JD 深度解析与备战策略
+
+这份 JD 的要求极高，这绝对不是一个普通的“写写页面+写写 CRUD”的全栈岗位，而是一个**“全栈架构师 + AI 系统架构师”**的综合体。从前端的 V8 引擎底层，到后端的分布式微服务，再到 DevOps 甚至 Multi-Agent（多智能体）的调度编排，要求你具备“全栈、全链路、全生命周期”的把控能力。
+
+**你需要重点准备的 4 个核心维度：**
+1. **大前端深水区**：不能只停留在会用 React/Vue。必须准备：浏览器渲染原理（重排/重绘）、SSR/CSR 混合架构 (Next.js 的 App Router 是完美范例)、构建工具深度优化（Tree-shaking 原理、Vite/Webpack 拆包策略）。
+2. **后端与高并发架构**：必须准备：分布式系统设计、Redis 缓存策略（击穿/穿透/雪崩）、数据库索引优化（PostgreSQL）、微服务架构下的鉴权（JWT/OAuth2）与容错容灾。
+3. **AI 与 Multi-Agent 架构（最核心的杀手锏）**：JD 明确提出了“多 Agent 架构调度、生命周期管理、并发控制”、“LLM + Vector DB 检索系统”。你需要准备如何利用任务队列（如 BullMQ）、状态机来编排多个 Agent，以及 RAG（检索增强生成）的全流程。
+4. **DevOps 与云原生**：准备好 Docker 化部署、K8s 基础概念（如 HPA 弹性伸缩）、CI/CD 自动化流水线构建。
+
+#### 2. 核心面试题与高分回答话术
+
+##### Q1: JD 要求“具备设计和搭建多 Agent 架构的能力”，假设我们的系统需要多个 AI Agent 协作（比如一个负责检索数据，一个负责写代码，一个负责 Review），你会如何设计它们的调度、通信和生命周期管理？
+**💡 回答思路（展示后端架构与 AI 的结合能力）：**
+“在设计多 Agent 协作系统时，最忌讳的是让它们通过同步的 HTTP 请求互相死等，这会导致极差的容错率和极高的延迟。我会采用**基于消息驱动的异步事件架构 (Event-Driven Architecture)**。
+1. **调度与通信**：我会引入类似 Redis 的 `BullMQ` 或 `Kafka` 作为中央消息总线。当总控 Agent (Router) 接收到用户请求时，它会将任务拆解，并向特定的 Topic 发布消息。检索 Agent 和编码 Agent 作为 Worker 监听对应的 Topic 进行消费。
+2. **生命周期与并发控制**：每个 Agent 的执行都是一个状态机（Pending -> Processing -> Completed/Failed）。在 Node.js/NestJS 中，我会为每个 Worker 设定并发上限（Concurrency控制），防止短时间内大模型 API 并发过高被限流 (Rate Limit)。
+3. **资源隔离与容错**：如果某个 Agent 陷入死循环或超时，任务队列会触发 Timeout 机制，并根据设定的策略进行重试 (Retry) 或将任务丢入死信队列 (DLQ)，防止单个 Agent 的崩溃拖垮整个系统。”
+
+##### Q2: 针对“大流量、高并发”的场景，如果我们上线了一个爆款的 AI 应用，瞬间涌入大量用户，你会从哪些层面进行性能调优和稳定性保障？
+**💡 回答思路（展现全链路的 DevOps 与后端调优经验）：**
+“应对高并发需要从接入层、应用层到数据层进行全链路防护：
+1. **接入层与前端 (CDN & 边缘计算)**：首先，静态资源必须全部上 CDN。对于一些无需个性化计算的接口，我会利用 Next.js 的 Edge Runtime 和 ISR（增量静态生成）在边缘节点直接拦截请求，大幅减轻源站压力。
+2. **应用层 (扩容与限流)**：后端采用 Docker 容器化部署在 Kubernetes (K8s) 上。我会配置 HPA (Horizontal Pod Autoscaler)，根据 CPU 使用率或消息队列的积压长度自动水平扩容 Node.js/NestJS 实例。同时，在网关层 (如 Nginx 或 API Gateway) 严格配置 IP 限流和 Token 令牌桶算法，防止恶意刷接口。
+3. **数据层与异步削峰**：高并发下绝不能让请求直接打到 PostgreSQL。我会引入 Redis 做热点数据缓存；对于耗时的 AI 推理请求，全面采用异步化，前端提交任务后立即返回，随后通过 WebSocket / SSE 建立长连接，等待后台 Worker 慢慢消费并推送结果，实现完美削峰。”
+
+##### Q3: 你如何理解 RAG (检索增强生成) 系统？如果在项目中要落地一个 “LLM + Vector DB” 的检索功能，你会怎么做？
+**💡 回答思路（直击 JD 中的 AI 数据驱动要求）：**
+“RAG 系统的核心目的是解决大模型的‘幻觉’和‘私有数据缺失’问题。落地 RAG 我会分为数据处理和检索生成两步：
+1. **离线数据管道 (Data Pipeline)**：首先需要将企业的私有文档进行解析，然后进行合理的切块 (Chunking)。切块策略很关键，不能切断上下文语义。接着，调用 Embedding 模型（如 `text-embedding-3-small`）将文本块转化为高维向量，并存入向量数据库（如 `pgvector` 或 `Milvus`）。
+2. **在线检索与生成**：当用户提问时，系统先将用户的问题同样转化为向量，在 Vector DB 中进行 KNN (K近邻) 或余弦相似度检索，召回最相关的 Top-K 个文本块。
+3. **混合检索优化**：为了提高准确率，我不仅会用向量检索，还会结合传统的 BM25 关键词检索（混合检索 Hybrid Search），然后使用一个 Reranker 模型对召回结果进行重排，最后将最精准的上下文拼接到 Prompt 中喂给大模型，生成可靠的答案。”
+
+##### Q4: 前端方面，JD 强调了 SSR/CSR、Hydration 和渲染流程。在 Next.js 的实际项目中，你是如何权衡和优化这些策略的？
+**💡 回答思路（展现 React/Next.js 深度）：**
+“在现代前端架构中，一刀切的 SSR 或 CSR 都是不合理的。在我的项目中，我深度实践了 Next.js 的 **Server Components (RSC)** 与 Client Components 混合架构。
+1. **渲染策略拆分**：对于重内容的框架、SEO 敏感的页面骨架，我全部采用 Server Components（在服务端执行），这样不仅实现了零 JS 打包体积发送到客户端，还直接穿透了数据库获取数据。对于需要用户交互的图表（ECharts）、表单，我才在文件顶部标记 `"use client"`，作为 Client Components。
+2. **Hydration 优化**：传统的 SSR 会在客户端执行全量的 Hydration（水合），导致 TTI（可交互时间）变长。通过合理使用 RSC，客户端只需对少量的交互组件进行 Hydration。此外，我大量使用了 `next/dynamic` 和 React `Suspense` 实现流式渲染 (Streaming)，优先展现核心内容，将重型组件延迟加载和水合，极致优化了首屏性能 (LCP)。”
+
+##### Q5: JD 提到了 HTTP/2、HTTP/3 以及 WebSocket 的实战。你在项目中是如何处理前后端实时通信的？
+**💡 回答思路（展现网络协议深度）：**
+“在 AI 交互场景中，传统的短轮询体验极差。
+1. 对于大模型的文字生成，我会采用 **SSE (Server-Sent Events)**。它是单向的、基于 HTTP 的流式传输，非常轻量，且天然支持 HTTP/2 的多路复用，不会像 HTTP/1.1 那样受限于浏览器的 6 个并发连接限制。
+2. 而对于需要双向交互、状态高频推送的场景（比如前端需要实时知道后端多个 Agent 的执行进度、资源状态），我会引入 **WebSocket** (结合 Socket.io 处理降级和心跳保活)。
+这两种协议在现代 Web 架构中是互补的：SSE 负责高吞吐的流式文本，WebSocket 负责低延迟的双向信令控制。”
+
+#### 3. 四大核心维度：硬核知识储备与“防追问”指南
+
+针对前面提到的 4 个核心维度，这里为你整理了**最容易被深度追问**的技术点和标准答案（可以直接作为你的复习大纲和八股文护城河）：
+
+##### 维度一：大前端深水区 (渲染、架构、工程化)
+*   **重排(Reflow)与重绘(Repaint)底层原理**：
+    *   **防追问**：什么时候触发？怎么优化？
+    *   **答案**：改变元素几何属性（宽高、位置）会触发**重排**（代价极大，需要重新计算布局树）；仅改变外观（颜色、背景）触发**重绘**。**优化方案**：使用 CSS3 的 `transform` 和 `opacity` 实现动画，它们会触发 GPU 硬件加速，跳过主线程的 Layout 和 Paint 阶段，直接进入 Composite（合成）阶段；另外，避免在 JS 循环中频繁读取 `offsetHeight` 等属性，这会导致浏览器强制清空渲染队列以获取最新值（强制同步布局）。
+*   **Tree-shaking (摇树优化) 底层机制**：
+    *   **防追问**：为什么 CommonJS 不能摇树？
+    *   **答案**：Tree-shaking 依赖于 ES6 Module (ESM) 的**静态分析**特性（`import/export` 只能在模块顶层，不能动态引入）。构建工具（如 Webpack/Rollup）通过 AST 分析，标记出未被使用的 export。对于带有副作用的代码，需要在 `package.json` 中配置 `"sideEffects": false` 才能彻底清除。
+*   **SSR vs CSR 与 Next.js App Router**：
+    *   **防追问**：SSR 的痛点是什么？Next.js 怎么解决的？
+    *   **答案**：传统 SSR 存在“全量水合 (Hydration)”问题，导致首屏可见但不可交互 (TTI 延迟)。Next.js App Router 引入了 **RSC (React Server Components)**。RSC 只在服务端运行，生成的组件不会打包任何 JS 到客户端，大幅缩减 Bundle Size。配合 `Suspense` 实现**流式渲染 (Streaming)**，让重要组件先水合，慢速请求组件后加载。
+
+##### 维度二：后端与高并发架构 (缓存、数据库、安全)
+*   **Redis 缓存三大经典问题 (击穿、穿透、雪崩)**：
+    *   **缓存穿透**（查不到）：恶意请求查询不存在的 ID，直接打到 DB。**对策**：缓存空对象 (短 TTL) 或引入**布隆过滤器 (Bloom Filter)** 拦截。
+    *   **缓存击穿**（热点失效）：某一个极高并发的热点 Key 突然过期，大量请求打穿到 DB。**对策**：使用**互斥锁 (如 Redis 的 `setnx`)**，只允许一个线程去 DB 重建缓存，其他线程等待；或者设置“逻辑过期时间”（异步线程去更新缓存）。
+    *   **缓存雪崩**（大面积失效）：大量 Key 在同一时间过期，或 Redis 宕机。**对策**：给 TTL 加上随机抖动值 (Random Jitter)；搭建 Redis Cluster 高可用集群。
+*   **PostgreSQL 索引优化与慢查询**：
+    *   **防追问**：如何排查慢 SQL？什么是最左前缀？
+    *   **答案**：使用 `EXPLAIN ANALYZE` 查看执行计划（看走的是 Seq Scan 还是 Index Scan）。建立联合索引时必须遵循**最左前缀法则**；遇到深分页（如 `OFFSET 10000 LIMIT 10`）时性能会极差，应改用**游标分页 (Cursor/Keyset Pagination)**，比如 `WHERE id > last_id LIMIT 10`。
+*   **JWT 鉴权体系的痛点**：
+    *   **防追问**：JWT 是无状态的，如果用户密码泄露或被封号，如何强制踢下线？
+    *   **答案**：引入 **Access Token (短效, 15分钟) + Refresh Token (长效, 7天)** 双 Token 机制。Refresh Token 存在 Redis 中。当需要踢人时，直接在 Redis 中拉黑/删除对应的 Refresh Token。Access Token 过期后，前端拿失效的 Refresh Token 去换新时就会被拒绝，从而实现踢人。
+
+##### 维度三：AI 与 Multi-Agent 架构 (编排与 RAG)
+*   **BullMQ 与状态机编排**：
+    *   **防追问**：如何保证 Agent 任务的幂等性和不丢失？
+    *   **答案**：BullMQ 基于 Redis 构建，利用 Redis 的事务和 Lua 脚本保证原子性。对于丢失问题，BullMQ 会将任务放在 `Active` 队列，如果 Worker 崩溃（未发送完成信号），任务超时后会被重新放回 `Wait` 队列。**幂等性**：每个任务必须生成全局唯一的 `jobId`，执行前检查状态，防止重试时造成重复扣费或重复生成。
+*   **RAG (检索增强生成) 的进阶优化**：
+    *   **防追问**：单纯的向量检索准确率不高怎么办？
+    *   **答案**：采用**混合检索 (Hybrid Search)**。向量检索 (如 pgvector HNSW 算法) 擅长捕捉“语义相似度”，但对专有名词、料号等“精准匹配”较弱。我会结合 **BM25 算法** (传统的关键词 TF-IDF 变种) 进行双路召回，然后使用 **Reranker (重排模型)** 根据问题和文档的相关性重新打分，取 Top 3 输入给大模型，极大降低幻觉。
+
+##### 维度四：DevOps 与云原生 (部署与弹性)
+*   **Docker 镜像优化**：
+    *   **防追问**：Node.js 的 Docker 镜像通常很大，如何优化？
+    *   **答案**：使用 **多阶段构建 (Multi-stage Builds)**。第一阶段 (Builder) 安装所有 `devDependencies` 并执行 `npm run build`；第二阶段 (Runner) 使用极简的基础镜像（如 `node:alpine` 或 `distroless`），仅拷贝打包后的产物和生产依赖 (`dependencies`)。能将镜像从 1GB+ 压缩到 100MB 级别。
+*   **K8s 的 HPA (弹性伸缩) 原理**：
+    *   **防追问**：你的系统是如何自动扩容的？
+    *   **答案**：在 Kubernetes 中配置 Horizontal Pod Autoscaler (HPA)。常规情况基于 CPU/内存利用率（比如 CPU > 70% 增加 Pod）。但在 AI 场景下，CPU 不一定高（都在等大模型 API），所以我会引入 **KEDA (Kubernetes Event-driven Autoscaling)**，监听 Redis/BullMQ 中等待执行的任务队列长度，队列积压超过阈值就自动弹出新的 Worker Pod 来消费任务，消费完再缩容。
