@@ -57,9 +57,10 @@ RAG 是解决大模型幻觉和私有数据问答的核心底座。
 服务端针对不同的场景，提供了三种深度的 Agent 执行逻辑：
 
 1. **Simple 模式**：
-   * 标准的 RAG + LLM 生成。
-   * 支持调用 Built-in Tools (计算器/维基百科) 和 MCP Servers。
+   * 标准的 LLM 生成。
 2. **Deep Think (深度思考)**：
+   * RAG 索引检索。
+   * 支持调用 Built-in Tools (计算器/维基百科) 和 MCP Servers。
    * **意图识别 (Query Intent)**：先让模型判断是否需要联网或调工具。
    * **二次精选与深挖**：在海量召回文档中，让 LLM `PickingDocuments`，并对选中文档进行 `FetchDocumentInDepth`（深度读取），再进行总结。
 3. **Deep Research (深度研究)**：

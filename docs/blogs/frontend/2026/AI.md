@@ -1,5 +1,28 @@
 # AI 相关1
 
+## 目录
+
+<!-- toc -->
+
+- [名词总览（通俗解释 + 原理要点）](#%E5%90%8D%E8%AF%8D%E6%80%BB%E8%A7%88%E9%80%9A%E4%BF%97%E8%A7%A3%E9%87%8A--%E5%8E%9F%E7%90%86%E8%A6%81%E7%82%B9)
+- [推理与生成（采样与性能）](#%E6%8E%A8%E7%90%86%E4%B8%8E%E7%94%9F%E6%88%90%E9%87%87%E6%A0%B7%E4%B8%8E%E6%80%A7%E8%83%BD)
+- [检索增强（RAG 全流程）](#%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BArag-%E5%85%A8%E6%B5%81%E7%A8%8B)
+- [训练与对齐（让模型更“像人”）](#%E8%AE%AD%E7%BB%83%E4%B8%8E%E5%AF%B9%E9%BD%90%E8%AE%A9%E6%A8%A1%E5%9E%8B%E6%9B%B4%E5%83%8F%E4%BA%BA)
+- [安全与治理（风控与合规）](#%E5%AE%89%E5%85%A8%E4%B8%8E%E6%B2%BB%E7%90%86%E9%A3%8E%E6%8E%A7%E4%B8%8E%E5%90%88%E8%A7%84)
+- [结构化输出与工具调用（让模型“能干活”）](#%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E4%B8%8E%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E8%AE%A9%E6%A8%A1%E5%9E%8B%E8%83%BD%E5%B9%B2%E6%B4%BB)
+- [评测与指标（如何判断好坏）](#%E8%AF%84%E6%B5%8B%E4%B8%8E%E6%8C%87%E6%A0%87%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%A5%BD%E5%9D%8F)
+- [多模态（文本 + 图像/语音）](#%E5%A4%9A%E6%A8%A1%E6%80%81%E6%96%87%E6%9C%AC--%E5%9B%BE%E5%83%8F%E8%AF%AD%E9%9F%B3)
+- [前端/端侧工程（落地与优化）](#%E5%89%8D%E7%AB%AF%E7%AB%AF%E4%BE%A7%E5%B7%A5%E7%A8%8B%E8%90%BD%E5%9C%B0%E4%B8%8E%E4%BC%98%E5%8C%96)
+- [MCP 与 Skills（统一接入与能力编排）](#mcp-%E4%B8%8E-skills%E7%BB%9F%E4%B8%80%E6%8E%A5%E5%85%A5%E4%B8%8E%E8%83%BD%E5%8A%9B%E7%BC%96%E6%8E%92)
+- [面试话术模板（MCP/Skills）](#%E9%9D%A2%E8%AF%95%E8%AF%9D%E6%9C%AF%E6%A8%A1%E6%9D%BFmcpskills)
+- [LangChain](#langchain)
+    + [RAG 流程解释](#rag-%E6%B5%81%E7%A8%8B%E8%A7%A3%E9%87%8A)
+- [langgraph](#langgraph)
+- [openClaw](#openclaw)
+- [OpenManus](#openmanus)
+
+<!-- tocstop -->
+
 ## 名词总览（通俗解释 + 原理要点）
 
 - LLM（大语言模型）
@@ -249,6 +272,7 @@
   - Tool Use：Agent 根据任务路由调用 Tool，结果回注上下文再生成
 
 #### RAG 流程解释
+
 - Loader：把原始数据读入并标准化，记录元信息（source/path/author/tenant/ACL），来源可为本地文件、Git、Notion、S3、SQL 等。
 - Splitter：将长文档切成可检索片段，常用固定长度 + 重叠或语义分段 + 滑窗，重叠 10–20% 保证跨段语义连续。
 - Embedding：为每个片段生成向量并持久化，关联 chunk_id/doc_id/元数据，注意租户隔离与索引版本化。
