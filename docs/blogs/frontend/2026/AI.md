@@ -16,10 +16,18 @@
 - [MCP 与 Skills（统一接入与能力编排）](#mcp-%E4%B8%8E-skills%E7%BB%9F%E4%B8%80%E6%8E%A5%E5%85%A5%E4%B8%8E%E8%83%BD%E5%8A%9B%E7%BC%96%E6%8E%92)
 - [面试话术模板（MCP/Skills）](#%E9%9D%A2%E8%AF%95%E8%AF%9D%E6%9C%AF%E6%A8%A1%E6%9D%BFmcpskills)
 - [LangChain](#langchain)
-    + [RAG 流程解释](#rag-%E6%B5%81%E7%A8%8B%E8%A7%A3%E9%87%8A)
+  - [RAG 流程解释](#rag-%E6%B5%81%E7%A8%8B%E8%A7%A3%E9%87%8A)
 - [langgraph](#langgraph)
 - [openClaw](#openclaw)
 - [OpenManus](#openmanus)
+- [AI 深度考察：AI Coding 与 AI Agent 市面生态及核心能力](#ai-%E6%B7%B1%E5%BA%A6%E8%80%83%E5%AF%9Fai-coding-%E4%B8%8E-ai-agent-%E5%B8%82%E9%9D%A2%E7%94%9F%E6%80%81%E5%8F%8A%E6%A0%B8%E5%BF%83%E8%83%BD%E5%8A%9B)
+  - [1. AI Coding (AI 编程辅助) 生态与底层逻辑](#1-ai-coding-ai-%E7%BC%96%E7%A8%8B%E8%BE%85%E5%8A%A9-%E7%94%9F%E6%80%81%E4%B8%8E%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91)
+  - [2. AI Agent (智能体) 核心架构与落地](#2-ai-agent-%E6%99%BA%E8%83%BD%E4%BD%93-%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%90%BD%E5%9C%B0)
+  - [3. 前端/全栈如何结合 AI (突破“基础”瓶颈)](#3-%E5%89%8D%E7%AB%AF%E5%85%A8%E6%A0%88%E5%A6%82%E4%BD%95%E7%BB%93%E5%90%88-ai-%E7%AA%81%E7%A0%B4%E5%9F%BA%E7%A1%80%E7%93%B6%E9%A2%88)
+    - [3.1 AI 交互组件库封装（核心护城河：用户体验）](#31-ai-%E4%BA%A4%E4%BA%92%E7%BB%84%E4%BB%B6%E5%BA%93%E5%B0%81%E8%A3%85%E6%A0%B8%E5%BF%83%E6%8A%A4%E5%9F%8E%E6%B2%B3%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C)
+    - [3.2 私有化 RAG 与 LangChain.js 落地](#32-%E7%A7%81%E6%9C%89%E5%8C%96-rag-%E4%B8%8E-langchainjs-%E8%90%BD%E5%9C%B0)
+    - [3.3 Prompt Engineering (提示词工程) 进阶架构](#33-prompt-engineering-%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B-%E8%BF%9B%E9%98%B6%E6%9E%B6%E6%9E%84)
+    - [3.4 端侧 AI (Web AI) 与隐私计算](#34-%E7%AB%AF%E4%BE%A7-ai-web-ai-%E4%B8%8E%E9%9A%90%E7%A7%81%E8%AE%A1%E7%AE%97)
 
 <!-- tocstop -->
 
@@ -204,6 +212,7 @@
   - 常见组件：Server/Client/Tool/Resource/Session/Events
 
 - MCP Tool（工具）签名示例
+
   ```json
   {
     "name": "web_fetch",
@@ -217,6 +226,7 @@
     }
   }
   ```
+
   - 调用流程：模型通过 Function Calling 生成参数 → Client 校验 Schema → Server 执行 → 返回 JSON 结果 → 结果进入上下文继续推理或呈现
 
 - Skills（技能/能力模块）
@@ -282,6 +292,7 @@
 - LLM：模型根据 Prompt 生成答案；前端用 SSE/WebSocket 流式渲染增量内容与引用，必要时触发二次检索或工具调用补齐证据。
 
 补充要点
+
 - 前端职责：构造查询 DSL（语义 + 过滤）、展示 Citation 与来源、多源公平性与慢源熔断、流式 UI 与占位。
 - 后端职责：摄取/切片/Embedding/索引、混合检索与重排、上下文拼接与模板化、权限与租户隔离、可观测与评测。
 - 常见坑：切片过长/无重叠导致断句；仅向量检索无重排相关性差；未做 ACL 越权；上下文过多超窗口；未提供引用易幻觉。
@@ -324,13 +335,78 @@
   - 前端提供可视化工作台以配置管线、查看效果与指标
 - 适用场景：知识库问答、文档摘要与基于证据的合成报告
 
-- 自我介绍
-- 字符串 第一个不重复
-- 列表 转 树
-- react 渲染组件
-- 输出结果 
-- 树节点拖拽转换的函数
-- react 防抖的组件
-- 业务理解、发起的原因、技术难点，解决问题的能力
-- 技术深度 react
-- AI 相关
+## AI 深度考察：AI Coding 与 AI Agent 市面生态及核心能力
+
+### 1. AI Coding (AI 编程辅助) 生态与底层逻辑
+
+目前的 AI Coding 已经从“单行代码补全”进化到了“全代码库理解”和“自主任务执行”阶段。
+
+- **市面主流工具梯队：**
+  - **第一梯队 (IDE 级原生融合)：** Cursor、Trae、Windsurf。它们不仅是插件，而是深度定制的编辑器，支持项目级上下文（Codebase Context）、Agentic UI（智能体交互），能直接阅读文件树、运行终端命令。
+  - **第二梯队 (强大插件型)：** GitHub Copilot、通义灵码、Codeium。主要优势是企业级合规、生态集成度高。
+  - **第三梯队 (独立大模型产品)：** Claude 3.5 Sonnet、ChatGPT (GPT-4o)、DeepSeek Coder。适合用来做架构设计、复杂算法推导或提供代码片段。
+- **展现深度的技术理解：**
+  - **上下文感知 (Context Awareness)：** 优秀的 AI 工具是如何理解整个项目的？
+  - （通常通过 AST 语法树解析、本地向量数据库构建 RAG、LRU 缓存最近打开的文件等方式，将项目结构喂给大模型）。
+  - **AI 编码的局限性与解法：** 幻觉、对复杂业务流的理解偏差、对长文件的上下文遗忘。
+  - 解决方式是：人工拆解任务、编写详细的 PRD 级注释或文档、提供 Few-shot（少样本）示例。
+
+### 2. AI Agent (智能体) 核心架构与落地
+
+Agent 远不止是大模型（LLM），而是 **LLM + 记忆 + 规划 + 工具调用**。
+
+- **市面主流 Agent 框架与平台：**
+  - **开发框架：** LangChain / LangGraph (基于图的编排，支持循环和状态)、LlamaIndex (专注数据摄取和 RAG)、AutoGen (微软多智能体对话框架)。
+  - **低代码平台：** Dify、Coze、FastGPT，提供可视化工作流编排，降低 Agent 落地门槛。
+  - **应用级 Agent：** Devin (AI 程序员)、OpenManus (开源 AI 智能体)、Perplexity (搜索增强 Agent)。
+- **展现深度的技术理解 (Agent 的四个核心组件)：**
+  - **大脑 (LLM)：** 负责推理和决策（如使用 CoT 思维链、ReAct 范式）。
+  - **记忆 (Memory)：** 短期记忆（当前会话的上下文，如滑动窗口缓存）和长期记忆（基于 Vector DB 的知识库检索）。
+  - **规划 (Planning)：** 将复杂目标拆解为子任务（Task Decomposition），并在执行错误时进行反思与自我纠正（Reflection & Self-Correction）。
+  - **工具调用 (Tool Use / Function Calling)：** 让大模型能够调用外部 API（如搜索、查数据库、执行代码）。本质是大模型按预设 Schema 返回 JSON 参数，由宿主系统执行后将结果塞回给模型。
+
+### 3. 前端/全栈如何结合 AI (突破“基础”瓶颈)
+
+#### 3.1 AI 交互组件库封装（核心护城河：用户体验）
+
+传统的前端是请求-响应模式，而 AI 场景下是持续的流式（Streaming）数据交互，这对前端架构提出了新挑战。
+
+- **SSE (Server-Sent Events) 与流式解析：** 大模型吐字通常使用 SSE。前端需要处理 `ReadableStream`，并解决由于网络抖动导致的截断问题（例如一个 JSON 被劈成两半返回，前端需要实现 Buffer 缓存机制来拼接解析）。
+- **打字机效果与渲染优化：** 接收到流式数据后，如果高频触发 React 的 `setState` 会导致严重卡顿。需要结合 `requestAnimationFrame` 或自定义节流机制，实现平滑的“打字机”输出体验。
+- **Markdown 实时渲染与防抖：** 模型输出包含复杂的 Markdown（如代码块、Latex 公式）。使用 `react-markdown` 时，由于数据是不完整的，渲染器容易报错。需要定制插件容错，并在代码块未闭合时提供占位显示。
+- **对话树状态管理 (Message Tree)：** 用户可能会对某一条回答“重新生成”或“修改提问”，这导致对话数据结构不再是简单的数组（Array），而是多分支的树形结构（Tree）。前端需要设计健壮的数据结构来管理当前激活的对话分支。
+
+#### 3.2 私有化 RAG 与 LangChain.js 落地
+
+前端不再只负责渲染，全栈/BFF 层需要承担起构建知识库的职责。
+
+- **LangChain.js 核心链路实践：**
+  1. **文档加载与解析 (Document Loaders)：** 使用 PDF/Word 解析器提取文本。
+  2. **智能切块 (Chunking)：** 根据段落或 Token 长度进行递归切块（RecursiveCharacterTextSplitter），保留上下文重叠（Overlap）。
+  3. **向量化 (Embedding) 与存储：** 调用 OpenAI Embedding 或开源模型，将文本转化为向量，存入 Vector DB（如 Pinecone、Milvus 或本地基于 SQLite 的方案）。
+  4. **检索与增强 (Retrieval)：** 用户提问时，进行相似度搜索（Top-K），将命中的 Chunk 作为背景知识拼接进 Prompt。
+- **难点与前端解法：** 如何在回答中展示“引用来源”（Citations），让前端能在回答的对应文本处高亮并链接到源文档的具体页码，这要求后端返回精确的 Metadata 映射，前端配合进行正则替换与渲染。
+  - 前端在渲染大模型返回的引用来源时，
+    - 首先通过正则匹配文本中的引用标记如 [1][2]，
+    - 然后结合后端返回的引用列表 references，将标记渲染为可点击的高亮标签；
+    - 点击时展示来源信息，包括文件名、页码、原文片段，并通过 PDF 预览工具跳转到对应页码。
+    - 在流式场景下，文本边流边渲染，引用信息等流结束后再做补全和绑定交互。
+
+#### 3.3 Prompt Engineering (提示词工程) 进阶架构
+
+在企业级应用中，Prompt 不能硬编码在前端代码里，而是需要系统化管理。
+
+- **结构化模版体系：** 抛弃纯文本指令，转向使用 XML 或 Markdown 结构的 Prompt 模版。明确区分 `<System>`、`<Context>`、`<User_Input>`、`<Output_Format>` 等模块，极大降低模型的幻觉率。
+- **动态上下文注入：** 前端在发送请求前，需要动态收集当前页面的上下文（如：用户当前选中了哪行代码、当前表格的过滤条件是什么），将其序列化后无缝注入到 Prompt 变量中。
+- **工程化管理：** 引入 Prompt CMS 或使用 LangSmith 等平台，实现 Prompt 的版本控制、A/B 测试和线上回溯（Trace），前端配合传递特定的 Session ID 以串联整个调用链路。
+
+#### 3.4 端侧 AI (Web AI) 与隐私计算
+
+将大模型直接跑在用户的浏览器里，这是目前前端最前沿的探索方向之一。
+
+- **WebGPU 与硬件加速：** 了解 WebGPU API 是如何打破 WebGL 的性能瓶颈，直接调用本地显卡算力的。
+- **WebLLM 与 Transformers.js：** 掌握如何使用 `WebLLM` 在浏览器中加载经过量化压缩的开源模型（如 Llama-3-8B-Instruct-q4f16），实现完全离线的智能对话。
+- **业务价值：**
+  1. **零服务器成本：** 算力由用户设备承担。
+  2. **绝对的隐私安全：** 适合医疗、财务等敏感数据场景，数据不出本地。
+  3. **零延迟的 UI 反馈：** 免去网络往返，适合做实时的拼写检查、输入框自动补全（类似本地版的 Copilot）。
