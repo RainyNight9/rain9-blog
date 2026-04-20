@@ -1,170 +1,5 @@
 # Me
 
-## 目录
-
-<!-- toc -->
-
-- [表现](#%E8%A1%A8%E7%8E%B0)
-- [自我介绍](#%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D)
-  * [原始版本](#%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC)
-  * [3. 核心竞争力总结 (Why You?)](#3-%E6%A0%B8%E5%BF%83%E7%AB%9E%E4%BA%89%E5%8A%9B%E6%80%BB%E7%BB%93-why-you)
-- [项目](#%E9%A1%B9%E7%9B%AE)
-  * [1. 微前端架构 (Micro-Frontends)](#1-%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84-micro-frontends)
-    + [阶段一：基于 Qiankun 的微前端落地 (上家公司)](#%E9%98%B6%E6%AE%B5%E4%B8%80%E5%9F%BA%E4%BA%8E-qiankun-%E7%9A%84%E5%BE%AE%E5%89%8D%E7%AB%AF%E8%90%BD%E5%9C%B0-%E4%B8%8A%E5%AE%B6%E5%85%AC%E5%8F%B8)
-    + [阶段二：基于 无界 (Wujie) 的极速方案 (当前公司)](#%E9%98%B6%E6%AE%B5%E4%BA%8C%E5%9F%BA%E4%BA%8E-%E6%97%A0%E7%95%8C-wujie-%E7%9A%84%E6%9E%81%E9%80%9F%E6%96%B9%E6%A1%88-%E5%BD%93%E5%89%8D%E5%85%AC%E5%8F%B8)
-  * [2. 埋点](#2-%E5%9F%8B%E7%82%B9)
-  * [3. 站内信](#3-%E7%AB%99%E5%86%85%E4%BF%A1)
-  * [4. 图表大盘](#4-%E5%9B%BE%E8%A1%A8%E5%A4%A7%E7%9B%98)
-  * [图表库的选择](#%E5%9B%BE%E8%A1%A8%E5%BA%93%E7%9A%84%E9%80%89%E6%8B%A9)
-  * [5. 智能检索](#5-%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2)
-  * [6. 工程规范、项目模板](#6-%E5%B7%A5%E7%A8%8B%E8%A7%84%E8%8C%83%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF)
-  * [7. 低代码](#7-%E4%BD%8E%E4%BB%A3%E7%A0%81)
-  * [8. 性能优化](#8-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-- [高并发场景](#%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF)
-- [BFF](#bff)
-- [工程化、模块化](#%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%A8%A1%E5%9D%97%E5%8C%96)
-- [webpack](#webpack)
-  * [工作流程 (加载 - 编译 - 输出)](#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B-%E5%8A%A0%E8%BD%BD---%E7%BC%96%E8%AF%91---%E8%BE%93%E5%87%BA)
-  * [Loader](#loader)
-  * [Plugin](#plugin)
-- [vite](#vite)
-- [Rust](#rust)
-- [前端打包工具对比](#%E5%89%8D%E7%AB%AF%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94)
-  * [Grunt：](#grunt)
-  * [Gulp：](#gulp)
-  * [webpack:](#webpack)
-  * [Rollup：](#rollup)
-- [ES6](#es6)
-- [TS](#ts)
-  * [type 和 interface 的异同](#type-%E5%92%8C-interface-%E7%9A%84%E5%BC%82%E5%90%8C)
-- [设计模式](#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
-  * [1. 前端常用设计模式](#1-%E5%89%8D%E7%AB%AF%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
-  * [2. Node.js 中的设计模式](#2-nodejs-%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
-  * [3. Nest.js 中的核心设计模式](#3-nestjs-%E4%B8%AD%E7%9A%84%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
-- [面试准备](#%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87)
-  * [4. 潜在面试题库 (Q&A Bank)](#4-%E6%BD%9C%E5%9C%A8%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%93-qa-bank)
-    + [4.1 技术类](#41-%E6%8A%80%E6%9C%AF%E7%B1%BB)
-    + [4.2 软技能/行为类](#42-%E8%BD%AF%E6%8A%80%E8%83%BD%E8%A1%8C%E4%B8%BA%E7%B1%BB)
-- [领导面 (总监/业务线负责人) 准备指南](#%E9%A2%86%E5%AF%BC%E9%9D%A2-%E6%80%BB%E7%9B%91%E4%B8%9A%E5%8A%A1%E7%BA%BF%E8%B4%9F%E8%B4%A3%E4%BA%BA-%E5%87%86%E5%A4%87%E6%8C%87%E5%8D%97)
-  * [1. 业务与价值导向 (Business & ROI)](#1-%E4%B8%9A%E5%8A%A1%E4%B8%8E%E4%BB%B7%E5%80%BC%E5%AF%BC%E5%90%91-business--roi)
-  * [2. 技术决策与方法论 (Technical Leadership)](#2-%E6%8A%80%E6%9C%AF%E5%86%B3%E7%AD%96%E4%B8%8E%E6%96%B9%E6%B3%95%E8%AE%BA-technical-leadership)
-  * [3. 团队协作与项目推进 (Collaboration)](#3-%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E4%B8%8E%E9%A1%B9%E7%9B%AE%E6%8E%A8%E8%BF%9B-collaboration)
-  * [4. 个人反思与稳定性 (Reflection & Future)](#4-%E4%B8%AA%E4%BA%BA%E5%8F%8D%E6%80%9D%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7-reflection--future)
-  * [5. 面试最后：向领导反问什么？ (Ask the Leader)](#5-%E9%9D%A2%E8%AF%95%E6%9C%80%E5%90%8E%E5%90%91%E9%A2%86%E5%AF%BC%E5%8F%8D%E9%97%AE%E4%BB%80%E4%B9%88-ask-the-leader)
-- [XBot](#xbot)
-  * [JD 信息拆解（基于两张截图）](#jd-%E4%BF%A1%E6%81%AF%E6%8B%86%E8%A7%A3%E5%9F%BA%E4%BA%8E%E4%B8%A4%E5%BC%A0%E6%88%AA%E5%9B%BE)
-  * [能力映射与准备清单](#%E8%83%BD%E5%8A%9B%E6%98%A0%E5%B0%84%E4%B8%8E%E5%87%86%E5%A4%87%E6%B8%85%E5%8D%95)
-  * [高频面试题（含参考答案）](#%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E9%A2%98%E5%90%AB%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88)
-  * [2 分钟项目陈述模板（可直接复述）](#2-%E5%88%86%E9%92%9F%E9%A1%B9%E7%9B%AE%E9%99%88%E8%BF%B0%E6%A8%A1%E6%9D%BF%E5%8F%AF%E7%9B%B4%E6%8E%A5%E5%A4%8D%E8%BF%B0)
-  * [面试官通常在乎什么](#%E9%9D%A2%E8%AF%95%E5%AE%98%E9%80%9A%E5%B8%B8%E5%9C%A8%E4%B9%8E%E4%BB%80%E4%B9%88)
-- [宏](#%E5%AE%8F)
-  * [JD 拆解（高级前端，偏数据传输与流媒体）](#jd-%E6%8B%86%E8%A7%A3%E9%AB%98%E7%BA%A7%E5%89%8D%E7%AB%AF%E5%81%8F%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%B8%8E%E6%B5%81%E5%AA%92%E4%BD%93)
-  * [我的匹配与补充（含国际化产品）](#%E6%88%91%E7%9A%84%E5%8C%B9%E9%85%8D%E4%B8%8E%E8%A1%A5%E5%85%85%E5%90%AB%E5%9B%BD%E9%99%85%E5%8C%96%E4%BA%A7%E5%93%81)
-  * [面试准备清单（可直接对题）](#%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%E6%B8%85%E5%8D%95%E5%8F%AF%E7%9B%B4%E6%8E%A5%E5%AF%B9%E9%A2%98)
-  * [高频问答要点（速答版本）](#%E9%AB%98%E9%A2%91%E9%97%AE%E7%AD%94%E8%A6%81%E7%82%B9%E9%80%9F%E7%AD%94%E7%89%88%E6%9C%AC)
-  * [可展示工件（面试携带）](#%E5%8F%AF%E5%B1%95%E7%A4%BA%E5%B7%A5%E4%BB%B6%E9%9D%A2%E8%AF%95%E6%90%BA%E5%B8%A6)
-  * [面试开场白（口语版 90 秒）](#%E9%9D%A2%E8%AF%95%E5%BC%80%E5%9C%BA%E7%99%BD%E5%8F%A3%E8%AF%AD%E7%89%88-90-%E7%A7%92)
-  * [面试开场白（精简 40 秒）](#%E9%9D%A2%E8%AF%95%E5%BC%80%E5%9C%BA%E7%99%BD%E7%B2%BE%E7%AE%80-40-%E7%A7%92)
-  * [追问引导句](#%E8%BF%BD%E9%97%AE%E5%BC%95%E5%AF%BC%E5%8F%A5)
-  * [面试题清单（对标 JD）](#%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B8%85%E5%8D%95%E5%AF%B9%E6%A0%87-jd)
-  * [参考答案（逐题）](#%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88%E9%80%90%E9%A2%98)
-- [SDK 的设计](#sdk-%E7%9A%84%E8%AE%BE%E8%AE%A1)
-  * [1. SDK 设计的核心原则是什么？](#1-sdk-%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99%E6%98%AF%E4%BB%80%E4%B9%88)
-  * [2. SDK 的整体架构如何划分？](#2-sdk-%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%A6%82%E4%BD%95%E5%88%92%E5%88%86)
-  * [3. 如何保证 SDK 不污染全局环境？](#3-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81-sdk-%E4%B8%8D%E6%B1%A1%E6%9F%93%E5%85%A8%E5%B1%80%E7%8E%AF%E5%A2%83)
-  * [4. 数据上报模块（Sender）如何设计？](#4-%E6%95%B0%E6%8D%AE%E4%B8%8A%E6%8A%A5%E6%A8%A1%E5%9D%97sender%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1)
-  * [5. SDK 如何实现插件化（Plugin System）？](#5-sdk-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%8F%92%E4%BB%B6%E5%8C%96plugin-system)
-  * [6. 如何保证 SDK 的代码质量？](#6-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81-sdk-%E7%9A%84%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F)
-  * [7. 遇到过哪些 SDK 兼容性问题，如何解决？](#7-%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B-sdk-%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3)
-- [web3](#web3)
-  * [1. 什么是 Web3.0？它与 Web1.0 和 Web2.0 有什么区别？](#1-%E4%BB%80%E4%B9%88%E6%98%AF-web30%E5%AE%83%E4%B8%8E-web10-%E5%92%8C-web20-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB)
-  * [2. 什么是智能合约（Smart Contract）？](#2-%E4%BB%80%E4%B9%88%E6%98%AF%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6smart-contract)
-  * [3. DApp (去中心化应用) 的架构与传统 Web 应用有什么不同？](#3-dapp-%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E5%BA%94%E7%94%A8-%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E4%BC%A0%E7%BB%9F-web-%E5%BA%94%E7%94%A8%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C)
-  * [4. 什么是 ERC-20 和 ERC-721 标准？](#4-%E4%BB%80%E4%B9%88%E6%98%AF-erc-20-%E5%92%8C-erc-721-%E6%A0%87%E5%87%86)
-  * [5. Web3 前端开发中，如何连接用户的钱包并获取余额？（以 ethers.js 为例）](#5-web3-%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%AD%E5%A6%82%E4%BD%95%E8%BF%9E%E6%8E%A5%E7%94%A8%E6%88%B7%E7%9A%84%E9%92%B1%E5%8C%85%E5%B9%B6%E8%8E%B7%E5%8F%96%E4%BD%99%E9%A2%9D%E4%BB%A5-ethersjs-%E4%B8%BA%E4%BE%8B)
-  * [Q1: 在设计一个 dApp 架构时，你是如何划分链上 (On-chain) 和链下 (Off-chain) 逻辑的？为什么？](#q1-%E5%9C%A8%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA-dapp-%E6%9E%B6%E6%9E%84%E6%97%B6%E4%BD%A0%E6%98%AF%E5%A6%82%E4%BD%95%E5%88%92%E5%88%86%E9%93%BE%E4%B8%8A-on-chain-%E5%92%8C%E9%93%BE%E4%B8%8B-off-chain-%E9%80%BB%E8%BE%91%E7%9A%84%E4%B8%BA%E4%BB%80%E4%B9%88)
-  * [Q2: Solidity、Rust 和 Go 在区块链开发中分别扮演什么角色？你的技术栈偏好是什么？](#q2-solidityrust-%E5%92%8C-go-%E5%9C%A8%E5%8C%BA%E5%9D%97%E9%93%BE%E5%BC%80%E5%8F%91%E4%B8%AD%E5%88%86%E5%88%AB%E6%89%AE%E6%BC%94%E4%BB%80%E4%B9%88%E8%A7%92%E8%89%B2%E4%BD%A0%E7%9A%84%E6%8A%80%E6%9C%AF%E6%A0%88%E5%81%8F%E5%A5%BD%E6%98%AF%E4%BB%80%E4%B9%88)
-  * [Q3: 你在编写 Solidity 智能合约时，遇到过哪些常见的安全漏洞？你是如何防范的？](#q3-%E4%BD%A0%E5%9C%A8%E7%BC%96%E5%86%99-solidity-%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E6%97%B6%E9%81%87%E5%88%B0%E8%BF%87%E5%93%AA%E4%BA%9B%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E%E4%BD%A0%E6%98%AF%E5%A6%82%E4%BD%95%E9%98%B2%E8%8C%83%E7%9A%84)
-  * [Q4: 当前 AI Agent 经济正在兴起，如果你要设计一个“AI 代理自动使用加密货币支付 API 费用”的系统，你会怎么设计？](#q4-%E5%BD%93%E5%89%8D-ai-agent-%E7%BB%8F%E6%B5%8E%E6%AD%A3%E5%9C%A8%E5%85%B4%E8%B5%B7%E5%A6%82%E6%9E%9C%E4%BD%A0%E8%A6%81%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AAai-%E4%BB%A3%E7%90%86%E8%87%AA%E5%8A%A8%E4%BD%BF%E7%94%A8%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%E6%94%AF%E4%BB%98-api-%E8%B4%B9%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E4%BD%A0%E4%BC%9A%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1)
-  * [Q5: 如果要用 Go 开发一个监听链上 DEX (如 Uniswap) 的高频套利/交易机器人，关键的技术挑战是什么？](#q5-%E5%A6%82%E6%9E%9C%E8%A6%81%E7%94%A8-go-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E7%9B%91%E5%90%AC%E9%93%BE%E4%B8%8A-dex-%E5%A6%82-uniswap-%E7%9A%84%E9%AB%98%E9%A2%91%E5%A5%97%E5%88%A9%E4%BA%A4%E6%98%93%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%85%B3%E9%94%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E6%8C%91%E6%88%98%E6%98%AF%E4%BB%80%E4%B9%88)
-- [科技](#%E7%A7%91%E6%8A%80)
-    + [1. JD 深度解析与个人匹配度](#1-jd-%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%B8%AA%E4%BA%BA%E5%8C%B9%E9%85%8D%E5%BA%A6)
-    + [2. 核心面试题与高分回答话术](#2-%E6%A0%B8%E5%BF%83%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%8E%E9%AB%98%E5%88%86%E5%9B%9E%E7%AD%94%E8%AF%9D%E6%9C%AF)
-      - [Q1: 你在项目中是如何实现大模型（LLM）的流式输出和状态同步的？(考察 Streaming, Vercel AI SDK/SSE)](#q1-%E4%BD%A0%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A4%A7%E6%A8%A1%E5%9E%8Bllm%E7%9A%84%E6%B5%81%E5%BC%8F%E8%BE%93%E5%87%BA%E5%92%8C%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5%E7%9A%84%E8%80%83%E5%AF%9F-streaming-vercel-ai-sdksse)
-      - [Q2: 你们的项目有涉及到 Function Calling (工具调用) 或 Agent 编排吗？具体是怎么落地的？](#q2-%E4%BD%A0%E4%BB%AC%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%9C%89%E6%B6%89%E5%8F%8A%E5%88%B0-function-calling-%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8-%E6%88%96-agent-%E7%BC%96%E6%8E%92%E5%90%97%E5%85%B7%E4%BD%93%E6%98%AF%E6%80%8E%E4%B9%88%E8%90%BD%E5%9C%B0%E7%9A%84)
-      - [Q3: 为什么你们的全栈方案中，数据库选型使用了 PostgreSQL？对于 ORM，你对 Drizzle 有了解吗？](#q3-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E4%BB%AC%E7%9A%84%E5%85%A8%E6%A0%88%E6%96%B9%E6%A1%88%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B%E4%BD%BF%E7%94%A8%E4%BA%86-postgresql%E5%AF%B9%E4%BA%8E-orm%E4%BD%A0%E5%AF%B9-drizzle-%E6%9C%89%E4%BA%86%E8%A7%A3%E5%90%97)
-      - [Q4: JD 提到“重度使用 AI 编程工具”，你能谈谈你日常是如何使用 Cursor 或类似工具开发的吗？它们对你的开发方式产生了什么改变？](#q4-jd-%E6%8F%90%E5%88%B0%E9%87%8D%E5%BA%A6%E4%BD%BF%E7%94%A8-ai-%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7%E4%BD%A0%E8%83%BD%E8%B0%88%E8%B0%88%E4%BD%A0%E6%97%A5%E5%B8%B8%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-cursor-%E6%88%96%E7%B1%BB%E4%BC%BC%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91%E7%9A%84%E5%90%97%E5%AE%83%E4%BB%AC%E5%AF%B9%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F%E4%BA%A7%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%E6%94%B9%E5%8F%98)
-      - [Q5: 你们的项目是如何处理长耗时 AI 任务的？(考察异步架构与系统解耦)](#q5-%E4%BD%A0%E4%BB%AC%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E9%95%BF%E8%80%97%E6%97%B6-ai-%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%80%83%E5%AF%9F%E5%BC%82%E6%AD%A5%E6%9E%B6%E6%9E%84%E4%B8%8E%E7%B3%BB%E7%BB%9F%E8%A7%A3%E8%80%A6)
-- [悟道 35k](#%E6%82%9F%E9%81%93-35k)
-    + [1. JD 深度解析与个人匹配度](#1-jd-%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%B8%AA%E4%BA%BA%E5%8C%B9%E9%85%8D%E5%BA%A6-1)
-      - [Q1: JD 中提到了“Vibe Coding”和“使用 AI 工具从 0 到 1](#q1-jd-%E4%B8%AD%E6%8F%90%E5%88%B0%E4%BA%86vibe-coding%E5%92%8C%E4%BD%BF%E7%94%A8-ai-%E5%B7%A5%E5%85%B7%E4%BB%8E-0-%E5%88%B0-1)
-      - [Q2: AI 生成的代码往往存在规范性、安全性和可维护性问题。你是如何审查和调优 AI 代码的？](#q2-ai-%E7%94%9F%E6%88%90%E7%9A%84%E4%BB%A3%E7%A0%81%E5%BE%80%E5%BE%80%E5%AD%98%E5%9C%A8%E8%A7%84%E8%8C%83%E6%80%A7%E5%AE%89%E5%85%A8%E6%80%A7%E5%92%8C%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7%E9%97%AE%E9%A2%98%E4%BD%A0%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%A1%E6%9F%A5%E5%92%8C%E8%B0%83%E4%BC%98-ai-%E4%BB%A3%E7%A0%81%E7%9A%84)
-      - [Q3: 结合你精通的 React 技术栈，在面对复杂 ToB 业务（如数据报告、分析看板）时，你是如何进行组件设计和状态管理的？](#q3-%E7%BB%93%E5%90%88%E4%BD%A0%E7%B2%BE%E9%80%9A%E7%9A%84-react-%E6%8A%80%E6%9C%AF%E6%A0%88%E5%9C%A8%E9%9D%A2%E5%AF%B9%E5%A4%8D%E6%9D%82-tob-%E4%B8%9A%E5%8A%A1%E5%A6%82%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%91%8A%E5%88%86%E6%9E%90%E7%9C%8B%E6%9D%BF%E6%97%B6%E4%BD%A0%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%92%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84)
-      - [Q4: JD 的加分项提到了“在线文档/报告编辑器的开发经验（类似 WPS WebOffice）”，结合你的项目，你在富文本或复杂报表呈现上有什么思路？](#q4-jd-%E7%9A%84%E5%8A%A0%E5%88%86%E9%A1%B9%E6%8F%90%E5%88%B0%E4%BA%86%E5%9C%A8%E7%BA%BF%E6%96%87%E6%A1%A3%E6%8A%A5%E5%91%8A%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C%E7%B1%BB%E4%BC%BC-wps-weboffice%E7%BB%93%E5%90%88%E4%BD%A0%E7%9A%84%E9%A1%B9%E7%9B%AE%E4%BD%A0%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E6%88%96%E5%A4%8D%E6%9D%82%E6%8A%A5%E8%A1%A8%E5%91%88%E7%8E%B0%E4%B8%8A%E6%9C%89%E4%BB%80%E4%B9%88%E6%80%9D%E8%B7%AF)
-- [ying](#ying)
-    + [2. 核心面试题与高分回答话术](#2-%E6%A0%B8%E5%BF%83%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%8E%E9%AB%98%E5%88%86%E5%9B%9E%E7%AD%94%E8%AF%9D%E6%9C%AF-1)
-      - [Q1: JD 要求“具备设计和搭建多 Agent 架构的能力”，假设我们的系统需要多个 AI Agent 协作（比如一个负责检索数据，一个负责写代码，一个负责 Review），你会如何设计它们的调度、通信和生命周期管理？](#q1-jd-%E8%A6%81%E6%B1%82%E5%85%B7%E5%A4%87%E8%AE%BE%E8%AE%A1%E5%92%8C%E6%90%AD%E5%BB%BA%E5%A4%9A-agent-%E6%9E%B6%E6%9E%84%E7%9A%84%E8%83%BD%E5%8A%9B%E5%81%87%E8%AE%BE%E6%88%91%E4%BB%AC%E7%9A%84%E7%B3%BB%E7%BB%9F%E9%9C%80%E8%A6%81%E5%A4%9A%E4%B8%AA-ai-agent-%E5%8D%8F%E4%BD%9C%E6%AF%94%E5%A6%82%E4%B8%80%E4%B8%AA%E8%B4%9F%E8%B4%A3%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE%E4%B8%80%E4%B8%AA%E8%B4%9F%E8%B4%A3%E5%86%99%E4%BB%A3%E7%A0%81%E4%B8%80%E4%B8%AA%E8%B4%9F%E8%B4%A3-review%E4%BD%A0%E4%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%AE%83%E4%BB%AC%E7%9A%84%E8%B0%83%E5%BA%A6%E9%80%9A%E4%BF%A1%E5%92%8C%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86)
-      - [Q2: 针对“大流量、高并发”的场景，如果我们上线了一个爆款的 AI 应用，瞬间涌入大量用户，你会从哪些层面进行性能调优和稳定性保障？](#q2-%E9%92%88%E5%AF%B9%E5%A4%A7%E6%B5%81%E9%87%8F%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9A%84%E5%9C%BA%E6%99%AF%E5%A6%82%E6%9E%9C%E6%88%91%E4%BB%AC%E4%B8%8A%E7%BA%BF%E4%BA%86%E4%B8%80%E4%B8%AA%E7%88%86%E6%AC%BE%E7%9A%84-ai-%E5%BA%94%E7%94%A8%E7%9E%AC%E9%97%B4%E6%B6%8C%E5%85%A5%E5%A4%A7%E9%87%8F%E7%94%A8%E6%88%B7%E4%BD%A0%E4%BC%9A%E4%BB%8E%E5%93%AA%E4%BA%9B%E5%B1%82%E9%9D%A2%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%92%8C%E7%A8%B3%E5%AE%9A%E6%80%A7%E4%BF%9D%E9%9A%9C)
-      - [Q3: 你如何理解 RAG (检索增强生成) 系统？如果在项目中要落地一个 “LLM + Vector DB” 的检索功能，你会怎么做？](#q3-%E4%BD%A0%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3-rag-%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90-%E7%B3%BB%E7%BB%9F%E5%A6%82%E6%9E%9C%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%A6%81%E8%90%BD%E5%9C%B0%E4%B8%80%E4%B8%AA-llm--vector-db-%E7%9A%84%E6%A3%80%E7%B4%A2%E5%8A%9F%E8%83%BD%E4%BD%A0%E4%BC%9A%E6%80%8E%E4%B9%88%E5%81%9A)
-      - [Q4: 前端方面，JD 强调了 SSR/CSR、Hydration 和渲染流程。在 Next.js 的实际项目中，你是如何权衡和优化这些策略的？](#q4-%E5%89%8D%E7%AB%AF%E6%96%B9%E9%9D%A2jd-%E5%BC%BA%E8%B0%83%E4%BA%86-ssrcsrhydration-%E5%92%8C%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B%E5%9C%A8-nextjs-%E7%9A%84%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%A0%E6%98%AF%E5%A6%82%E4%BD%95%E6%9D%83%E8%A1%A1%E5%92%8C%E4%BC%98%E5%8C%96%E8%BF%99%E4%BA%9B%E7%AD%96%E7%95%A5%E7%9A%84)
-      - [Q5: JD 提到了 HTTP/2、HTTP/3 以及 WebSocket 的实战。你在项目中是如何处理前后端实时通信的？](#q5-jd-%E6%8F%90%E5%88%B0%E4%BA%86-http2http3-%E4%BB%A5%E5%8F%8A-websocket-%E7%9A%84%E5%AE%9E%E6%88%98%E4%BD%A0%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%89%8D%E5%90%8E%E7%AB%AF%E5%AE%9E%E6%97%B6%E9%80%9A%E4%BF%A1%E7%9A%84)
-    + [3. 四大核心维度：硬核知识储备与“防追问”指南](#3-%E5%9B%9B%E5%A4%A7%E6%A0%B8%E5%BF%83%E7%BB%B4%E5%BA%A6%E7%A1%AC%E6%A0%B8%E7%9F%A5%E8%AF%86%E5%82%A8%E5%A4%87%E4%B8%8E%E9%98%B2%E8%BF%BD%E9%97%AE%E6%8C%87%E5%8D%97)
-      - [维度一：大前端深水区 (渲染、架构、工程化)](#%E7%BB%B4%E5%BA%A6%E4%B8%80%E5%A4%A7%E5%89%8D%E7%AB%AF%E6%B7%B1%E6%B0%B4%E5%8C%BA-%E6%B8%B2%E6%9F%93%E6%9E%B6%E6%9E%84%E5%B7%A5%E7%A8%8B%E5%8C%96)
-      - [维度二：后端与高并发架构 (缓存、数据库、安全)](#%E7%BB%B4%E5%BA%A6%E4%BA%8C%E5%90%8E%E7%AB%AF%E4%B8%8E%E9%AB%98%E5%B9%B6%E5%8F%91%E6%9E%B6%E6%9E%84-%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8)
-      - [维度三：AI 与 Multi-Agent 架构 (编排与 RAG)](#%E7%BB%B4%E5%BA%A6%E4%B8%89ai-%E4%B8%8E-multi-agent-%E6%9E%B6%E6%9E%84-%E7%BC%96%E6%8E%92%E4%B8%8E-rag)
-      - [维度四：DevOps 与云原生 (部署与弹性)](#%E7%BB%B4%E5%BA%A6%E5%9B%9Bdevops-%E4%B8%8E%E4%BA%91%E5%8E%9F%E7%94%9F-%E9%83%A8%E7%BD%B2%E4%B8%8E%E5%BC%B9%E6%80%A7)
-- [一、gRPC & 微服务通信（4 题）](#%E4%B8%80grpc--%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A14-%E9%A2%98)
-  * [1. 前端/Node 怎么调用 gRPC？和 REST 区别是什么？](#1-%E5%89%8D%E7%AB%AFnode-%E6%80%8E%E4%B9%88%E8%B0%83%E7%94%A8-grpc%E5%92%8C-rest-%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88)
-  * [2. 浏览器能直接调 gRPC 吗？](#2-%E6%B5%8F%E8%A7%88%E5%99%A8%E8%83%BD%E7%9B%B4%E6%8E%A5%E8%B0%83-grpc-%E5%90%97)
-  * [3. 什么是 Protobuf？有什么好处？](#3-%E4%BB%80%E4%B9%88%E6%98%AF-protobuf%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%A4%84)
-  * [4. 流式 gRPC 在前端有什么应用场景？](#4-%E6%B5%81%E5%BC%8F-grpc-%E5%9C%A8%E5%89%8D%E7%AB%AF%E6%9C%89%E4%BB%80%E4%B9%88%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
-- [二、RAG & Embedding & AI 基础（5 题）](#%E4%BA%8Crag--embedding--ai-%E5%9F%BA%E7%A1%805-%E9%A2%98)
-  * [5. 什么是 Embedding？前端为什么要了解？](#5-%E4%BB%80%E4%B9%88%E6%98%AF-embedding%E5%89%8D%E7%AB%AF%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BA%86%E8%A7%A3)
-  * [6. 什么是 RAG？为什么大厂都用 RAG 不用纯 LLM？](#6-%E4%BB%80%E4%B9%88%E6%98%AF-rag%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%A7%E5%8E%82%E9%83%BD%E7%94%A8-rag-%E4%B8%8D%E7%94%A8%E7%BA%AF-llm)
-  * [7. 前端在 RAG 系统里负责什么？](#7-%E5%89%8D%E7%AB%AF%E5%9C%A8-rag-%E7%B3%BB%E7%BB%9F%E9%87%8C%E8%B4%9F%E8%B4%A3%E4%BB%80%E4%B9%88)
-  * [8. 向量数据库是什么？常见有哪些？](#8-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%98%AF%E4%BB%80%E4%B9%88%E5%B8%B8%E8%A7%81%E6%9C%89%E5%93%AA%E4%BA%9B)
-  * [9. RAG 效果不好怎么优化？（前端能说的层面）](#9-rag-%E6%95%88%E6%9E%9C%E4%B8%8D%E5%A5%BD%E6%80%8E%E4%B9%88%E4%BC%98%E5%8C%96%E5%89%8D%E7%AB%AF%E8%83%BD%E8%AF%B4%E7%9A%84%E5%B1%82%E9%9D%A2)
-- [三、私有云 & 强管控环境（4 题）](#%E4%B8%89%E7%A7%81%E6%9C%89%E4%BA%91--%E5%BC%BA%E7%AE%A1%E6%8E%A7%E7%8E%AF%E5%A2%834-%E9%A2%98)
-  * [10. 什么是私有云/内网强管控环境？](#10-%E4%BB%80%E4%B9%88%E6%98%AF%E7%A7%81%E6%9C%89%E4%BA%91%E5%86%85%E7%BD%91%E5%BC%BA%E7%AE%A1%E6%8E%A7%E7%8E%AF%E5%A2%83)
-  * [11. 在这种环境下，前端开发 AI 应用要注意什么？](#11-%E5%9C%A8%E8%BF%99%E7%A7%8D%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91-ai-%E5%BA%94%E7%94%A8%E8%A6%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88)
-  * [12. Schema Versioning 是什么？为什么重要？](#12-schema-versioning-%E6%98%AF%E4%BB%80%E4%B9%88%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E8%A6%81)
-  * [13. 内网环境怎么调试 AI 服务？](#13-%E5%86%85%E7%BD%91%E7%8E%AF%E5%A2%83%E6%80%8E%E4%B9%88%E8%B0%83%E8%AF%95-ai-%E6%9C%8D%E5%8A%A1)
-- [四、安全 & AK 泄露 & 稳定性（4 题）](#%E5%9B%9B%E5%AE%89%E5%85%A8--ak-%E6%B3%84%E9%9C%B2--%E7%A8%B3%E5%AE%9A%E6%80%A74-%E9%A2%98)
-  * [14. AI 生成代码把 AK/SK 泄露了，前端怎么兜底？](#14-ai-%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81%E6%8A%8A-aksk-%E6%B3%84%E9%9C%B2%E4%BA%86%E5%89%8D%E7%AB%AF%E6%80%8E%E4%B9%88%E5%85%9C%E5%BA%95)
-  * [15. 前端如何避免密钥泄露？](#15-%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%AF%86%E9%92%A5%E6%B3%84%E9%9C%B2)
-  * [16. 什么是 Prompt Injection？怎么防御？](#16-%E4%BB%80%E4%B9%88%E6%98%AF-prompt-injection%E6%80%8E%E4%B9%88%E9%98%B2%E5%BE%A1)
-  * [17. 阿里为什么强调稳定性大于创新？](#17-%E9%98%BF%E9%87%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BC%BA%E8%B0%83%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%A4%A7%E4%BA%8E%E5%88%9B%E6%96%B0)
-- [五、WebGPU & 端侧 AI & 前沿（3 题）](#%E4%BA%94webgpu--%E7%AB%AF%E4%BE%A7-ai--%E5%89%8D%E6%B2%BF3-%E9%A2%98)
-  * [18. WebGPU 是什么？相比 WebGL 优势？](#18-webgpu-%E6%98%AF%E4%BB%80%E4%B9%88%E7%9B%B8%E6%AF%94-webgl-%E4%BC%98%E5%8A%BF)
-  * [19. WebGPU 如何支撑前端 AI？](#19-webgpu-%E5%A6%82%E4%BD%95%E6%94%AF%E6%92%91%E5%89%8D%E7%AB%AF-ai)
-  * [20. 未来前端核心竞争力是什么？](#20-%E6%9C%AA%E6%9D%A5%E5%89%8D%E7%AB%AF%E6%A0%B8%E5%BF%83%E7%AB%9E%E4%BA%89%E5%8A%9B%E6%98%AF%E4%BB%80%E4%B9%88)
-- [二、高频问题 + 考察点 + 标准答案（直接背）](#%E4%BA%8C%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98--%E8%80%83%E5%AF%9F%E7%82%B9--%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88%E7%9B%B4%E6%8E%A5%E8%83%8C)
-  * [1. 自我介绍](#1-%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D)
-  * [2. 你理解的 AI 全栈工程师是做什么的？](#2-%E4%BD%A0%E7%90%86%E8%A7%A3%E7%9A%84-ai-%E5%85%A8%E6%A0%88%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%98%AF%E5%81%9A%E4%BB%80%E4%B9%88%E7%9A%84)
-  * [3. 你做过的最完整的 AI 项目是什么？](#3-%E4%BD%A0%E5%81%9A%E8%BF%87%E7%9A%84%E6%9C%80%E5%AE%8C%E6%95%B4%E7%9A%84-ai-%E9%A1%B9%E7%9B%AE%E6%98%AF%E4%BB%80%E4%B9%88)
-  * [4. 什么是 RAG？你在项目里怎么实现的？](#4-%E4%BB%80%E4%B9%88%E6%98%AF-rag%E4%BD%A0%E5%9C%A8%E9%A1%B9%E7%9B%AE%E9%87%8C%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84)
-  * [5. 前端怎么实现 AI 流式打字效果？](#5-%E5%89%8D%E7%AB%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0-ai-%E6%B5%81%E5%BC%8F%E6%89%93%E5%AD%97%E6%95%88%E6%9E%9C)
-  * [6. 产品提一个 AI 功能，你觉得实现难度大，怎么沟通？](#6-%E4%BA%A7%E5%93%81%E6%8F%90%E4%B8%80%E4%B8%AA-ai-%E5%8A%9F%E8%83%BD%E4%BD%A0%E8%A7%89%E5%BE%97%E5%AE%9E%E7%8E%B0%E9%9A%BE%E5%BA%A6%E5%A4%A7%E6%80%8E%E4%B9%88%E6%B2%9F%E9%80%9A)
-  * [7. AI 接口经常超时/报错/不稳定，你怎么处理？](#7-ai-%E6%8E%A5%E5%8F%A3%E7%BB%8F%E5%B8%B8%E8%B6%85%E6%97%B6%E6%8A%A5%E9%94%99%E4%B8%8D%E7%A8%B3%E5%AE%9A%E4%BD%A0%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86)
-  * [8. 怎么看待大模型幻觉？工程上怎么解决？](#8-%E6%80%8E%E4%B9%88%E7%9C%8B%E5%BE%85%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%BB%E8%A7%89%E5%B7%A5%E7%A8%8B%E4%B8%8A%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3)
-  * [9. 你怎么估算一个 AI 功能的开发时间？](#9-%E4%BD%A0%E6%80%8E%E4%B9%88%E4%BC%B0%E7%AE%97%E4%B8%80%E4%B8%AA-ai-%E5%8A%9F%E8%83%BD%E7%9A%84%E5%BC%80%E5%8F%91%E6%97%B6%E9%97%B4)
-  * [10. 项目进度紧张，你怎么保证 AI 效果与稳定性？](#10-%E9%A1%B9%E7%9B%AE%E8%BF%9B%E5%BA%A6%E7%B4%A7%E5%BC%A0%E4%BD%A0%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81-ai-%E6%95%88%E6%9E%9C%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7)
-  * [11. 你怎么和算法/产品配合？](#11-%E4%BD%A0%E6%80%8E%E4%B9%88%E5%92%8C%E7%AE%97%E6%B3%95%E4%BA%A7%E5%93%81%E9%85%8D%E5%90%88)
-  * [12. 未来职业规划？](#12-%E6%9C%AA%E6%9D%A5%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92)
-  * [13. 为什么想来我们公司？](#13-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%83%B3%E6%9D%A5%E6%88%91%E4%BB%AC%E5%85%AC%E5%8F%B8)
-  * [14. 你有什么问我们？](#14-%E4%BD%A0%E6%9C%89%E4%BB%80%E4%B9%88%E9%97%AE%E6%88%91%E4%BB%AC)
-- [自动化测试工具的前端架构设计](#%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%E7%9A%84%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1)
-  * [1. 核心业务模块划分](#1-%E6%A0%B8%E5%BF%83%E4%B8%9A%E5%8A%A1%E6%A8%A1%E5%9D%97%E5%88%92%E5%88%86)
-  * [2. 技术栈与架构分层](#2-%E6%8A%80%E6%9C%AF%E6%A0%88%E4%B8%8E%E6%9E%B6%E6%9E%84%E5%88%86%E5%B1%82)
-  * [3. 核心难点与解决方案 (面试亮点)](#3-%E6%A0%B8%E5%BF%83%E9%9A%BE%E7%82%B9%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E9%9D%A2%E8%AF%95%E4%BA%AE%E7%82%B9)
-    + [难点一：海量测试日志实时渲染导致页面卡顿](#%E9%9A%BE%E7%82%B9%E4%B8%80%E6%B5%B7%E9%87%8F%E6%B5%8B%E8%AF%95%E6%97%A5%E5%BF%97%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%93%E5%AF%BC%E8%87%B4%E9%A1%B5%E9%9D%A2%E5%8D%A1%E9%A1%BF)
-    + [难点二：可视化用例编排的复杂状态与性能问题](#%E9%9A%BE%E7%82%B9%E4%BA%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E7%94%A8%E4%BE%8B%E7%BC%96%E6%8E%92%E7%9A%84%E5%A4%8D%E6%9D%82%E7%8A%B6%E6%80%81%E4%B8%8E%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98)
-    + [难点三：大型代码编辑器的性能优化](#%E9%9A%BE%E7%82%B9%E4%B8%89%E5%A4%A7%E5%9E%8B%E4%BB%A3%E7%A0%81%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
-    + [难点四：与 DevOps 流水线的无缝集成](#%E9%9A%BE%E7%82%B9%E5%9B%9B%E4%B8%8E-devops-%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9A%84%E6%97%A0%E7%BC%9D%E9%9B%86%E6%88%90)
-  * [4. 架构演进与未来规划 (加分项)](#4-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B8%8E%E6%9C%AA%E6%9D%A5%E8%A7%84%E5%88%92-%E5%8A%A0%E5%88%86%E9%A1%B9)
-
-<!-- tocstop -->
-
 ## 表现
 
 1. 乐观积极
@@ -193,21 +28,19 @@
 
 ## 自我介绍
 
-### 原始版本
-
-面试官你好，我叫 xx，从事前端相关的工作至今约 9 年多，认为和咱们公司这个岗位比较匹配就投递了一下。
+面试官你好，我叫 xx，从事前端相关的工作至今约 9 年多。
 
 16 年 8 月，第一家公司，技术 100 多人，在这家公司主要 红酒商城系统、旅游系统、企业应用、政务系统等，主要用到 react、vue、小程序 xxxx 技术，前端 6 人，前期主要承担主力开发人员，后期一些项目的主要负责人，同时开始带人开发。获得 2017 年团队最佳员工奖 1/40。
 
 18 年 4 月，第二家公司，技术 300 多人，APP 端内嵌的 h5 项目，小程序，客服系统、大数据系统、冬奥会系统、车联网系统等十几个项目，主要用到 xxx 技术，前端 20 人，前期主要承担主力开发人员，后期开始带小伙伴一起做项目。
 
-20 年 11 月，第三家公司，在 xxx 技术中台，部门 100 个人，云服务产品（容器、日志、网关、mlops、运维平台），大数据产品（日志、数据查询、服务、质量），自研低代码问卷平台等。自研信息，埋点等，主要用到 xxx 技术。前期带几个外包一起开发，后期主力开发人员。2022 年度团队协作奖。产品、设计、解决方案等。 
+20 年 11 月，第三家公司，在 xxx 技术中台，部门 100 个人，云服务产品（容器、日志、网关、mlops、运维平台），大数据产品（日志、数据查询、服务、质量），自研低代码问卷平台等。自研信息，埋点等，主要用到 xxx 技术。前期带几个外包一起开发，后期主力开发人员。2022 年度团队协作奖。 
 
 24 年 3 月，第四家公司， xx科技，主要负责 前端 项目（coco ai, es 后台管理平台，cloud 管理平台，前端公共组件库，官网等），主要用到 react、tauri 技术，主要负责项目的需求分析、项目的设计、项目的开发、项目的测试、项目的上线。24年度最佳新人，25 年最具创新奖。25 参加 gitCode 全国线上演讲。
 
 总得来说，这几年做的各类项目比较多，同时也注重工程化建设，提高开发效率等，帮助团队，喜欢做团队中难度高的项目，后期也开始关注业务，关注用户体验，优化项目。偶尔也会参与一些开源项目。
 
-面试官您好，我叫 XX，从事前端相关的工作至今约 9 年多，主要技术栈是 React/Vue/Node/小程序/移动端/桌面端/ 等。
+主要技术栈是 React/Vue/Node/小程序/移动端/桌面端/ 等。
 
 最新关注 Agent
 
@@ -218,7 +51,7 @@
 
 简单说：别做 “码字工人”，要做解决问题的人、指挥 AI 的人。
 
-### 3. 核心竞争力总结 (Why You?)
+### Why You?
 
 1.  **技术广度与深度的结合**：
     *   不仅精通 **Vue/React** 业务开发，更深入 **Rust/Tauri** 系统级开发，是市场上稀缺的 **"前端 + 桌面端 + AI"** 复合型人才。
@@ -261,6 +94,11 @@
     *   *解决*：在 Webpack 构建时，将 `publicPath` 设置为子应用的完整 URL；或者使用 `url-loader` 将小资源转 base64。
 3.  **循环依赖部署问题**：主应用部署在 K8s 容器，容器平台前端又依赖主应用（套娃）。
     *   *解决*：将主应用在阿里云 OSS 和 K8s 各部署一份，通过网关路由规则，切分流量避免死循环。
+4.   **Q: 微前端中，子应用之间如何通信？**
+    *   A: 我们主要用了三种方式：
+        1.  **URL 参数**：最简单，适合带 ID 跳转。
+        2.  **EventBus**：发布订阅模式，适合松耦合通知（如“刷新列表”）。
+        3.  **全局状态 (Props/Global Store)**：主应用下发 UserInfo、Token 等共享数据。在 Wujie 中，还可以通过 `props` 直接注入方法。
 
 #### 阶段二：基于 无界 (Wujie) 的极速方案 (当前公司)
 
@@ -291,18 +129,87 @@
 3.  针对 AI Agent 场景，利用无界的 `预加载` 能力，提前加载好大模型对话组件，实现了用户点击即用的“秒开”体验。
     
 ### 2. 埋点
-   
-   见 ./frontend/log_sdk.md 内容
+
+见 ./frontend/log_sdk.md 内容
+
+## 数据埋点 SDK 的设计
+
+设计一个优秀的前端 SDK（如数据埋点 SDK、性能监控 SDK、开放平台 API 封装 SDK 等）不仅考验代码能力，更考验架构思维。以下是面试中常被问到的核心维度与解答：
+
+### 1. SDK 设计的核心原则是什么？
+- **易用性（User-Friendly）**：接入成本极低，最好是 "Zero-Config"（零配置）或者只需传入一个 Token 即可初始化。API 命名需语义化，符合开发者直觉。
+- **稳定性与安全性（Stability & Security）**：SDK 代码绝不能导致宿主应用崩溃。所有的核心流程都应该有 `try...catch` 包裹，绝不能污染全局变量（避免变量冲突）。
+- **轻量化（Lightweight）**：体积要尽可能小。不要引入庞大的第三方库（如 lodash/axios），尽量使用原生 JavaScript（如 fetch/XHR）实现。按需加载和 Tree-shaking 支持。
+- **扩展性（Extensibility）**：支持插件化机制（Plugin System），允许开发者自定义生命周期钩子（Hooks）拦截和修改数据。
+
+### 2. SDK 的整体架构如何划分？
+一个成熟的 SDK 通常分为以下几个模块：
+1. **入口模块 (Core/Entry)**：负责 SDK 的初始化、配置合并、插件挂载、暴露全局 API。
+2. **环境处理模块 (Environment)**：判断当前运行环境（浏览器/Node.js/小程序），抹平环境差异。
+3. **数据采集模块 (Collector)**：例如拦截 XHR/Fetch，监听 Error/UnhandledRejection，监听路由变化，或是监听 DOM 点击事件（无痕埋点）。
+4. **数据处理模块 (Processor/Formatter)**：对采集到的数据进行格式化、过滤（如去除敏感信息）、添加公共参数（如 UUID、设备信息、时间戳）。
+5. **上报/通信模块 (Sender/Transport)**：负责将数据发送给服务端。需要处理网络异常、重试机制、数据批量上报策略。
+
+### 3. 如何保证 SDK 不污染全局环境？
+- **使用闭包或立即执行函数 (IIFE)** 封装代码，避免内部变量泄露。
+- **使用 ES Modules (ESM) 或 CommonJS** 进行模块化开发，打包时通过 Rollup/Webpack 输出 UMD 或 ESM 格式。
+- **唯一命名空间**：如果必须挂载到 `window` 上，使用特殊且唯一的名字，如 `window.__MyMonitorSDK__`，而不是通用的 `window.utils`。
+
+### 4. 数据上报模块（Sender）如何设计？
+这是监控/埋点 SDK 最关键的部分，需要考虑性能和数据丢失问题：
+- **上报方式选择**：
+  - `navigator.sendBeacon(url, data)`：**首选方案**。它是异步非阻塞的，即使页面卸载（Unload）也能保证数据成功发送，不影响下一个页面的加载。
+  - `Image Beacon`（`new Image().src = url + '?data=xxx'`）：兼容性极好，不会跨域拦截，通常作为降级方案（但只能用 GET 请求，有长度限制）。
+  - `Fetch/XHR`：常用于数据量较大或需要接收服务端返回结果的场景。
+- **上报策略（降本增效）**：
+  - **批量上报**：将数据存入内存队列，当队列满（如 10条）或达到定时器时间（如 5秒）时再一次性合并发送。
+  - **空闲上报**：利用 `requestIdleCallback` 在浏览器主线程空闲时处理数据并上报，不抢占用户交互资源。
+  - **本地缓存（容灾）**：遇到断网或发送失败时，将数据存入 `localStorage` 或 `IndexedDB`，待网络恢复后重发。
+
+### 5. SDK 如何实现插件化（Plugin System）？
+为了保持核心（Core）的轻量，将不同功能拆分成独立插件。
+借鉴类似 Vue/Webpack 的插件机制：
+- 定义生命周期 Hooks，如 `beforeInit`, `beforeSend`, `afterSend`。
+- 提供 `use(plugin)` 方法注册插件。
+```javascript
+class SDKCore {
+  constructor() {
+    this.plugins = [];
+  }
+  use(plugin) {
+    plugin.install(this); // 将当前 SDK 实例传入插件
+    this.plugins.push(plugin);
+  }
+  // 在关键节点触发钩子
+  notifyHooks(hookName, data) {
+    this.plugins.forEach(plugin => {
+      if (typeof plugin[hookName] === 'function') {
+        plugin[hookName](data);
+      }
+    });
+  }
+}
+```
+
+### 6. 如何保证 SDK 的代码质量？
+- **TypeScript**：使用 TS 编写，提供完善的 `.d.ts` 类型声明文件，让使用者在 IDE 中有极好的代码提示体验。
+- **单元测试**：使用 Jest/Vitest 进行核心逻辑（如队列合并、配置解析）的单元测试。
+- **打包构建**：使用 Rollup 进行打包，因为它相比 Webpack 打包出来的代码更干净、冗余代码更少，非常适合构建 Library/SDK。
+
+### 7. 遇到过哪些 SDK 兼容性问题，如何解决？
+- **跨端兼容**：一套代码想跑在浏览器、Node.js 和小程序中。解决方案是在构建时（或运行时注入适配器），针对不同环境提供不同的 Transport 层（如浏览器用 `XHR`，小程序用 `wx.request`，Node 用 `http` 模块）。
+- **API 兼容**：某些老浏览器不支持 `sendBeacon` 或 `Promise`。SDK 内部应做降级处理（如退化为 Image 上报），并尽量避免直接引入 polyfill 以免增加体积，让宿主环境自己决定是否引入 polyfill。
 
 ### 3. 站内信
    
-   见 ./frontend/mail.md 内容
+见 ./frontend/mail.md 内容
 
 ### 4. 图表大盘
-   - 背景 核心功能、体验
-   - 技术 排序、布局、拖拉拽、主题、全屏、暗黑、水印
-   - 难点 加载、排序、新建
-   - [见掘金文章地址](https://juejin.cn/post/7208472817459789885)
+
+- 背景 核心功能、体验
+- 技术 排序、布局、拖拉拽、主题、全屏、暗黑、水印
+- 难点 加载、排序、新建
+- [见掘金文章地址](https://juejin.cn/post/7208472817459789885)
 
 ### 图表库的选择
 
@@ -325,59 +232,63 @@
 其中最后的选择落在 echarts 和 G2，echart 使用就是一些配置项，G2 是图形语法，通过数据之间关系，来生成一张图，虽说这样 G2 定制化更加强大。但是我们的业务，一般就是需要一个特定的图然后再填充数据，还能支持配置，无疑 Echarts 更符合我们的业务场景。所以最终图表库选择 **echarts** 。
 
 ### 5. 智能检索
-   - 背景 kibana es7 kql 查询
-   - 难点 语法分析、大小写转换、前置修改、键盘操作
 
-   - [见掘金文章地址](https://juejin.cn/post/7210593177820676154)
+- 背景 kibana es7 kql 查询
+- 难点 语法分析、大小写转换、前置修改、键盘操作
+
+- [见掘金文章地址](https://juejin.cn/post/7210593177820676154)
 
 ### 6. 工程规范、项目模板
-   - eslint、git commit、分支规范、code review、模板、脚手架、工具库
 
-   - [见掘金文章地址](https://juejin.cn/post/7091202054680985630)
+- eslint、git commit、分支规范、code review、模板、脚手架、工具库
+
+- [见掘金文章地址](https://juejin.cn/post/7091202054680985630)
 
 ### 7. 低代码
-   - 背景 内部没有、外部暴漏公司用户信息、文档无法当 url 用
-   - 技术 Function(`"use strict";const formData = ${JSON.stringify(formData)};return (${string})`)()
-   - 技术 动态关联
-   - 撤销、重做（快照、限制保存快照的容量，超出容量直接删除前面最早的快照即可）
-   - 撤销、重做（两个栈记录每次操作记录，维护的难度也会越来越高）
-   - 成果 生成 url、10 分钟/人、4 期 7 个产品
 
-   - [见掘金文章地址](https://juejin.cn/post/7078860542026186765)
+- 背景 内部没有、外部暴漏公司用户信息、文档无法当 url 用
+- 技术 Function(`"use strict";const formData = ${JSON.stringify(formData)};return (${string})`)()
+- 技术 动态关联
+- 撤销、重做（快照、限制保存快照的容量，超出容量直接删除前面最早的快照即可）
+- 撤销、重做（两个栈记录每次操作记录，维护的难度也会越来越高）
+- 成果 生成 url、10 分钟/人、4 期 7 个产品
+
+- [见掘金文章地址](https://juejin.cn/post/7078860542026186765)
 
 ### 8. 性能优化
-   - 首次内容绘制 (First Contentful Paint，FCP) 1.8s 3s
-   - 最大内容绘制 (Largest Contentful Paint，LCP) 2.5s 4s
-   - 首次输入延迟 (First Input Delay ，FID) 100ms 300ms
-   - 交互到绘制延迟（Interaction to Next Paint，INP）200ms 500ms
-   - 累积布局偏移 (Cumulative Layout Shift，CLS) 0.1 0.25
-   - 第一字节时间 (Time to First Byte，TTFB) 800ms 1800ms
-   - 预取回 Prefetch <link rel="prefetch"
-   - 预加载 Preload <link rel="preload"
-   - 预连接 Preconnect <link rel="preconnect"
-   - DNS预取回 DNS-Prefetch <link rel="dns-prefetch"
-   - 加载指标：秒开率
-   - 稳定性指标：资源错误,JS报错,Crash,内存堆栈,接口报错等
-   - 操作体验指标：响应延迟，卡顿，滚动流畅性，TTI（可交互时间） FID(用户首次和页面交互到页面响应交互的时间)
-   - 加载链路的优化：从访问url到页面呈现，整个加载渲染链路可以做优化的思路
-   - CRP 关键渲染路径
-   - 减少请求数量、减少请求体积、加载顺序、资源合并压缩、GZIP
-   - 元素背景图使用雪碧图模式，是前端基本优化手段，可以显著降低请求次数。
-   - 缓存（Service Worke、HttpCache）
-   - DNS 解析
-   - 图片处理优化（选择合适的图片、压缩、svg、base64、异步加载）
-   - url-》页面
-     - url 解析
-     - 缓存（强缓存 Expires / Cache-Control、协商缓存 Last-Modified / ETag、数据缓存）
-     - DNS解析（20~120毫秒、dns-prefetch、CDN 加速）
-     - TCP三次握手（SYN、AYN+ACK、ACK）
-     - 数据传输
-     - TCP四次挥手（FIN、ACK、ACK+FIN、ACK）
-     - 页面渲染（async、defer）
-   - vue
-     - 路由懒加载
-     - 按需引入
-     - KeepAlive
+   
+- 首次内容绘制 (First Contentful Paint，FCP) 1.8s 3s
+- 最大内容绘制 (Largest Contentful Paint，LCP) 2.5s 4s
+- 首次输入延迟 (First Input Delay ，FID) 100ms 300ms
+- 交互到绘制延迟（Interaction to Next Paint，INP）200ms 500ms
+- 累积布局偏移 (Cumulative Layout Shift，CLS) 0.1 0.25
+- 第一字节时间 (Time to First Byte，TTFB) 800ms 1800ms
+- 预取回 Prefetch <link rel="prefetch"
+- 预加载 Preload <link rel="preload"
+- 预连接 Preconnect <link rel="preconnect"
+- DNS预取回 DNS-Prefetch <link rel="dns-prefetch"
+- 加载指标：秒开率
+- 稳定性指标：资源错误,JS报错,Crash,内存堆栈,接口报错等
+- 操作体验指标：响应延迟，卡顿，滚动流畅性，TTI（可交互时间） FID(用户首次和页面交互到页面响应交互的时间)
+- 加载链路的优化：从访问url到页面呈现，整个加载渲染链路可以做优化的思路
+- CRP 关键渲染路径
+- 减少请求数量、减少请求体积、加载顺序、资源合并压缩、GZIP
+- 元素背景图使用雪碧图模式，是前端基本优化手段，可以显著降低请求次数。
+- 缓存（Service Worke、HttpCache）
+- DNS 解析
+- 图片处理优化（选择合适的图片、压缩、svg、base64、异步加载）
+- url-》页面
+ - url 解析
+ - 缓存（强缓存 Expires / Cache-Control、协商缓存 Last-Modified / ETag、数据缓存）
+ - DNS解析（20~120毫秒、dns-prefetch、CDN 加速）
+ - TCP三次握手（SYN、AYN+ACK、ACK）
+ - 数据传输
+ - TCP四次挥手（FIN、ACK、ACK+FIN、ACK）
+ - 页面渲染（async、defer）
+- vue
+ - 路由懒加载
+ - 按需引入
+ - KeepAlive
 
 ## 高并发场景
 
@@ -539,51 +450,6 @@ SPA，目前最强大的打包工具，但是过于臃肿，如何单纯打包js
 
 MPA，tree-shaking特性（针对es6，按需打包，多余的不要，目前（2018，vuex,react主流使用）
 
-## ES6
-
-- let、const
-- 解构
-- Set、WeakSet、Map、WeakMap
-  - WeakSet 结构与 Set 类似，也是不重复的值的集合。WeakSet 的成员只能是对象和 Symbol 值
-  - WeakSet 中的对象都是弱引用
-- Proxy
-
-```js
-var obj = new Proxy({}, {
-  get: function (target, propKey, receiver) {
-      console.log(`getting ${propKey}!`);
-      return Reflect.get(target, propKey, receiver);
-  },
-  set: function (target, propKey, value, receiver) {
-      console.log(`setting ${propKey}!`);
-      return Reflect.set(target, propKey, value, receiver);
-  }
-});
-```
-
-## TS
-
-### type 和 interface 的异同
-
-**同：**
-1. 都可以描述一个对象或者函数
-2. 都允许拓展（extends）
-
-**不同：**
-1. type 可以声明基本类型别名，联合类型，元组等类型
-2. type 语句中还可以使用 typeof 获取实例的 类型进行赋值
-3. `type StringOrNumber = string | number;`  
-4. `type Text = string | { text: string };`  
-5. `type NameLookup = Dictionary<string, Person>;`  
-6. `type Callback<T> = (data: T) => void; `
-7. `type Pair<T> = [T, T]; ` 
-8. `type Coordinates = Pair<number>; ` 
-9. `type Tree<T> = T | { left: Tree<T>, right: Tree<T> };`
-
-1. interface 能够声明合并
-
-
-
 ## 设计模式
 
 在前端和 Node.js/Nest.js 开发中，设计模式不仅是理论，更是解决实际工程问题的利器。以下是常用的设计模式及其实际应用场景：
@@ -642,38 +508,20 @@ Nest.js 是一个重度使用设计模式的现代化 Node 框架（深受 Angul
 *   **适配器模式 (Adapter Pattern)**
     *   **应用：抹平底层框架差异**。Nest.js 的底层 HTTP 服务器默认使用 Express，但也支持切换到性能更高的 Fastify。Nest 通过提供 `ExpressAdapter` 和 `FastifyAdapter`，向开发者屏蔽了底层的差异，上层业务代码无需修改即可运行在不同的 HTTP 框架之上。
 
-## 面试准备
+## 领导面 (总监/业务线负责人) 准备指南
 
-### 4. 潜在面试题库 (Q&A Bank)
+### 1. 业务与价值导向 (Business & ROI)
 
-#### 4.1 技术类
-*   **Q: 为什么选择 Tauri 而不是 Electron？**
-    *   A: 核心是 **包体积** 和 **内存占用**。Tauri 复用系统 WebView，打包仅几 MB（Electron 需 100MB+）。且 Rust 后端安全性更高，内存管理更优。虽然兼容性适配（Windows WebView2 vs WebKit）有成本，但通过 PlatformAdapter 已解决。
-*   **Q: 微前端中，子应用之间如何通信？**
-    *   A: 我们主要用了三种方式：
-        1.  **URL 参数**：最简单，适合带 ID 跳转。
-        2.  **EventBus**：发布订阅模式，适合松耦合通知（如“刷新列表”）。
-        3.  **全局状态 (Props/Global Store)**：主应用下发 UserInfo、Token 等共享数据。在 Wujie 中，还可以通过 `props` 直接注入方法。
-*   **Q: 在做 AI 流式响应时，如何处理 Markdown 渲染的抖动问题？**
-    *   A: 这是一个典型问题。流式输出时，Markdown 结构可能不完整（如代码块未闭合）。我们采用了 **"缓冲解析"** 策略，或者使用支持流式的 Markdown 解析库。同时在 UI 上做 CSS `min-height` 占位，防止高度塌陷导致的剧烈抖动。
-
-#### 4.2 软技能/行为类
-*   **Q: 你在团队中是如何推行新技术的（比如 Rust 或 Monorepo）？**
+**Q: 你在团队中是如何推行新技术的（比如 Rust 或 Monorepo）？**
     *   A: **小步快跑，试点先行**。
         1.  先在一个非核心、边缘模块进行试点（Demo）。
         2.  用数据证明收益（如：打包速度快了多少，代码复用率高了多少）。
         3.  编写详细的文档和脚手架，降低队友上手门槛。
         4.  组织 Tech Talk 分享经验，最后才全面推广。
-*   **Q: 遇到过最棘手的 Bug 是什么？**
+**Q: 遇到过最棘手的 Bug 是什么？**
     *   A: (可以说 WebGL 上下文丢失的问题，或者微前端下的弹窗挂载问题)。
         *   *例子*：Next.js 路由切换时 3D 场景重建导致 GPU 飙升。
         *   *解决*：引入 **View Tunneling** 技术，将 Canvas 放在顶层，路由切换时只改变“视图窗口”的位置和相机参数，而不销毁 Canvas 实例，实现了无缝过渡且显存不泄露。
-
----
-
-## 领导面 (总监/业务线负责人) 准备指南
-
-### 1. 业务与价值导向 (Business & ROI)
 
 *   **Q1: “你做过最有成就感（或最有价值）的项目是什么？它给公司带来了什么业务收益？”**
     *   **避坑**：不要一上来就沉浸在技术细节（如“我用 Rust 优化了什么算法”）。
@@ -828,203 +676,7 @@ Nest.js 是一个重度使用设计模式的现代化 Node 框架（深受 Angul
 - **ToB 产品的稳定性与治理**：门禁、监控、SLO、灰度、回滚与故障演练
 
 
-## 宏
 
-### JD 拆解（高级前端，偏数据传输与流媒体）
-- 业务范围：广告业务平台/SDK 设计与体验优化；复杂项目的渐进式架构重构与技术升级。
-- 传输与播放：分布式网络数据高效传输、资源调度优化；Web 流媒体播放优化（H5 Player/WebCodecs/MSE/WebAssembly/FFmpeg）。
-- 通信能力：浏览器 P2P/实时通信（WebRTC/WebSocket/WebTorrent），拥塞控制与弱网容错。
-- 技术广度：服务端经验（Node/Go/Java/Rust/或 C++），ToC 国际化产品经验与最佳实践。
-- 能力要求：技术评估与落地、快速迭代与架构取舍、方案归纳与行业调研。
-
-### 我的匹配与补充（含国际化产品）
-- 参与国际化产品的数据传输与流媒体解决方案的设计开发与体验优化：统一协议栈（HTTP/2 + SSE/WebSocket + WebRTC DataChannel），CDN/Edge 加速与 Geo 路由，弱网降级与 ABR 策略；播放器路径从 H5 Player 迁移至 WebCodecs/MSE，显著降低首帧与卡顿率。
-- SDK 工程化与治理：事件采集/上报/去重/离线缓存/重试/批量压缩，端到端埋点与 RUM 指标（TTFF/TPS/Buffer Underrun），A/B 验证；隐私与合规（GDPR/Cookie 同意、PII 脱敏）。
-- 架构演进：Monorepo 化、基础库抽象（网络层/Hook）、多形态部署（SaaS/On‑Prem），灰度/回滚与可观测链路接入。
-
-### 面试准备清单（可直接对题）
-- P2P/RTC：ICE/STUN/TURN、DataChannel 文件分发与实时协作；NAT 穿透；拥塞控制与 QoS 指标。
-- 流媒体优化：MSE 与 SourceBuffer 管线、WebCodecs 编解码路径、ABR 算法、缓冲阈值与首帧优化；弱网自动降级。
-- 传输协议：HTTP/2/HTTP/3(QUIC)、Range 请求、Brotli/Gzip 压缩、DNS/Geo 路由、CDN 边缘缓存策略。
-- WebAssembly/FFmpeg：端侧转码/裁剪的可行性与安全边界，CPU/内存占用与用户体验取舍。
-- SDK 设计：采集→聚合→上报链路，离线缓存与重试策略；指标字典与监控面板设计；版本与开关治理。
-- 国际化 ToC：时区/RTL/本地化资源、法务合规与数据跨境；弱网地区体验保障与降级策略。
-
-### 高频问答要点（速答版本）
-- 问：浏览器里如何做 P2P 文件/数据分发？答：WebRTC DataChannel + ICE/STUN/TURN 解决 NAT；按切片哈希做去重与校验；拥塞控制与重传策略；落地侧重灰度与安全域隔离。
-- 问：MSE 与 WebCodecs 怎样配合优化首帧？答：MSE 负责管线与缓冲，WebCodecs 直连编解码，配合短分片与关键帧对齐、降低初始缓冲阈值；弱网时 ABR 降码率/分辨率以保体验。
-- 问：国际化的传输优化如何做？答：Geo 路由 + 边缘缓存、预连接与域名分片、HTTP/2 复用；资源按区域打包与本地化；RUM 指标分地域观测与 A/B。
-- 问：SDK 如何保障合规与鲁棒？答：Schema 驱动事件、PII 脱敏、最小化采集；离线队列与批量上报、退避重试；可观测与快照回滚。
-
-### 可展示工件（面试携带）
-- Demo：WebRTC DataChannel 小文件分发与协同编辑；MSE/WebCodecs 播放器首帧与 ABR 对比。
-- 文档：广告 SDK 采集/上报设计图、流媒体缓冲与 ABR 策略说明、传输优化清单（HTTP/2/3、压缩、缓存）。
-- 指标：TTFF/TPS/Buffer Underrun、卡顿率与错误率分地域面板截图；A/B 结果与结论。
-
-### 面试开场白（口语版 90 秒）
-- 开场
-  - “您好，我在前端这块做了多年，最近两年重点在国际化产品的数据传输与流媒体体验优化。我的工作比较偏工程化与性能治理，目标是让弱网和复杂网络下也能稳定高效。”
-- 与岗位匹配的三条核心能力
-  - “第一，传输与协议。我把前端侧的协议栈统一成 HTTP/2 + SSE/WebSocket + WebRTC DataChannel，并结合 CDN/Edge 的 Geo 路由做加速；资源层面用预连接、缓存与再验证，弱网下自动降级。”
-  - “第二，流媒体播放。我从 H5 Player 迁移到 WebCodecs + MSE，配合短分片与关键帧对齐、缓冲阈值调优，首帧与卡顿率显著下降；ABR 策略防抖避免来回抖动。”
-  - “第三，SDK 工程化与治理。事件全链路 Schema 化，离线缓存与批量上报、退避重试；端到端观测 TTFF/TPS/Buffer Underrun，并用 A/B 验证效果；同时满足 GDPR/Cookie 同意与跨境合规。”
-- 代表成果
-  - “在一个多区域的 ToC 场景，做完协议栈与播放链路的升级后，首帧时间下降约 30–40%，弱网卡顿率明显降低；SDK 指标面板支持分地域运营决策，问题定位效率提升。”
-- 收尾
-  - “如果后续深入，我可以分别展开传输优化的策略组合、WebCodecs 与 MSE 的协同、以及 P2P/RTC 在企业网络下的降级与回退方案。”
-
-### 面试开场白（精简 40 秒）
-- “您好，我主要做国际化场景下的数据传输与流媒体优化。传输侧统一 HTTP/2 + WebSocket/WebRTC 并结合 CDN/Edge；播放侧用 WebCodecs + MSE 调优首帧与缓冲；SDK 侧做 Schema 化采集、离线与批量上报，观测 TTFF/TPS/Buffer Underrun 并满足 GDPR 合规。上线后首帧与卡顿有明显改善，指标面板支持区域化运营。”
-
-### 追问引导句
-- “要不要我详细说下 WebCodecs + MSE 的协同方式，以及 ABR 防抖怎么做？”
-- “如果关注 P2P/RTC，我可以结合 ICE/STUN/TURN 的成功率提升策略与企业网络的降级回退方案。”
-- “关于国际化传输，我可以展示 Geo 路由与边缘缓存策略，以及分地域 RUM 指标的对比面板。”
-
-### 面试题清单（对标 JD）
-- P2P/RTC：请解释 ICE/STUN/TURN 的作用与协同流程，如何在企业网络下保证连接成功率？
-- P2P/RTC：DataChannel 的可靠/不可靠模式有什么区别？文件分发如何做分片校验与断点续传？
-- P2P/RTC：如何在浏览器端做拥塞控制与丢包重传？有哪些指标判断 QoS 是否达标？
-- P2P/RTC：在禁止 P2P 的企业网络中，你的降级与回退方案是什么？
-- 传输协议：HTTP/2 与 HTTP/3 (QUIC) 的核心差异是什么？在弱网/高延迟地区如何选择？
-- 传输协议：Range 请求、ETag/If-None-Match 与 Cache-Control 的协作机制如何影响边缘缓存命中？
-- 传输优化：如何设计 Geo 路由与 CDN 边缘缓存策略？预连接/域名分片/资源打包如何组合使用？
-- 传输优化：Brotli/Gzip 压缩在文本与二进制资源上的取舍？哪些资源不建议压缩？
-- 流媒体：请说明 MSE 管线与 SourceBuffer 的工作方式，append/evict 的最佳实践是什么？
-- 流媒体：WebCodecs 与 MSE 如何配合降低首帧时间？关键帧间隔与分片大小如何设定？
-- 流媒体：ABR 算法的输入信号有哪些？如何避免来回抖动与错误降码？
-- 流媒体：直播的低延迟优化链路（LL-HLS/LL-DASH）涉及哪些参数？如何权衡卡顿与时延？
-- 流媒体：在浏览器端进行 WASM+FFmpeg 的转码/裁剪需要注意哪些安全与性能边界？
-- SDK 工程：事件 Schema 如何设计以便版本演进？如何做离线缓存、批量上报与退避重试？
-- SDK 工程：如何定义与实现 RUM 指标（TTFF/TPS/Buffer Underrun/错误率）？面板与告警如何搭建？
-- SDK 工程：如何保证事件上报的幂等性与去重？客户端时钟漂移会带来哪些问题？
-- 合规治理：在 GDPR/Cookie 同意/跨境数据场景下，SDK 需要做哪些合规与隐私防护？
-- 国际化 ToC：RTL/时区/本地化资源在前端工程中的落地要点是什么？如何管理多区域构建与缓存？
-- 国际化 ToC：在弱网地区如何做资源降级与体验保障？有哪些可观测指标用于运营决策？
-- 架构演进：为什么选择 Wujie（无界）做混合微前端？与 Qiankun 相比的关键差异与适用边界？
-- 架构演进：Monorepo 迁移的风险点与收益是什么？基础库抽象如何衡量“复用率 90%”的达成？
-- 边缘计算：Next.js RSC/ISR/Edge Runtime 在 BFF 聚合与缓存上的价值是什么？有哪些踩坑点？
-- 可观测与稳定性：如何将前端 Trace 与后端日志、CDN 指标关联起来做端到端排障？
-- 发布与治理：金丝雀/灰度/快照回滚的决策条件如何制定？遇到线上卡顿/错误激增时的处置流程？
-
-### 参考答案（逐题）
-- P2P/RTC：ICE/STUN/TURN 协同流程与企业网络成功率提升
-  - 答：ICE 收集候选地址；STUN 获取公网候选；TURN 在直连失败时做中继。提升成功率的做法是优先级排序 + trickle ICE、延长收集窗口、开启 TCP/TLS:443 TURN 以穿企业防火墙、失败快速降级到 TURN，仅在允许条件下启用直连。
-- P2P/RTC：DataChannel 可靠/不可靠模式与文件分发
-  - 答：可靠+有序适合文件传输；不可靠+无序适合实时信令。文件分发采用分片清单（manifest）、切片哈希校验、缺片重传、断点续传与窗口控制；大文件并发受拥塞窗口与接收端处理能力约束。
-- P2P/RTC：拥塞控制与丢包重传、QoS 指标
-  - 答：WebRTC 媒体通道依赖 RTP/RTCP 反馈（NACK/PLI/FIR）、码率上限与发包 pacing；DataChannel 基于 SCTP 的重传与拥塞控制。QoS 关注 RTT、丢包率、抖动、有效吞吐、重传次数；媒体侧看 buffer 长度、丢帧、重缓冲次数与时长。
-- P2P/RTC：禁止 P2P 的企业网络降级回退
-  - 答：侦测 ICE 失败后直接走 TURN relay（TCP/TLS:443）；若 TURN 不可用，降级到 WebSocket/HTTP 流；关闭 P2P 特性，保留相同协议栈的功能子集，确保体验稳定。
-- 传输协议：HTTP/2 vs HTTP/3 选择
-  - 答：HTTP/3（QUIC/UDP）支持 0‑RTT 与无队头阻塞，丢包/高时延环境更稳；HTTP/2 在 UDP 受限或中间设备不友好时更兼容。策略是优先 H3，监测失败自动回退 H2。
-- 传输协议：Range、ETag/If‑None‑Match 与 Cache‑Control 协作
-  - 答：Range 用于断点续传与局部刷新；ETag/INM 做强校验与再验证；Cache‑Control 控制新鲜度与再验证策略。结合使用可提升边缘命中与字节节省；静态资源采用内容指纹 + immutable。
-- 传输优化：Geo 路由与 CDN 边缘缓存、预连接/域名分片/打包
-  - 答：DNS/Anycast 做 Geo 路由，区域化构建与边缘缓存；预连接针对关键域名，HTTP/2 下避免过度域名分片；打包策略权衡缓存粒度与首屏关键路径，配合 stale‑while‑revalidate。
-- 传输优化：Brotli/Gzip 取舍
-  - 答：文本类（JS/CSS/JSON/SVG）用 Brotli；二进制已压缩资源（JPEG/PNG/MP4/ZIP）勿再压；小文件压缩收益低可跳过；压缩在边缘执行，避免源站 CPU 抖动。
-- 流媒体：MSE 管线与 SourceBuffer 最佳实践
-  - 答：批量 append、避免频繁小片；按关键帧对齐分片；保持适度 buffer（如 10‑20s），定期 remove 旧范围；监控 updateend/errored，避免交叉操作与过度 evict。
-- 流媒体：WebCodecs 与 MSE 降首帧、关键帧与分片设置
-  - 答：WebCodecs 直连编解码减少管线开销；配合短分片与 1‑2s 关键帧间隔、降低初始缓冲阈值；预取初始化段与首片，硬件解码优先，弱网时快速降码率。
-- 流媒体：ABR 输入信号与防抖策略
-  - 答：输入包括带宽估计、片下载时长、buffer 占用、丢帧与重缓冲风险；防抖采用滞后/保持时间、加权移动平均、上行门槛更保守、下行迅速与下限锁定。
-- 流媒体：LL‑HLS/LL‑DASH 关键参数与权衡
-  - 答：短分片/part‑duration、preload‑hint、阻塞式刷新、CMAF；参数越激进，时延越低但重缓冲风险上升；在弱网下适度放大分片与缓冲阈值以稳帧。
-- 流媒体：WASM+FFmpeg 安全与性能边界
-  - 答：需跨源隔离（SharedArrayBuffer）、限制线程与内存占用、避免长时间主线程阻塞；只做轻量裁剪/转封装，重编解码交给后端；提示耗电与风扇噪音等体验风险。
-- SDK 工程：事件 Schema 版本与离线/批量/重试
-  - 答：Schema 前向/后向兼容（可选字段、默认值），带 schema_version；离线队列用 IndexedDB、批量压缩与去重，退避重试与冲突检测；服务端按 event_id 幂等。
-- SDK 工程：RUM 指标定义与面板告警
-  - 答：TTFF（首字/首帧时间）、TPS（每秒 token/片）、Buffer Underrun（重缓冲事件率）、错误率；按区域/版本维度展示，阈值告警与趋势回归。
-- SDK 工程：幂等与去重、时钟漂移
-  - 答：客户端生成全局唯一 event_id 与序列号；服务端幂等插入；时钟漂移用服务器时间戳或 NTP 矫正，关键事件以服务端时间为准。
-- 合规治理：GDPR/Cookie 同意与跨境
-  - 答：Consent gating、最小化采集与 PII 脱敏/假名化、数据驻留与跨境评估、用户删除与导出通道、审计日志与访问控制。
-- 国际化 ToC：RTL/时区/本地化资源与多区域构建
-  - 答：使用 ICU/Intl 与双向布局支持，时区安全格式化；资源按 locale/region 构建与缓存 key 隔离；文案/图片/视频考虑文化差异与合规。
-- 国际化 ToC：弱网降级与运营指标
-  - 答：低码率/低分辨率、占位骨架、延迟加载与预取；指标关注 TTFB/重缓冲率/错误率/吞吐按地域分布，结合 A/B 做运营决策。
-- 架构演进：选择 Wujie 与 Qiankun 差异
-  - 答：Wujie 基于 WebComponent+iframe，隔离更强、支持多版本与 Vite 生态；Qiankun JS 沙箱 + 样式隔离更轻、生态成熟。选择依据是隔离强度需求与子应用技术栈。
-- 架构演进：Monorepo 迁移风险与收益、复用率度量
-  - 答：风险是依赖提升/构建耗时/发布流程重塑；收益是统一规范、库复用与协作效率提升；复用率以内部包被引用占比与实际调用覆盖率度量。
-- 边缘计算：Next.js RSC/ISR/Edge 的价值与踩坑
-  - 答：价值在于 BFF 聚合与边缘缓存、降低 TTFB；踩坑包括缓存语义混乱、动态/静态混用、Cookie 鉴权在 Edge 的限制、流式组件边界。
-- 可观测与稳定性：端到端关联排障
-  - 答：统一 trace_id，前端埋点与后端日志/CDN 命中关联；按时间线串联请求、播放器事件与资源加载；建立故障知识库与演练。
-- 发布与治理：金丝雀/灰度/回滚
-  - 答：制定阈值（错误率/卡顿率/指标回退）、分批发布与自动回滚；保留快照与特性开关，遇到异常先止损再定位，复盘纳入门禁与演练。
-
-
-## SDK 的设计
-
-设计一个优秀的前端 SDK（如数据埋点 SDK、性能监控 SDK、开放平台 API 封装 SDK 等）不仅考验代码能力，更考验架构思维。以下是面试中常被问到的核心维度与解答：
-
-### 1. SDK 设计的核心原则是什么？
-- **易用性（User-Friendly）**：接入成本极低，最好是 "Zero-Config"（零配置）或者只需传入一个 Token 即可初始化。API 命名需语义化，符合开发者直觉。
-- **稳定性与安全性（Stability & Security）**：SDK 代码绝不能导致宿主应用崩溃。所有的核心流程都应该有 `try...catch` 包裹，绝不能污染全局变量（避免变量冲突）。
-- **轻量化（Lightweight）**：体积要尽可能小。不要引入庞大的第三方库（如 lodash/axios），尽量使用原生 JavaScript（如 fetch/XHR）实现。按需加载和 Tree-shaking 支持。
-- **扩展性（Extensibility）**：支持插件化机制（Plugin System），允许开发者自定义生命周期钩子（Hooks）拦截和修改数据。
-
-### 2. SDK 的整体架构如何划分？
-一个成熟的 SDK 通常分为以下几个模块：
-1. **入口模块 (Core/Entry)**：负责 SDK 的初始化、配置合并、插件挂载、暴露全局 API。
-2. **环境处理模块 (Environment)**：判断当前运行环境（浏览器/Node.js/小程序），抹平环境差异。
-3. **数据采集模块 (Collector)**：例如拦截 XHR/Fetch，监听 Error/UnhandledRejection，监听路由变化，或是监听 DOM 点击事件（无痕埋点）。
-4. **数据处理模块 (Processor/Formatter)**：对采集到的数据进行格式化、过滤（如去除敏感信息）、添加公共参数（如 UUID、设备信息、时间戳）。
-5. **上报/通信模块 (Sender/Transport)**：负责将数据发送给服务端。需要处理网络异常、重试机制、数据批量上报策略。
-
-### 3. 如何保证 SDK 不污染全局环境？
-- **使用闭包或立即执行函数 (IIFE)** 封装代码，避免内部变量泄露。
-- **使用 ES Modules (ESM) 或 CommonJS** 进行模块化开发，打包时通过 Rollup/Webpack 输出 UMD 或 ESM 格式。
-- **唯一命名空间**：如果必须挂载到 `window` 上，使用特殊且唯一的名字，如 `window.__MyMonitorSDK__`，而不是通用的 `window.utils`。
-
-### 4. 数据上报模块（Sender）如何设计？
-这是监控/埋点 SDK 最关键的部分，需要考虑性能和数据丢失问题：
-- **上报方式选择**：
-  - `navigator.sendBeacon(url, data)`：**首选方案**。它是异步非阻塞的，即使页面卸载（Unload）也能保证数据成功发送，不影响下一个页面的加载。
-  - `Image Beacon`（`new Image().src = url + '?data=xxx'`）：兼容性极好，不会跨域拦截，通常作为降级方案（但只能用 GET 请求，有长度限制）。
-  - `Fetch/XHR`：常用于数据量较大或需要接收服务端返回结果的场景。
-- **上报策略（降本增效）**：
-  - **批量上报**：将数据存入内存队列，当队列满（如 10条）或达到定时器时间（如 5秒）时再一次性合并发送。
-  - **空闲上报**：利用 `requestIdleCallback` 在浏览器主线程空闲时处理数据并上报，不抢占用户交互资源。
-  - **本地缓存（容灾）**：遇到断网或发送失败时，将数据存入 `localStorage` 或 `IndexedDB`，待网络恢复后重发。
-
-### 5. SDK 如何实现插件化（Plugin System）？
-为了保持核心（Core）的轻量，将不同功能拆分成独立插件。
-借鉴类似 Vue/Webpack 的插件机制：
-- 定义生命周期 Hooks，如 `beforeInit`, `beforeSend`, `afterSend`。
-- 提供 `use(plugin)` 方法注册插件。
-```javascript
-class SDKCore {
-  constructor() {
-    this.plugins = [];
-  }
-  use(plugin) {
-    plugin.install(this); // 将当前 SDK 实例传入插件
-    this.plugins.push(plugin);
-  }
-  // 在关键节点触发钩子
-  notifyHooks(hookName, data) {
-    this.plugins.forEach(plugin => {
-      if (typeof plugin[hookName] === 'function') {
-        plugin[hookName](data);
-      }
-    });
-  }
-}
-```
-
-### 6. 如何保证 SDK 的代码质量？
-- **TypeScript**：使用 TS 编写，提供完善的 `.d.ts` 类型声明文件，让使用者在 IDE 中有极好的代码提示体验。
-- **单元测试**：使用 Jest/Vitest 进行核心逻辑（如队列合并、配置解析）的单元测试。
-- **打包构建**：使用 Rollup 进行打包，因为它相比 Webpack 打包出来的代码更干净、冗余代码更少，非常适合构建 Library/SDK。
-
-### 7. 遇到过哪些 SDK 兼容性问题，如何解决？
-- **跨端兼容**：一套代码想跑在浏览器、Node.js 和小程序中。解决方案是在构建时（或运行时注入适配器），针对不同环境提供不同的 Transport 层（如浏览器用 `XHR`，小程序用 `wx.request`，Node 用 `http` 模块）。
-- **API 兼容**：某些老浏览器不支持 `sendBeacon` 或 `Promise`。SDK 内部应做降级处理（如退化为 Image 上报），并尽量避免直接引入 polyfill 以免增加体积，让宿主环境自己决定是否引入 polyfill。
 
 ## web3
 
@@ -1303,13 +955,8 @@ async function connectWallet() {
     *   **防追问**：你的系统是如何自动扩容的？
     *   **答案**：在 Kubernetes 中配置 Horizontal Pod Autoscaler (HPA)。常规情况基于 CPU/内存利用率（比如 CPU > 70% 增加 Pod）。但在 AI 场景下，CPU 不一定高（都在等大模型 API），所以我会引入 **KEDA (Kubernetes Event-driven Autoscaling)**，监听 Redis/BullMQ 中等待执行的任务队列长度，队列积压超过阈值就自动弹出新的 Worker Pod 来消费任务，消费完再缩容。
 
-这份是**专门针对阿里/阿里云系前端（AI + 云原生方向）**的
-**20 道高频面试题 + 可直接背诵的标准答案**
-风格务实、不花哨，面试官一听就知道你是懂行的。
 
----
-
-## 一、gRPC & 微服务通信（4 题）
+## 一、gRPC & 微服务通信（4 题）阿里/阿里云系前端（AI + 云原生方向） 
 
 ### 1. 前端/Node 怎么调用 gRPC？和 REST 区别是什么？
 **答：**
