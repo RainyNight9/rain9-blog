@@ -132,17 +132,17 @@
 
 见 ./frontend/log_sdk.md 内容
 
-## 数据埋点 SDK 的设计
+### 数据埋点 SDK 的设计
 
 设计一个优秀的前端 SDK（如数据埋点 SDK、性能监控 SDK、开放平台 API 封装 SDK 等）不仅考验代码能力，更考验架构思维。以下是面试中常被问到的核心维度与解答：
 
-### 1. SDK 设计的核心原则是什么？
+#### 1. SDK 设计的核心原则是什么？
 - **易用性（User-Friendly）**：接入成本极低，最好是 "Zero-Config"（零配置）或者只需传入一个 Token 即可初始化。API 命名需语义化，符合开发者直觉。
 - **稳定性与安全性（Stability & Security）**：SDK 代码绝不能导致宿主应用崩溃。所有的核心流程都应该有 `try...catch` 包裹，绝不能污染全局变量（避免变量冲突）。
 - **轻量化（Lightweight）**：体积要尽可能小。不要引入庞大的第三方库（如 lodash/axios），尽量使用原生 JavaScript（如 fetch/XHR）实现。按需加载和 Tree-shaking 支持。
 - **扩展性（Extensibility）**：支持插件化机制（Plugin System），允许开发者自定义生命周期钩子（Hooks）拦截和修改数据。
 
-### 2. SDK 的整体架构如何划分？
+#### 2. SDK 的整体架构如何划分？
 一个成熟的 SDK 通常分为以下几个模块：
 1. **入口模块 (Core/Entry)**：负责 SDK 的初始化、配置合并、插件挂载、暴露全局 API。
 2. **环境处理模块 (Environment)**：判断当前运行环境（浏览器/Node.js/小程序），抹平环境差异。
@@ -150,12 +150,12 @@
 4. **数据处理模块 (Processor/Formatter)**：对采集到的数据进行格式化、过滤（如去除敏感信息）、添加公共参数（如 UUID、设备信息、时间戳）。
 5. **上报/通信模块 (Sender/Transport)**：负责将数据发送给服务端。需要处理网络异常、重试机制、数据批量上报策略。
 
-### 3. 如何保证 SDK 不污染全局环境？
+#### 3. 如何保证 SDK 不污染全局环境？
 - **使用闭包或立即执行函数 (IIFE)** 封装代码，避免内部变量泄露。
 - **使用 ES Modules (ESM) 或 CommonJS** 进行模块化开发，打包时通过 Rollup/Webpack 输出 UMD 或 ESM 格式。
 - **唯一命名空间**：如果必须挂载到 `window` 上，使用特殊且唯一的名字，如 `window.__MyMonitorSDK__`，而不是通用的 `window.utils`。
 
-### 4. 数据上报模块（Sender）如何设计？
+#### 4. 数据上报模块（Sender）如何设计？
 这是监控/埋点 SDK 最关键的部分，需要考虑性能和数据丢失问题：
 - **上报方式选择**：
   - `navigator.sendBeacon(url, data)`：**首选方案**。它是异步非阻塞的，即使页面卸载（Unload）也能保证数据成功发送，不影响下一个页面的加载。
@@ -166,7 +166,7 @@
   - **空闲上报**：利用 `requestIdleCallback` 在浏览器主线程空闲时处理数据并上报，不抢占用户交互资源。
   - **本地缓存（容灾）**：遇到断网或发送失败时，将数据存入 `localStorage` 或 `IndexedDB`，待网络恢复后重发。
 
-### 5. SDK 如何实现插件化（Plugin System）？
+#### 5. SDK 如何实现插件化（Plugin System）？
 为了保持核心（Core）的轻量，将不同功能拆分成独立插件。
 借鉴类似 Vue/Webpack 的插件机制：
 - 定义生命周期 Hooks，如 `beforeInit`, `beforeSend`, `afterSend`。
@@ -191,12 +191,12 @@ class SDKCore {
 }
 ```
 
-### 6. 如何保证 SDK 的代码质量？
+#### 6. 如何保证 SDK 的代码质量？
 - **TypeScript**：使用 TS 编写，提供完善的 `.d.ts` 类型声明文件，让使用者在 IDE 中有极好的代码提示体验。
 - **单元测试**：使用 Jest/Vitest 进行核心逻辑（如队列合并、配置解析）的单元测试。
 - **打包构建**：使用 Rollup 进行打包，因为它相比 Webpack 打包出来的代码更干净、冗余代码更少，非常适合构建 Library/SDK。
 
-### 7. 遇到过哪些 SDK 兼容性问题，如何解决？
+#### 7. 遇到过哪些 SDK 兼容性问题，如何解决？
 - **跨端兼容**：一套代码想跑在浏览器、Node.js 和小程序中。解决方案是在构建时（或运行时注入适配器），针对不同环境提供不同的 Transport 层（如浏览器用 `XHR`，小程序用 `wx.request`，Node 用 `http` 模块）。
 - **API 兼容**：某些老浏览器不支持 `sendBeacon` 或 `Promise`。SDK 内部应做降级处理（如退化为 Image 上报），并尽量避免直接引入 polyfill 以免增加体积，让宿主环境自己决定是否引入 polyfill。
 
@@ -289,6 +289,13 @@ class SDKCore {
  - 路由懒加载
  - 按需引入
  - KeepAlive
+- react
+  - 用 memo、PureComponent 避免子组件重复渲染
+  - 用 useMemo、useCallback 缓存计算和函数
+  - 列表用 唯一 key，长列表用 虚拟滚动
+  - 懒加载路由与组件，代码分割
+  - 拆分状态与 Context，减少渲染范围
+  - 避免匿名函数、内联对象作为 props
 
 ## 高并发场景
 
