@@ -88,7 +88,7 @@ Promise.resolve(1)
 ```
 
 - 输出 1：因为前面两个 then 穿透，最后打印最初的 1
-- 输出 Promise {<fulfilled>: undefined}：因为最后一个 then 没有 return，隐式返回 undefined，控制台打印整个链条的返回值
+- 输出 `Promise {<fulfilled>: undefined}`：因为最后一个 then 没有 return，隐式返回 undefined，控制台打印整个链条的返回值
 
 ## 5
 
