@@ -53,14 +53,6 @@ export default defineUserConfig({
         link: "/blogs/web3/",
       },
       {
-        text: "Vim",
-        link: "/blogs/vim/",
-      },
-      {
-        text: "AI Agent",
-        link: "/blogs/2026/AI-Agent-Data-Analyzer/",
-      },
-      {
         text: "Rain9 的博客",
         children: [
           { text: "Github", link: "https://github.com/RainyNight9" },
@@ -69,7 +61,7 @@ export default defineUserConfig({
             link: "https://juejin.cn/user/1943592288391496/posts",
           },
           {
-            text: "公众号",
+            text: "公众号《与 IT 有约》",
             link: "https://mp.weixin.qq.com/s/kFGRxEwoWiXDgUC_D8mgnQ",
           },
         ],
