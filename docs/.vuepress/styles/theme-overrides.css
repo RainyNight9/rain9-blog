@@ -1,0 +1,78 @@
+/* ============================================================
+ * Rain9 Blog - 主题变量覆盖
+ * 通过 client.js 导入，确保在所有主题 CSS 之后加载
+ * 直接覆盖默认主题的 --c-* 变量系统
+ * ============================================================ */
+
+/* 亮色模式 */
+html:root {
+  --c-brand: #6366f1;
+  --c-brand-light: #818cf8;
+  --c-bg: #f8f9fc;
+  --c-bg-light: #f0f1f6;
+  --c-bg-lighter: #e8eaf2;
+  --c-bg-navbar: rgba(248, 249, 252, 0.78);
+  --c-bg-sidebar: #ffffff;
+  --c-text: #1a1c2e;
+  --c-text-light: #4a4e6a;
+  --c-text-lighter: #6b7090;
+  --c-text-lightest: #8a8fa8;
+  --c-text-accent: #6366f1;
+  --c-border: #e5e7f0;
+  --c-border-dark: #d5d7e0;
+  --code-hl-bg-color: #f3f4f9;
+}
+
+/* 深色模式 */
+html.dark:root {
+  --c-brand: #818cf8;
+  --c-brand-light: #a5b4fc;
+  --c-bg: #0b0e1a;
+  --c-bg-light: #111627;
+  --c-bg-lighter: #161b2e;
+  --c-bg-navbar: rgba(11, 14, 26, 0.78);
+  --c-bg-sidebar: #111627;
+  --c-text: #e6e9f5;
+  --c-text-light: #a0a5c0;
+  --c-text-lighter: #7a8099;
+  --c-text-lightest: #5a5f78;
+  --c-text-accent: #818cf8;
+  --c-border: #1f2438;
+  --c-border-dark: #2a3048;
+  --code-hl-bg-color: #161b2e;
+}
+
+/* 显式覆盖 body 和导航栏背景，确保使用 --c-bg 变量 */
+html, body {
+  background-color: var(--c-bg) !important;
+  color: var(--c-text) !important;
+}
+
+.navbar {
+  background-color: var(--c-bg-navbar) !important;
+}
+
+.sidebar {
+  background-color: var(--c-bg-sidebar) !important;
+}
+
+/* 确保内容区域文字、标题、列表等使用正确的文字色 */
+.theme-default-content,
+.theme-default-content h1,
+.theme-default-content h2,
+.theme-default-content h3,
+.theme-default-content h4,
+.theme-default-content h5,
+.theme-default-content h6,
+.theme-default-content p,
+.theme-default-content li,
+.theme-default-content td,
+.theme-default-content th {
+  color: var(--c-text);
+}
+
+/* 次要文字 */
+.theme-default-content .page-meta,
+.theme-default-content .page-nav .inner {
+  color: var(--c-text-lighter);
+}

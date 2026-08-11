@@ -1,5 +1,6 @@
 import { defineClientConfig } from '@vuepress/client'
 import { nextTick } from 'vue'
+import './styles/theme-overrides.css'
 
 export default defineClientConfig({
   enhance({ router }) {

@@ -1,0 +1,48 @@
+// ============================================================
+// Rain9 Blog - 现代科技感调色板
+// 主色：深空蓝紫 + 青色点缀
+// 注意：SCSS 变量仅在编译期生效，深色模式由 index.scss 中的
+//       CSS 自定义属性（CSS Variables）在运行时切换
+// ============================================================
+
+// ---- 品牌主色（紫蓝渐变核心色） ----
+$theme-color: #6366f1;          // indigo-500
+$theme-color-l5: #7376f3;
+$theme-color-l10: #8385f5;
+$theme-color-l20: #a3a5f8;
+$theme-color-l30: #c3c4fb;
+
+// ---- 亮色模式（用于默认主题生成的 CSS） ----
+$bg-color: #f8f9fc;
+$bg-color-secondary: #ffffff;
+$bg-color-flotation: #ffffff;
+
+$text-color: #1a1c2e;
+$text-color-l10: #2a2d44;
+$text-color-l20: #4a4e6a;
+$text-color-l30: #6b7090;
+
+$border-color: #e5e7f0;
+$border-color-l10: #eef0f6;
+$border-color-l20: #f3f5fa;
+
+// ---- 代码区 ----
+$code-bg-color: #f3f4f9;
+$code-color: #4a4e6a;
+
+// ---- 强调色 ----
+$accent-color: #06b6d4;          // cyan-500
+$highlight-color: #ec4899;       // pink-500
+
+// ---- 阴影 ----
+$box-shadow: 0 1px 3px rgba(99, 102, 241, 0.06), 0 1px 2px rgba(99, 102, 241, 0.04);
+$box-shadow-hover: 0 12px 28px rgba(99, 102, 241, 0.16), 0 4px 10px rgba(99, 102, 241, 0.08);
+
+// ---- 圆角 ----
+$border-radius: 10px;
+$border-radius-large: 16px;
+
+// ---- 响应式断点 ----
+$MQMobile: 768px;
+$MQNarrow: 1024px;
+$MQWide: 1440px;

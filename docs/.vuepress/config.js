@@ -7,6 +7,20 @@ export default defineUserConfig({
   lang: "zh-CN",
   head: [
     ["link", { rel: "icon", href: "/images/lover.png" }],
+    // 预连接 Google 字体（提升加载速度）
+    ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+    [
+      "link",
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+    ],
+    // JetBrains Mono 等宽字体（用于代码区）
+    [
+      "link",
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+      },
+    ],
     [
       "script",
       {},
@@ -22,38 +36,26 @@ export default defineUserConfig({
     ],
   ],
   title: "Rain9",
-  description: "Rain9 的站点",
+  description: "Rain9 的站点 | 探索 AI，深耕全栈，记录成长",
   theme: defaultTheme({
     hostname: "https://raingpt.top",
     logo: "/images/lover.png",
-    // repo: 'https://github.com/RainyNight9/rain9-blog',
+    // 深色模式：默认跟随系统，右上角显示切换按钮（colorModeSwitch 默认为 true）
+    colorMode: "auto",
+    colorModeSwitch: true,
     navbar: [
+      { text: "首页", link: "/" },
+      { text: "前端", link: "/blogs/frontend/" },
+      { text: "后端", link: "/blogs/backend/" },
+      { text: "算法", link: "/blogs/algorithm/" },
+      { text: "WebGL", link: "/blogs/webgl/" },
+      { text: "Web3", link: "/blogs/web3/" },
       {
-        text: "首页",
-        link: "/",
+        text: "关于",
+        link: "/about.html",
       },
       {
-        text: "前端",
-        link: "/blogs/frontend/",
-      },
-      {
-        text: "后端",
-        link: "/blogs/backend/",
-      },
-      {
-        text: "算法",
-        link: "/blogs/algorithm/",
-      },
-      {
-        text: "WebGL",
-        link: "/blogs/webgl/",
-      },
-      {
-        text: "Web3",
-        link: "/blogs/web3/",
-      },
-      {
-        text: "Rain9 的博客",
+        text: "更多",
         children: [
           { text: "Github", link: "https://github.com/RainyNight9" },
           {
@@ -109,12 +111,23 @@ export default defineUserConfig({
         },
       ],
     },
+    // 上一页/下一页
+    prevLink: true,
+    nextLink: true,
+    // 最后更新时间
+    lastUpdated: "最近更新",
+    // 编辑链接（暂时关闭，避免误链接到不存在的仓库）
+    // editLinkText: "编辑此页",
+    // repo: "RainyNight9/rain9-blog",
+    // docsDir: "docs",
+    // editLinkPattern: ":repo/edit/main/:path",
   }),
   plugins: [
     searchPlugin({
       locales: {
         "/": {
-          placeholder: "搜索",
+          placeholder: "搜索文章...",
+          maxSuggestions: 10,
         },
       },
     }),
