@@ -7,8 +7,8 @@ actions:
   - text: 开始阅读
     link: /blogs/frontend/
     type: primary
-  - text: AI 导航
-    link: /#ai-nav
+  - text: AI 目录
+    link: /ai-directory.html
     type: secondary
 features:
   - title: AI 探索
@@ -26,14 +26,8 @@ features:
 footer: © 2024 Rain9 Blog · Together, exploring, learning and growing
 ---
 
-<div id="ai-nav" style="padding-top: 2rem;"></div>
+## AI 工具目录
 
-## AI 导航精选
+精选 AI 对话工具、生产力应用与学习资源，支持按分类、标签、关键词筛选。
 
-<AiNav />
-
----
-
-## 推荐与补充
-
-如果你有更多优秀的 AI 网站推荐，欢迎在评论区留言或 PR 补充！
+<AiDirectory />

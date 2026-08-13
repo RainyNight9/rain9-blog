@@ -50,6 +50,7 @@ export default defineUserConfig({
       { text: "算法", link: "/blogs/algorithm/" },
       { text: "WebGL", link: "/blogs/webgl/" },
       { text: "Web3", link: "/blogs/web3/" },
+      { text: "AI 目录", link: "/ai-directory.html" },
       {
         text: "关于",
         link: "/about.html",
