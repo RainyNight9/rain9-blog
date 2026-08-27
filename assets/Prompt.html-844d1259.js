@@ -1,0 +1,1 @@
+const t=JSON.parse('{"key":"v-d3c85e9a","path":"/blogs/2026/coze/Prompt.html","title":"","lang":"zh-CN","frontmatter":{},"headers":[],"git":{"updatedTime":1786462831000,"contributors":[{"name":"rain9","email":"15911122312@163.com","commits":1}]},"filePathRelative":"blogs/2026/coze/Prompt.md"}');export{t as data};
