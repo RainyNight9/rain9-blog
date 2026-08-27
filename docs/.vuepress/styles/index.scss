@@ -173,15 +173,33 @@ html.dark ::selection {
   backdrop-filter: saturate(180%) blur(16px);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
   height: 64px;
-  line-height: 64px;
+  // 用 flex 统一垂直居中，替代 line-height 撑高的 inline 对齐
+  display: flex;
+  align-items: center;
   z-index: 100;
   border-bottom: 1px solid var(--c-border);
 
+  // 左侧 logo + 站名容器，必须 flex 才能垂直居中
+  // 注意：不要覆盖 .toggle-sidebar-button 的 display，主题靠它做桌面端隐藏
+  > span {
+    display: flex;
+    align-items: center;
+  }
+
+  // 链接本身也要 flex，避免 logo 与文字上下堆叠
+  > span > a {
+    display: flex !important;
+    align-items: center !important;
+  }
+
   .logo {
     height: 32px;
+    width: 32px;
     margin-right: 12px;
-    vertical-align: middle;
     border-radius: 8px;
+    display: block;
+    flex-shrink: 0;
+    object-fit: cover;
   }
 
   .site-name {
@@ -193,6 +211,45 @@ html.dark ::selection {
     -webkit-text-fill-color: transparent;
     color: transparent;
     letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+
+  // 右侧区域：导航项 + 主题切换 + 搜索框 同行垂直居中
+  .navbar-items-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  .navbar-items {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  // 统一导航项（含下拉项）的垂直居中
+  .navbar-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-dropdown-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-dropdown-title {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem;
+    padding: 0 !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    background: none !important;
+    border: none !important;
+    cursor: pointer;
   }
 
   .nav-links {
@@ -200,25 +257,37 @@ html.dark ::selection {
       font-weight: 500;
       font-size: 0.95rem;
       transition: color var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      line-height: 1.4;
     }
   }
 
-  .search-box input {
-    background-color: rgba(99, 102, 241, 0.06);
-    border: 1px solid rgba(99, 102, 241, 0.16);
-    border-radius: 999px;
-    font-size: 0.9rem;
-    height: 36px;
-    transition: all var(--transition-fast);
-    &:focus {
-      background-color: rgba(99, 102, 241, 0.1);
-      border-color: var(--c-brand);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  .search-box {
+    display: flex;
+    align-items: center;
+    input {
+      background-color: rgba(99, 102, 241, 0.06);
+      border: 1px solid rgba(99, 102, 241, 0.16);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      height: 36px;
+      transition: all var(--transition-fast);
+      &:focus {
+        background-color: rgba(99, 102, 241, 0.1);
+        border-color: var(--c-brand);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      }
     }
   }
 
-  .toggle-color-mode-button .icon {
-    transition: color var(--transition-fast), transform var(--transition-base);
+  .toggle-color-mode-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      transition: color var(--transition-fast), transform var(--transition-base);
+    }
   }
   .toggle-color-mode-button:hover .icon {
     transform: rotate(15deg);
@@ -308,12 +377,18 @@ html.dark ::selection {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1.5rem;
+
+  // 首页内容区放宽，容纳产品展示等更宽的布局
+  .theme-default-content {
+    max-width: none;
+    padding: 2rem 0;
+  }
 }
 
 .home .hero {
   position: relative;
   text-align: center;
-  padding: 5rem 1rem 4rem !important;
+  padding: 4rem 1rem 4rem !important;
   margin: 0 auto;
   max-width: 880px;
   overflow: visible;
@@ -356,7 +431,7 @@ html.dark ::selection {
     box-shadow: 0 0 0 6px rgba(99,102,241,0.15),
       0 12px 40px rgba(99,102,241,0.25),
       0 4px 12px rgba(0,0,0,0.1) !important;
-    margin: 0 auto 2rem !important;
+    margin: 0 auto 1.5rem !important;
     display: block;
     animation: heroFloat 6s ease-in-out infinite;
     transition: transform var(--transition-base);
@@ -367,7 +442,7 @@ html.dark ::selection {
     font-size: clamp(2.4rem, 5vw, 3.6rem) !important;
     font-weight: 800 !important;
     letter-spacing: -0.03em !important;
-    margin: 0 0 1rem !important;
+    margin: 0 0 1.5rem !important;
     background: var(--gradient-text);
     -webkit-background-clip: text;
     background-clip: text;
@@ -379,13 +454,13 @@ html.dark ::selection {
   .description {
     font-size: clamp(1rem, 2vw, 1.25rem) !important;
     max-width: 580px;
-    margin: 0 auto 2.5rem !important;
+    margin: 0 auto 1.5rem !important;
     line-height: 1.7 !important;
     font-weight: 400 !important;
   }
 
   .actions {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;

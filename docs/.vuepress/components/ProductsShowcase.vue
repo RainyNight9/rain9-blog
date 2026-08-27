@@ -253,7 +253,7 @@ function resetFilters() {
 
 <style scoped>
 .products-showcase {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 1rem 0 3rem;
 }
@@ -577,16 +577,16 @@ function resetFilters() {
 }
 
 .card-head {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
 }
 .card-icon {
   font-size: 1.85rem;
   line-height: 1;
   width: 46px;
   height: 46px;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(139, 92, 246, 0.08));
@@ -597,20 +597,28 @@ function resetFilters() {
 .product-card:hover .card-icon {
   transform: scale(1.12) rotate(-5deg);
 }
-.card-title-wrap { flex: 1; min-width: 0; }
+.card-title-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 .card-title {
   font-size: 1.12rem;
   font-weight: 700;
   color: var(--c-text);
-  margin: 0 0 0.3rem;
+  margin: 0 !important;
+  padding: 0 !important;
   letter-spacing: -0.01em;
+  line-height: 1.3;
   word-break: break-word;
 }
 .card-meta {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 0.55rem;
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 .lang-badge, .star-badge {
   display: inline-flex;
