@@ -7,12 +7,12 @@ actions:
   - text: 开始阅读
     link: /blogs/frontend/
     type: primary
-  - text: AI 目录
-    link: /ai-directory.html
+  - text: 开源产品
+    link: https://github.com/you-want
     type: secondary
 features:
-  - title: AI 探索
-    details: 精选优质 AI 工具与资源，紧跟人工智能发展前沿。
+  - title: 开源产品
+    details: 在 you-want 组织下打造 AI 智能体、工具应用与设计资源，持续开源。
   - title: 前端技术
     details: 深入理解 Vue、React、Webpack 等核心前端技术栈。
   - title: 后端架构
@@ -26,8 +26,8 @@ features:
 footer: © 2024 Rain9 Blog · Together, exploring, learning and growing
 ---
 
-## AI 工具目录
+## 开源产品
 
-精选 AI 对话工具、生产力应用与学习资源，支持按分类、标签、关键词筛选。
+来自 [you-want](https://github.com/you-want) 组织的开源项目：AI 智能体、工具应用与设计资源，支持按分类筛选与关键词搜索。
 
-<AiDirectory />
+<ProductsShowcase />
