@@ -235,6 +235,45 @@ html.dark ::selection {
     align-items: center;
   }
 
+  // 导航链接：hover 渐变下划线 + 当前页高亮
+  .navbar-items .navbar-item > a {
+    position: relative;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.35rem 0.55rem;
+    border-radius: 8px;
+    transition: color var(--transition-fast), background var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.4;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--gradient-brand);
+      transform: translateX(-50%);
+      transition: width var(--transition-base);
+    }
+
+    &:hover {
+      color: var(--c-brand);
+      background: var(--gradient-brand-soft);
+      &::after { width: 60%; }
+    }
+
+    // 当前激活页（router-link-active 会被 Vue 加在匹配路由的链接上）
+    &.router-link-active {
+      color: var(--c-brand);
+      font-weight: 600;
+      &::after { width: 60%; }
+    }
+  }
+
   .navbar-dropdown-wrapper {
     display: flex;
     align-items: center;
@@ -262,6 +301,7 @@ html.dark ::selection {
       line-height: 1.4;
     }
   }
+  // (旧版 .nav-links 选择器保留兼容，v2 实际结构见上 .navbar-items)
 
   .search-box {
     display: flex;
@@ -353,6 +393,28 @@ html.dark ::selection {
       var(--gradient-brand);
     background-origin: border-box;
     background-clip: padding-box, border-box;
+  }
+
+  // 正文 h2：左侧渐变短杠 + hover 锚点高亮
+  h2 {
+    position: relative;
+    padding-left: 1rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.32em;
+      width: 4px;
+      height: 1.05em;
+      border-radius: 4px;
+      background: var(--gradient-brand);
+    }
+
+    // 主题的 # 锚点默认 float 到 -0.87em，会压在渐变条上，往外挪
+    .header-anchor {
+      margin-left: calc(-0.87em - 1rem);
+    }
   }
 
   .page-meta {
@@ -491,52 +553,97 @@ html.dark .home .hero {
 }
 
 // ============================================================
-// 首页 features 卡片
+// 首页自定义卡片（HomeCards 组件）
 // ============================================================
-.home .features {
-  margin-top: 2.5rem !important;
-  padding: 0 1rem;
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-.home .feature {
+.home-card {
+  position: relative;
+  display: block;
+  padding: 1.5rem 1.5rem 1.35rem;
+  background: var(--c-bg-sidebar);
+  border: 1px solid var(--c-border);
   border-radius: var(--radius-lg);
-  padding: 1.75rem !important;
-  margin-bottom: 1.5rem !important;
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
   transition: transform var(--transition-base), box-shadow var(--transition-base),
     border-color var(--transition-base);
-  position: relative;
-  overflow: hidden;
+  color: inherit;
 
+  // 顶部渐变细线
   &::before {
     content: '';
     position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 100%;
+    top: 0; left: 0; right: 0;
+    height: 3px;
     background: var(--gradient-brand);
     opacity: 0;
     transition: opacity var(--transition-base);
   }
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.35);
+    text-decoration: none;
     &::before { opacity: 1; }
+
+    .home-card-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   h2 {
-    margin: 0 0 0.5rem !important;
+    margin: 0.85rem 0 0.45rem !important;
     border: none !important;
     padding: 0 !important;
-    font-size: 1.15rem !important;
+    font-size: 1.08rem !important;
+    line-height: 1.4;
   }
 
   p {
     margin: 0 !important;
-    font-size: 0.92rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--c-text-light);
   }
+
+  .home-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 1.35rem;
+    border-radius: 12px;
+    line-height: 1;
+  }
+
+  .home-card-arrow {
+    position: absolute;
+    right: 1.25rem;
+    top: 1.4rem;
+    font-weight: 700;
+    color: var(--c-brand);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+  }
+}
+
+@media (max-width: 960px) {
+  .home-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .home-cards { grid-template-columns: 1fr; padding: 0 1rem; }
 }
 
 // ============================================================
@@ -667,6 +774,221 @@ table {
   padding: 1.5rem 2.5rem !important;
   font-size: 0.85rem;
   text-align: center;
+  color: var(--c-text-lighter);
+}
+
+// ============================================================
+// 自定义容器 tip / warning / danger / details
+// ============================================================
+.custom-container {
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border: 1px solid transparent;
+
+  .custom-container-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+  }
+
+  p { margin: 0.4rem 0 !important; }
+
+  &.tip {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.25);
+    .custom-container-title { color: var(--c-brand); }
+  }
+  &.warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+    .custom-container-title { color: #d97706; }
+  }
+  &.danger {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.28);
+    .custom-container-title { color: #dc2626; }
+  }
+  &.details {
+    background: var(--c-bg-light);
+    border-color: var(--c-border);
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      outline: none;
+      &:hover { color: var(--c-brand); }
+    }
+  }
+}
+
+// ============================================================
+// Mermaid 图表容器
+// ============================================================
+.mermaid {
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  background: var(--c-bg-sidebar);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+
+  svg { max-width: 100%; height: auto; }
+}
+
+// ============================================================
+// 表格斑马纹（叠加在已有表格样式上）
+// ============================================================
+table {
+  tbody tr:nth-child(even) td {
+    background: var(--c-bg-light);
+  }
+  tr:hover td {
+    background: var(--gradient-brand-soft) !important;
+  }
+}
+
+// ============================================================
+// 右侧目录（OutlineItem）
+// ============================================================
+.toc-container,
+aside.page-outline,
+.outline-item {
+  font-size: 0.86rem;
+}
+
+.theme-default-content:not(.home) {
+  // 内容淡入
+  animation: contentFadeIn 0.45s ease both;
+}
+
+@keyframes contentFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// ============================================================
+// 任务列表复选框（config.js extendsMarkdown 生成）
+// ============================================================
+.theme-default-content li:has(input.task-checkbox) {
+  list-style: none;
+}
+.theme-default-content li:has(> input.task-checkbox) {
+  margin-left: -1.3em; // 让复选框对齐到原项目符号位置
+}
+.theme-default-content input.task-checkbox {
+  accent-color: var(--c-brand);
+  margin-right: 0.45em;
+  vertical-align: -0.1em;
+  width: 15px;
+  height: 15px;
+}
+
+// ============================================================
+// 代码块复制按钮（client.js 注入）
+// ============================================================
+div[class*="language-"] {
+  .copy-code-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 3;
+    padding: 0.18rem 0.7rem;
+    font-size: 0.75rem;
+    font-family: var(--font-family);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--transition-fast), background var(--transition-fast);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+      opacity: 1 !important;
+    }
+
+    // 触屏设备没有 hover，常显半透明
+    @media (hover: none) {
+      opacity: 0.7;
+    }
+  }
+
+  &:hover .copy-code-btn { opacity: 1; }
+}
+
+// ============================================================
+// 返回顶部按钮（client.js 注入）
+// ============================================================
+.back-to-top {
+  position: fixed;
+  right: 2rem;
+  bottom: 2.4rem;
+  z-index: 90;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--gradient-brand);
+  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.4);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity var(--transition-base), transform var(--transition-base),
+    box-shadow var(--transition-base);
+
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(99, 102, 241, 0.55);
+  }
+
+  @media (max-width: 768px) {
+    right: 1.1rem;
+    bottom: 1.6rem;
+    width: 38px;
+    height: 38px;
+  }
+}
+
+// ============================================================
+// 无障碍：尊重「减少动态效果」系统偏好
+// ============================================================
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+// ============================================================
+// kbd 与 details
+// ============================================================
+kbd {
+  background: var(--c-bg-lighter);
+  border: 1px solid var(--c-border-dark);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 0.1em 0.45em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
 }
 
 // ============================================================
@@ -674,9 +996,15 @@ table {
 // ============================================================
 @media (max-width: 768px) {
   .navbar { height: 56px; line-height: 56px; }
+
+  // 关键：主题用 .navbar .can-hide { display: none } 在窄屏隐藏导航项，
+  // 但本文件的 .navbar-items { display: flex } 同优先级且更晚加载，
+  // 会把它覆盖掉导致导航项溢出压到汉堡按钮上 —— 这里显式恢复隐藏
+  .navbar .navbar-items { display: none; }
+
   .page .theme-default-content { padding: 1.5rem 1.25rem; }
   .page h1 { font-size: 1.7rem; }
-  .home .feature { padding: 1.25rem !important; }
   .home .hero { padding: 3rem 1rem 2.5rem !important; }
   .home .hero img { width: 110px !important; height: 110px !important; }
+  .page h2 { padding-left: 0.75rem; }
 }
