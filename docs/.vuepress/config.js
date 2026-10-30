@@ -11,6 +11,13 @@ import path from "node:path";
 // ============================================================
 const blogsRoot = path.resolve(__dirname, "..", "blogs");
 
+// 复刻 VuePress 的产物路径清洗（@vuepress/utils sanitizeFileName），
+// 使侧边栏链接与路由别名及静态产物文件名一致
+const UNSAFE_ROUTE_CHARS = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g;
+function toRoutePath(p) {
+  return encodeURI(p.replace(UNSAFE_ROUTE_CHARS, "_"));
+}
+
 function pickTitle(absFile) {
   try {
     const head = fs.readFileSync(absFile, "utf-8").slice(0, 800);
@@ -32,10 +39,8 @@ function buildSectionSidebar(sectionName) {
   } catch (e) {
     return [];
   }
-  // 跳过文件名含 VuePress 会做 sanitize 的字符的文件（& % : ; 等），其路由不可靠
-  const unsafeName = /[&%;:#?<>|"'`$@+=\\]/;
   const pages = entries
-    .filter((e) => e.isFile() && e.name.endsWith(".md") && !unsafeName.test(e.name))
+    .filter((e) => e.isFile() && e.name.endsWith(".md"))
     .map((e) => ({
       name: e.name,
       isHome: /^(README|index)\.md$/i.test(e.name),
@@ -49,7 +54,7 @@ function buildSectionSidebar(sectionName) {
   return pages.map((p) =>
     p.isHome
       ? `/blogs/${sectionName}/`
-      : encodeURI(`/blogs/${sectionName}/${p.name}`).replace(/\.md$/, ".html")
+      : toRoutePath(`/blogs/${sectionName}/${p.name}`).replace(/\.md$/, ".html")
   );
 }
 
@@ -65,6 +70,30 @@ const sectionLabels = {
   yan: "杂谈",
   2026: "2026 · AI 时代",
 };
+
+// 数据分析 AI Agent 课程：扫描章节目录自动生成侧边栏
+function buildCourseSidebar() {
+  const courseDir = path.join(blogsRoot, "2026", "数据分析 AI Agent");
+  const prefix = "/blogs/2026/数据分析 AI Agent/";
+  try {
+    return fs
+      .readdirSync(courseDir, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .sort((a, b) => a.name.localeCompare(b.name, "zh-Hans-CN", { numeric: true }))
+      .map((ch) => ({
+        text: ch.name,
+        collapsible: true,
+        children: fs
+          .readdirSync(path.join(courseDir, ch.name), { withFileTypes: true })
+          .filter((e) => e.isFile() && e.name.endsWith(".md"))
+          .map((e) => e.name)
+          .sort((a, b) => a.localeCompare(b, "zh-Hans-CN", { numeric: true }))
+          .map((name) => toRoutePath(`${prefix}${ch.name}/${name}`).replace(/\.md$/, ".html")),
+      }));
+  } catch (e) {
+    return [];
+  }
+}
 
 const blogSidebars = {};
 // 这些分区使用下面手工定义的分组侧边栏，不参与自动扫描
@@ -193,50 +222,12 @@ export default defineUserConfig({
             "/blogs/ai-jobs/agent-02-core.md",
             "/blogs/ai-jobs/agent-03-engineering.md",
             "/blogs/ai-jobs/agent-04-interview.md",
+            "/blogs/ai-jobs/agent-05-rag.md",
           ],
         },
       ],
-      // AI Agent Data Analyzer 课程（原有手工配置）
-      "/blogs/2026/AI-Agent-Data-Analyzer/": [
-        {
-          text: "AI Agent Data Analyst",
-          children: [
-            "/blogs/2026/AI-Agent-Data-Analyzer/",
-            {
-              text: "01-Fundamentals",
-              collapsible: true,
-              children: [
-                "/blogs/2026/AI-Agent-Data-Analyzer/01-fundamentals/",
-                "/blogs/2026/AI-Agent-Data-Analyzer/01-fundamentals/lab/",
-              ],
-            },
-            {
-              text: "02-Intermediate",
-              collapsible: true,
-              children: [
-                "/blogs/2026/AI-Agent-Data-Analyzer/02-intermediate/",
-                "/blogs/2026/AI-Agent-Data-Analyzer/02-intermediate/lab/",
-              ],
-            },
-            {
-              text: "03-Project",
-              collapsible: true,
-              children: [
-                "/blogs/2026/AI-Agent-Data-Analyzer/03-project/",
-                "/blogs/2026/AI-Agent-Data-Analyzer/03-project/lab/",
-              ],
-            },
-            {
-              text: "04-Deployment",
-              collapsible: true,
-              children: [
-                "/blogs/2026/AI-Agent-Data-Analyzer/04-deployment/",
-                "/blogs/2026/AI-Agent-Data-Analyzer/04-deployment/lab/",
-              ],
-            },
-          ],
-        },
-      ],
+      // 数据分析 AI Agent 课程（扫描真实章节目录生成）
+      "/blogs/2026/数据分析 AI Agent/": buildCourseSidebar(),
       // 后端（手工分组）
       "/blogs/backend/": [
         { text: "后端总览", children: ["/blogs/backend/"] },
@@ -271,6 +262,7 @@ export default defineUserConfig({
             "/blogs/backend/auth.md",
             "/blogs/backend/websocket.md",
             "/blogs/backend/system-design.md",
+            "/blogs/backend/distributed.md",
           ],
         },
         {

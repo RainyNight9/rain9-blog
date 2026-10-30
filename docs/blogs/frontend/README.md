@@ -115,6 +115,10 @@ uni-app
 
 [实践篇—低代码问卷平台](https://juejin.cn/post/7078860542026186765)
 
+## AI 前端
+
+1. [AI 产品前端开发指南](./ai-frontend.md) —— 流式渲染与帧解析、打字机与 Markdown 渐进渲染、对话 UI 模式、Vercel AI SDK 选型
+
 ## 微前端
 
 1. [微前端实战](https://juejin.cn/post/7073481273183830052)

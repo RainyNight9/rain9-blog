@@ -26,7 +26,8 @@
 2. [网关 Gateway](./gateway.md)
 3. [认证与鉴权](./auth.md)（Session/JWT/OAuth2/OIDC 与 SSO、RBAC/ABAC）
 4. [实时通信](./websocket.md)（WebSocket/SSE 选型、心跳重连、横向扩展）
-5. [经典系统设计题](./system-design.md)（短链/秒杀/Feed 流/分布式 ID）
+5. [分布式基础](./distributed.md)（CAP/BASE、一致性哈希、分布式事务、幂等）
+6. [经典系统设计题](./system-design.md)（短链/秒杀/Feed 流/分布式 ID）
 
 ## 数据与中间件
 

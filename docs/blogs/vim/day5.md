@@ -4,8 +4,8 @@ prev:
   link: ./day4.html
 
 next:
-  text: day6
-  link: ./day6.html
+  text: Vim 练级目录
+  link: ./index.html
 ---
 
 # day5

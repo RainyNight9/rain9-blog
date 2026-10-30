@@ -2,7 +2,7 @@
 
 > 2025–2026 年，AI 应用爆发带来了两类肉眼可见在升温的工程岗位：**FDE（Forward Deployed Engineer，前线部署工程师）** 和 **全栈 AI Agent 工程师**。这个知识库把两类岗位的「角色认知、知识体系、工程方法、面试准备」整理成一条可以照着走的路径。
 >
-> FDE 部分主要整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License，在线阅读：<https://vangong1999.github.io/FDE/>），该库综合了 Exponent、The Forward Deployed、The Pragmatic Engineer 等公开资料；AI Agent 部分结合业界共识与站内文章 [从零开始构建智能体](/blogs/2026/从零开始构建智能体.md)、[AI Agent Data Analyst 课程](/blogs/2026/AI-Agent-Data-Analyzer/)。感谢原作者的开源贡献。
+> FDE 部分主要整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License，在线阅读：<https://vangong1999.github.io/FDE/>），该库综合了 Exponent、The Forward Deployed、The Pragmatic Engineer 等公开资料；AI Agent 部分结合业界共识与站内文章 [从零开始构建智能体](/blogs/2026/从零开始构建智能体.md)、[数据分析 AI Agent 课程](/blogs/2026/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20AI%20Agent/1.%20%E5%AF%BC%E8%AE%BA_%20Al%20Agent%20%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%8C%96%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%9E%B6%E6%9E%84/1.1.%20%E7%90%86%E8%A7%A3AI%20Agent%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.html)。感谢原作者的开源贡献。
 
 ---
 
@@ -50,6 +50,7 @@ flowchart LR
 | [02 · 核心技术栈](./agent-02-core.md) | LLM API、Prompt/上下文工程、RAG、工具调用、MCP、多 Agent 编排 | 技术主干 |
 | [03 · 从 Demo 到生产](./agent-03-engineering.md) | Eval、可观测性、成本与延迟、安全护栏、流式前端、部署形态 | 工程化 |
 | [04 · 面试高频题](./agent-04-interview.md) | LLM/RAG/Agent/工程化四类高频题 + 系统设计题 + 行为面 | 备面 |
+| [05 · 实战：可评测的 RAG](./agent-05-rag.md) | 跟着代码跑通分块→检索→引用→拒答→评测全链路（作品集项目一） | 动手 |
 
 ---
 
@@ -98,4 +99,4 @@ Week 6  面试准备     → Part B-04
 - [Exponent FDE Interview Guide 2026](https://www.tryexponent.com/blog/forward-deployed-engineer-interview-the-definitive-2026-guide-fde)
 - [The Forward Deployed](https://www.theforwarddeployed.io/)：FDE 面试与角色分析
 - [OWASP LLM 应用风险 Top 10](https://genai.owasp.org/llm-top-10/)
-- 站内：[从零开始构建智能体](/blogs/2026/从零开始构建智能体.md) · [AI Agent Data Analyst 课程](/blogs/2026/AI-Agent-Data-Analyzer/) · [AI 产品目录](/ai-directory.md)
+- 站内：[从零开始构建智能体](/blogs/2026/从零开始构建智能体.md) · [数据分析 AI Agent 课程](/blogs/2026/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20AI%20Agent/1.%20%E5%AF%BC%E8%AE%BA_%20Al%20Agent%20%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%8C%96%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%9E%B6%E6%9E%84/1.1.%20%E7%90%86%E8%A7%A3AI%20Agent%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.html) · [AI 产品目录](/ai-directory.md)

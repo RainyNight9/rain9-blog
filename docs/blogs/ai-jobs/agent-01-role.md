@@ -84,7 +84,7 @@ flowchart TB
 
 每个项目都写一份简短的 README：问题定义、架构决策与取舍、评测方法与结果、已知局限。**展示判断力，而不只是展示代码**。
 
-站内参考：[AI Agent Data Analyst 课程](/blogs/2026/AI-Agent-Data-Analyzer/)（从基础到部署的完整实战路线）。
+站内参考：[数据分析 AI Agent 课程](/blogs/2026/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20AI%20Agent/1.%20%E5%AF%BC%E8%AE%BA_%20Al%20Agent%20%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%8C%96%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%9E%B6%E6%9E%84/1.1.%20%E7%90%86%E8%A7%A3AI%20Agent%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90.html)（从基础到部署的完整实战路线）、[RAG 实战](./agent-05-rag.md)。
 
 ---
 
