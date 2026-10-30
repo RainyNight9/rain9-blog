@@ -16,10 +16,11 @@
 
 ## 其它
 
-1. [JS 输出题](./out.md)
-2. [JS 手写题](./js.md)
-3. [JS 排序题](./sort.md)
-4. [数据处理手写题](./dealData.md)
-5. [场景应用题](./scene.md)
-6. [前端手写代码整理](https://juejin.cn/post/7110949841571676173)
-7. [常见的前端算法](https://juejin.cn/post/7114121062928875556)
+1. [高频算法模板速查（JS 版）](./templates.md) —— 双指针/滑动窗口/二分/BFS/回溯/DP 九类模板
+2. [JS 输出题](./out.md)
+3. [JS 手写题](./js.md)
+4. [JS 排序题](./sort.md)
+5. [数据处理手写题](./dealData.md)
+6. [场景应用题](./scene.md)
+7. [前端手写代码整理](https://juejin.cn/post/7110949841571676173)
+8. [常见的前端算法](https://juejin.cn/post/7114121062928875556)

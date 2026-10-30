@@ -107,7 +107,7 @@ css 模块
 5. [小程序直播](./xiaochengxuzhibo.md)
 6. [Taro](./taro.md)
 7. [Flutter](./flutter.md)
-8. [Tauri](./tauri.md)
+8. [Tauri 系列笔记](/blogs/desktop/tauri.html)（已迁至[桌面端开发](/blogs/desktop/)）
 
 uni-app
 
