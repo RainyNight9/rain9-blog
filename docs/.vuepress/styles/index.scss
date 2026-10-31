@@ -1001,3 +1001,43 @@ kbd {
   .vp-hero img { width: 110px !important; height: 110px !important; }
   .vp-page h2 { padding-left: 1rem; }
 }
+
+// ============================================================
+// 排版节奏重建（rc.137）
+// 插件链注入的「负 margin-top + 大 padding-top」锚点偏移模式会把
+// 标题拉进上一个区块（整体显得拥挤）。全局 scroll-padding-top 已处理
+// 锚点让位，这里用 ID 级优先级 + !important 彻底压制并重建节奏。
+// ============================================================
+#content h2,
+#content h3,
+#content h4,
+#content h5,
+#content h6 {
+  margin-top: 2.2em !important;
+  padding-top: 0 !important;
+}
+#content h2 {
+  margin-bottom: 1.1em !important;
+}
+#content h3,
+#content h4 {
+  margin-bottom: 0.8em !important;
+}
+#content p {
+  margin-bottom: 1.1em;
+  line-height: 1.78;
+}
+#content ul,
+#content ol {
+  margin-bottom: 1.1em;
+}
+#content li {
+  margin: 0.45em 0;
+  line-height: 1.75;
+}
+// 首页卡片内的标题不受上述节奏影响
+#content .home-card h2,
+#content .home-card h3 {
+  margin: 0.85rem 0 0.45rem !important;
+  padding: 0 !important;
+}
