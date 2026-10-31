@@ -1,6 +1,6 @@
 # FDE 交付方法论：Discover → Design → Deploy → Review
 
-> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「交付方法论」部分。上一篇：[FDE 角色认知](./fde-01-what-is-fde.md)。
+> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「交付方法论」部分。
 
 DDDR 是 FDE 现场工作的**主骨架**。目标：能说清每个阶段的**入口、动作、出口、产物**，并避免阶段跳跃——最常见的翻车是 Discover 没做完就 Deploy。
 
@@ -191,5 +191,3 @@ POC 与生产系统之间隔着四条沟，FDE 的核心工作就是逐一跨过
 - [ ] 默写四阶段出口检查
 - [ ] 选一个你过去的项目，标出它实际停在哪一阶段
 - [ ] 用六阶段表给同一项目再标一遍，看缺口是否在 Prove / Scale
-
-下一篇：[FDE 的 AI 落地技术栈](./fde-03-ai-landing.md)

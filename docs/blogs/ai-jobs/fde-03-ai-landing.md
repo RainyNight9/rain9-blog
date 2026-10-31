@@ -1,6 +1,6 @@
 # FDE 的 AI 落地技术栈：RAG、Agent、Eval 与生产化
 
-> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「AI 落地」部分，结合业界公开共识。上一篇：[FDE 交付方法论](./fde-02-delivery.md)。
+> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「AI 落地」部分，结合业界公开共识。
 >
 > 动手向的 Agent 构建教程见站内 [从零开始构建智能体](/blogs/2026/从零开始构建智能体.md)。
 
@@ -217,5 +217,3 @@ flowchart TB
 - [ ] 为自己的项目建一个 50 条的 golden set（含应拒答）
 - [ ] 用 §5 决策树重新审视你手上的 AI 需求
 - [ ] 过一遍 §6 生产化清单，数数缺几项
-
-下一篇：[FDE 面试通关](./fde-04-interview.md)

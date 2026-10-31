@@ -1,6 +1,6 @@
 # FDE 角色认知：什么是 Forward Deployed Engineer
 
-> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「角色认知」部分，并综合 [The Forward Deployed](https://www.theforwarddeployed.io/)、[The Pragmatic Engineer](https://newsletter.pragmaticengineer.com/) 等公开资料的结论。上一篇文章见 [AI 岗位知识库总览](./README.md)。
+> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「角色认知」部分，并综合 [The Forward Deployed](https://www.theforwarddeployed.io/)、[The Pragmatic Engineer](https://newsletter.pragmaticengineer.com/) 等公开资料的结论。
 
 ---
 
@@ -182,5 +182,3 @@ FDE 会把「合同审核」拆成可验证子问题（条款抽取？风险分�
 - [ ] 列出你过去项目里「最像 FDE」的一段经历
 - [ ] 用 §7 矩阵判断：你目标雇主是否真在「非技术买家 × 技术产品」象限
 - [ ] 填 §9 自评矩阵，确定下一步方向
-
-下一篇：[FDE 交付方法论：Discover → Design → Deploy → Review](./fde-02-delivery.md)

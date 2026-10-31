@@ -1,6 +1,6 @@
 # FDE 面试通关：全景、框架与公司对照
 
-> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「面试通关」部分，综合 [Exponent FDE Interview Guide 2026](https://www.tryexponent.com/blog/forward-deployed-engineer-interview-the-definitive-2026-guide-fde)、[The Forward Deployed](https://www.theforwarddeployed.io/) 与各公司公开招聘信息。上一篇：[FDE 的 AI 落地技术栈](./fde-03-ai-landing.md)。
+> 本文整理自开源知识库 [VanGong1999/FDE](https://github.com/VanGong1999/FDE)（MIT License）的「面试通关」部分，综合 [Exponent FDE Interview Guide 2026](https://www.tryexponent.com/blog/forward-deployed-engineer-interview-the-definitive-2026-guide-fde)、[The Forward Deployed](https://www.theforwarddeployed.io/) 与各公司公开招聘信息。
 
 FDE 面试不是标准后端 LeetCode 流水线，而是 **工程能力 × 问题拆解 × 客户判断 ×（常有）AI 生产化** 的组合。
 
