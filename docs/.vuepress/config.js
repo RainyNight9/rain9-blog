@@ -165,7 +165,8 @@ export default defineUserConfig({
     // 导致切分区后侧边栏冻结。同时全局 scroll-padding 仍保证锚点跳转体验。
     sidebarDepth: 0,
     lastUpdated: true,
-    contributors: true,
+    // 不展示贡献者（git 插件会在 title 里暴露作者邮箱）
+    contributors: false,
     navbar: [
       { text: "首页", link: "/" },
       { text: "AI 岗位", link: "/blogs/ai-jobs/" },
@@ -291,6 +292,9 @@ export default defineUserConfig({
     locales: {
       "/": {
         lastUpdatedText: "最近更新",
+        contributorsText: "贡献者",
+        prev: "上一篇",
+        next: "下一篇",
       },
     },
   }),

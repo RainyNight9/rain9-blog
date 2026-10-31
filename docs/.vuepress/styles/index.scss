@@ -430,27 +430,28 @@ html.dark ::selection {
   // 正文 h2：左侧渐变短杠 + hover 锚点高亮
   h2 {
     position: relative;
-    padding-left: 1rem;
-    // 中和 vuepress-shared 注入的「负 margin-top + 大 padding-top」锚点偏移模式：
-    // 那套规则让 h2 盒顶比文字高约 65px，导致左侧装饰条浮到上一段旁边。
-    // 锚点跳转的导航让位已由全局 html { scroll-padding-top } 处理，这里无需保留。
-    margin-top: 2.4em;
-    padding-top: 0;
+    padding-left: 1.25rem;
 
+    // 左侧渐变竖条
     &::before {
       content: '';
       position: absolute;
       left: 0;
-      top: 0.32em;
+      top: 0.15em;
       width: 4px;
-      height: 1.05em;
+      height: 1em;
       border-radius: 4px;
       background: var(--gradient-brand);
     }
 
-    // 主题的 # 锚点默认 float 到 -0.87em，会压在渐变条上，往外挪
+    // 主题的 # 锚点是 float + 负 margin —— 会把标题文字往左拖、压到竖条上。
+    // 改为绝对定位悬在竖条左侧，不参与文本流。
     .header-anchor {
-      margin-left: calc(-0.87em - 1rem);
+      float: none;
+      position: absolute;
+      left: -1.15em;
+      top: 0.2em;
+      margin-left: 0;
     }
   }
 
@@ -998,5 +999,5 @@ kbd {
   .vp-page h1 { font-size: 1.7rem; }
   .vp-hero { padding: 3rem 1rem 2.5rem !important; }
   .vp-hero img { width: 110px !important; height: 110px !important; }
-  .vp-page h2 { padding-left: 0.75rem; }
+  .vp-page h2 { padding-left: 1rem; }
 }
