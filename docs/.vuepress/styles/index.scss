@@ -713,19 +713,21 @@ html.dark .vp-hero {
 // ============================================================
 // 首页按钮
 // ============================================================
-.vp-hero .vp-hero-actions .route-link {
+.vp-hero .vp-hero-actions .vp-hero-action-button {
+  // 统一胶囊形（含外链按钮——主题默认给它方角+粗边框）
   border-radius: 999px !important;
-  padding: 0.7rem 1.8rem !important;
+  padding: 0.75rem 1.9rem !important;
   font-size: 0.95rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.02em;
+  line-height: 1.4;
   transition: transform var(--transition-fast), box-shadow var(--transition-base),
-    opacity var(--transition-fast) !important;
-  border: none !important;
+    border-color var(--transition-fast), background var(--transition-fast) !important;
 
   &.primary {
     background: var(--gradient-brand) !important;
     color: #fff !important;
+    border: none !important;
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
     &:hover {
       transform: translateY(-2px);
