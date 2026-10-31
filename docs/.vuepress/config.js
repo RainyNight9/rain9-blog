@@ -70,6 +70,7 @@ const sectionLabels = {
   interview: "面试八股",
   vim: "Vim 练级",
   yan: "杂谈",
+  desktop: "桌面端开发",
   2026: "2026 · AI 时代",
 };
 
