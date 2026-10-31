@@ -173,6 +173,10 @@ export default defineUserConfig({
   theme: defaultTheme({
     hostname: "https://raingpt.top",
     logo: "/images/lover.png",
+    // 侧边栏不挂页内锚点子链接（当前页 h2 列表）：beta.67 主题的
+    // resolveMultiSidebarItems 在组件上下文外重算时 useRoute() 会抛错，
+    // 导致切分区后侧边栏冻结。同时全局 scroll-padding 仍保证锚点跳转体验。
+    sidebarDepth: 0,
     // 深色模式：默认跟随系统，右上角显示切换按钮（colorModeSwitch 默认为 true）
     colorMode: "auto",
     colorModeSwitch: true,

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>hash test</title></head>
+<body style="font-family:monospace;font-size:12px">
+<div id="log">start</div>
+<iframe id="f" src="/blogs/ai-jobs/" style="width:1100px;height:500px"></iframe>
+<script>
+const log = (m) => { document.getElementById('log').innerHTML += '<br>' + m }
+const info = () => {
+  const doc = document.getElementById('f').contentDocument
+  const win = document.getElementById('f').contentWindow
+  const aside = doc.querySelector('aside.sidebar')
+  if (!aside) return 'NO-ASIDE'
+  const hs = [...aside.querySelectorAll('.sidebar-heading')].map(h => h.textContent.trim())
+  return 'hash=' + win.location.hash.slice(0, 20) + ' | 分组: ' + (hs.length ? hs.slice(0, 3).join(' | ') : '(无)')
+}
+const clickSidebarHash = async () => {
+  const doc = document.getElementById('f').contentDocument
+  const a = [...doc.querySelectorAll('aside.sidebar a')].find(x => x.getAttribute('href').includes('#_4-'))
+  if (!a) { log('  未找到锚点子链接'); return }
+  log('  锚点链接 href=' + a.getAttribute('href').slice(0, 50))
+  a.click(); await new Promise(r => setTimeout(r, 2500))
+  log('  → 点锚点后 | ' + info())
+}
+const clickNav = async (text) => {
+  const doc = document.getElementById('f').contentDocument
+  const a = [...doc.querySelectorAll('.navbar-items a')].find(x => x.textContent.trim() === text)
+  if (!a) { log('  导航未找到: ' + text); return }
+  a.click(); await new Promise(r => setTimeout(r, 2500))
+  log('  → 导航[' + text + '] | ' + info())
+}
+window.runTest = async () => {
+  const wait = (ms) => new Promise(r => setTimeout(r, ms))
+  await wait(3000)
+  log('S1 起始: ' + info())
+  await clickSidebarHash()
+  await clickNav('前端')
+  await clickNav('后端')
+  await clickNav('AI 目录')
+  log('DONE')
+}
+setTimeout(runTest, 1500)
+</script></body></html>

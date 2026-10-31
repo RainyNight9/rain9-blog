@@ -120,6 +120,30 @@ export default defineClientConfig({
       window.addEventListener('scroll', toggleTop, { passive: true })
       toggleTop()
 
+      /* ============ 页内锚点链接兜底 ============ */
+      // 正文/侧边栏里的同页锚点（href 带 #）不走 vue-router 的 hash 导航：
+      // 会触发主题 resolveMultiSidebarItems 的注入缺陷导致后续视图冻结。
+      // 改为原生滚动 + replaceState（保留 vue-router 的 history.state）。
+      document.addEventListener(
+        'click',
+        (e) => {
+          try {
+            const a = e.target.closest('a[href*="#"]')
+            if (!a || !a.closest('.theme-default-content, aside.sidebar')) return
+            const url = new URL(a.href, location.origin)
+            if (url.pathname !== location.pathname || !url.hash) return
+            e.preventDefault()
+            e.stopPropagation()
+            const el = document.getElementById(decodeURIComponent(url.hash.slice(1)))
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            history.replaceState(history.state, '', url.hash)
+          } catch (err) {
+            /* 忽略 */
+          }
+        },
+        true
+      )
+
       /* ============ 侧边栏一致性兜底 ============ */
       // 背景：极少数长会话场景下（经历多次 HMR / dev server 重启后），
       // 主题的侧边栏 computed 可能不随路由更新，表现为切分区后左侧仍显示
@@ -131,25 +155,33 @@ export default defineClientConfig({
       }
       const enforceSidebarSync = async (to) => {
         await nextTick()
-        setTimeout(() => {
+        // 检查侧边栏链接所属分区是否与当前路由一致；
+        // 不匹配时再等 250ms 复查一次（排除 Vue 补丁完成前的过渡期误判），
+        // 两次都不一致才强制刷新自愈。
+        const check = () => {
           try {
             const aside = document.querySelector('aside.sidebar')
-            if (!aside) return
+            if (!aside) return true
             const links = [...aside.querySelectorAll('a[href^="/blogs/"]')]
-            if (!links.length) return
+            if (!links.length) return true
             const cur = sectionOf(to.path)
-            const aligned = links.some(
+            return links.some(
               (a) => sectionOf(new URL(a.href, location.origin).pathname) === cur
             )
-            if (aligned) return
+          } catch (e) {
+            return true
+          }
+        }
+        setTimeout(() => {
+          if (check()) return
+          setTimeout(() => {
+            if (check()) return
             const key = 'sidebar-reload:' + to.path
             if (sessionStorage.getItem(key)) return
             sessionStorage.setItem(key, '1')
             console.warn('[sidebar] 检测到侧边栏与路由不一致，自动刷新同步')
             window.location.reload()
-          } catch (e) {
-            /* 校验异常不影响正常浏览 */
-          }
+          }, 250)
         }, 80)
       }
 
