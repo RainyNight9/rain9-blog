@@ -5,3 +5,5 @@ node_modules
 .DS_Store
 
 docs/.vuepress/dist
+.temp-build
+.cache-build
