@@ -421,9 +421,10 @@ html.dark ::selection {
   padding-bottom: 4rem;
 
   #content {
-    max-width: 940px;
+    // 大屏跟随变宽（上限 1160px），小屏自动收缩；两侧始终保留呼吸留白
+    max-width: min(1160px, calc(100% - 4rem));
     margin: 0 auto;
-    padding: 2.5rem 3rem;
+    padding: 2.5rem 3.5rem;
   }
 
   h1 {
@@ -1059,4 +1060,13 @@ kbd {
   max-width: 700px !important;
   font-size: 1.25rem !important;
   margin-inline: auto;
+}
+
+// ============================================================
+// 布局宽度覆盖：主题默认 --content-width 740px 太窄，
+// 大屏内容列跟随变宽（sidebar 20rem + 两侧留白），小屏自动收缩
+// ============================================================
+html:root {
+  --content-width: min(1160px, calc(100vw - 26rem));
+  --homepage-width: 1200px;
 }
