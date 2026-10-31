@@ -406,6 +406,16 @@ html.dark ::selection {
 // ============================================================
 // 页面主区域
 // ============================================================
+
+// ── 正文链接样式：去默认下划线，hover 恢复 ──
+#content a {
+  text-decoration: none;
+}
+#content a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .vp-page {
   padding-top: 2rem;
   padding-bottom: 4rem;
@@ -1040,4 +1050,13 @@ kbd {
 #content .home-card h3 {
   margin: 0.85rem 0 0.45rem !important;
   padding: 0 !important;
+}
+
+// ============================================================
+// Hero 描述区（主题默认 1.6rem/560px 太大导致 tagline 换行）
+// ============================================================
+.vp-hero .vp-hero-description {
+  max-width: 700px !important;
+  font-size: 1.25rem !important;
+  margin-inline: auto;
 }

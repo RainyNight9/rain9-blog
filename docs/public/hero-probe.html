@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>hero probe</title></head>
+<body style="font-family:monospace;font-size:12px">
+<div id="log">start</div>
+<iframe id="f" src="/" style="width:1100px;height:400px"></iframe>
+<script>
+const log = (m) => { document.getElementById('log').innerHTML += '<br>' + m }
+window.runTest = async () => {
+  const wait = (ms) => new Promise(r => setTimeout(r, ms))
+  await wait(3200)
+  const win = document.getElementById('f').contentWindow
+  const doc = document.getElementById('f').contentDocument
+  const d = doc.querySelector('.vp-hero-description')
+  if (!d) { log('no .vp-hero-description'); return }
+  const cs = win.getComputedStyle(d)
+  log('maxWidth=' + cs.maxWidth + ' | width=' + cs.width + ' | fontSize=' + cs.fontSize)
+  const r = d.getBoundingClientRect()
+  log('rect: left=' + Math.round(r.left) + ' width=' + Math.round(r.width))
+  log('DONE')
+}
+setTimeout(runTest, 1500)
+</script></body></html>
