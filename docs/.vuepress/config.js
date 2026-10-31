@@ -12,10 +12,12 @@ import path from "node:path";
 const blogsRoot = path.resolve(__dirname, "..", "blogs");
 
 // 复刻 VuePress 的产物路径清洗（@vuepress/utils sanitizeFileName），
-// 使侧边栏链接与路由别名及静态产物文件名一致
+// 使侧边栏链接与路由别名及静态产物文件名一致。
+// 注意：只做字符净化、不做 encodeURI —— 主题的 useNavLink 约定配置里
+// 写非编码字符串，它内部会自己 encodeURI 再解析（双重编码会 404）
 const UNSAFE_ROUTE_CHARS = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g;
 function toRoutePath(p) {
-  return encodeURI(p.replace(UNSAFE_ROUTE_CHARS, "_"));
+  return p.replace(UNSAFE_ROUTE_CHARS, "_");
 }
 
 function pickTitle(absFile) {
@@ -227,7 +229,9 @@ export default defineUserConfig({
         },
       ],
       // 数据分析 AI Agent 课程（扫描真实章节目录生成）
-      "/blogs/2026/数据分析 AI Agent/": buildCourseSidebar(),
+      // key 必须是 encodeURI 形态：vue-router 的 route.path 是编码的，
+      // resolveLocalePath 直接用编码后的路径做前缀匹配
+      [encodeURI("/blogs/2026/数据分析 AI Agent/")]: buildCourseSidebar(),
       // 后端（手工分组）
       "/blogs/backend/": [
         { text: "后端总览", children: ["/blogs/backend/"] },
