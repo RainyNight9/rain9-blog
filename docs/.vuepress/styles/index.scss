@@ -685,7 +685,7 @@ html.dark .home .hero {
 // ============================================================
 div[class*="language-"] {
   border-radius: var(--radius-md) !important;
-  border: 1px solid rgba(99, 241, 200, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.14);
   margin: 1.25rem 0 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: relative;
@@ -701,11 +701,21 @@ div[class*="language-"] {
   }
 
   pre, pre[class*="language-"] {
-    padding: 1.2rem 1.4rem !important;
-    margin: 0 !important;
+    padding: 1.3rem 1.4rem !important;
+    // 只清上下外边距：主题用 pre 的 margin-left（3.5rem）为行号列让位，
+    // 整体 margin: 0 会把让位边距清掉，导致行号与代码文本重叠
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     font-family: var(--font-mono) !important;
     font-size: 0.875rem !important;
     line-height: 1.7 !important;
+  }
+
+  // 行号列与代码行严格对齐：同字号、同行高、同顶部留白
+  &.line-numbers-mode .line-numbers {
+    font-size: 0.875rem !important;
+    line-height: 1.7 !important;
+    padding-top: 1.3rem !important;
   }
 }
 
