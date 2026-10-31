@@ -441,7 +441,7 @@ html.dark ::selection {
   // 正文 h2：左侧渐变短杠 + hover 锚点高亮
   h2 {
     position: relative;
-    padding-left: 1.25rem;
+    padding-left: 1rem;
 
     // 左侧渐变竖条
     &::before {
@@ -455,15 +455,7 @@ html.dark ::selection {
       background: var(--gradient-brand);
     }
 
-    // 主题的 # 锚点是 float + 负 margin —— 会把标题文字往左拖、压到竖条上。
-    // 改为绝对定位悬在竖条左侧，不参与文本流。
-    .header-anchor {
-      float: none;
-      position: absolute;
-      left: -1.15em;
-      top: 0.2em;
-      margin-left: 0;
-    }
+
   }
 
   .vp-page-meta {
