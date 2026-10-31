@@ -399,6 +399,11 @@ html.dark ::selection {
   h2 {
     position: relative;
     padding-left: 1rem;
+    // 中和 vuepress-shared 注入的「负 margin-top + 大 padding-top」锚点偏移模式：
+    // 那套规则让 h2 盒顶比文字高约 65px，导致左侧装饰条浮到上一段旁边。
+    // 锚点跳转的导航让位已由全局 html { scroll-padding-top } 处理，这里无需保留。
+    margin-top: 2.4em;
+    padding-top: 0;
 
     &::before {
       content: '';
