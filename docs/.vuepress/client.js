@@ -120,13 +120,47 @@ export default defineClientConfig({
       window.addEventListener('scroll', toggleTop, { passive: true })
       toggleTop()
 
+      /* ============ 侧边栏一致性兜底 ============ */
+      // 背景：极少数长会话场景下（经历多次 HMR / dev server 重启后），
+      // 主题的侧边栏 computed 可能不随路由更新，表现为切分区后左侧仍显示
+      // 上一个分区的目录。这里在每次路由切换后校验：若侧边栏链接所属分区
+      // 与当前路由不一致，强制整页刷新一次自愈（sessionStorage 防循环）。
+      const sectionOf = (p) => {
+        const parts = p.split('/')
+        return '/' + parts.slice(1, 3).filter(Boolean).join('/')
+      }
+      const enforceSidebarSync = async (to) => {
+        await nextTick()
+        setTimeout(() => {
+          try {
+            const aside = document.querySelector('aside.sidebar')
+            if (!aside) return
+            const links = [...aside.querySelectorAll('a[href^="/blogs/"]')]
+            if (!links.length) return
+            const cur = sectionOf(to.path)
+            const aligned = links.some(
+              (a) => sectionOf(new URL(a.href, location.origin).pathname) === cur
+            )
+            if (aligned) return
+            const key = 'sidebar-reload:' + to.path
+            if (sessionStorage.getItem(key)) return
+            sessionStorage.setItem(key, '1')
+            console.warn('[sidebar] 检测到侧边栏与路由不一致，自动刷新同步')
+            window.location.reload()
+          } catch (e) {
+            /* 校验异常不影响正常浏览 */
+          }
+        }, 80)
+      }
+
       /* ============ 路由切换后统一装饰 ============ */
       const decorate = async () => {
         await renderMermaid()
         addCopyButtons()
       }
-      router.afterEach(() => {
+      router.afterEach((to) => {
         void decorate()
+        void enforceSidebarSync(to)
       })
       await decorate()
     })
