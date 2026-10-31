@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>align probe</title></head>
+<body style="font-family:monospace;font-size:12px">
+<div id="log">start</div>
+<iframe id="f" src="/" style="width:1990px;height:400px"></iframe>
+<script>
+const log = (m) => { document.getElementById('log').innerHTML += '<br>' + m }
+window.runTest = async () => {
+  const wait = (ms) => new Promise(r => setTimeout(r, ms))
+  await wait(3500)
+  const win = document.getElementById('f').contentWindow
+  const doc = document.getElementById('f').contentDocument
+  const info = (el, name) => {
+    if (!el) { log(name + ' → 未找到'); return }
+    const r = el.getBoundingClientRect()
+    const cs = win.getComputedStyle(el)
+    log(`${name} → left=${Math.round(r.left)} w=${Math.round(r.width)} maxW=${cs.maxWidth} padL=${cs.paddingLeft} margin=${cs.marginLeft}`)
+  }
+  info(doc.querySelector('.vp-home, .home'), 'home容器')
+  info(doc.querySelector('#content'), '#content')
+  const h2s = [...doc.querySelectorAll('#content h2')]
+  const target = h2s.find(h => h.textContent.includes('开源产品'))
+  info(target, '开源产品h2')
+  info(doc.querySelector('.products-showcase'), '.products-showcase')
+  const card = doc.querySelector('.products-showcase .showcase-card, .products-showcase article, .products-showcase > div > div')
+  info(card, '产品卡片')
+  log('DONE')
+}
+setTimeout(runTest, 1500)
+</script></body></html>

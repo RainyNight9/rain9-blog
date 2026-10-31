@@ -1064,3 +1064,15 @@ html:root {
   --content-width: min(1160px, calc(100vw - 26rem));
   --homepage-width: 1200px;
 }
+
+// ============================================================
+// 首页内容包装层对齐：rc.137 首页的 markdown 容器无样式，
+// 与 ProductsShowcase（1100px 居中）的左边缘错开 —— 统一对齐
+// ============================================================
+.vp-home [vp-content] > div {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.vp-home [vp-content] > div .home-cards {
+  padding: 0;
+}
