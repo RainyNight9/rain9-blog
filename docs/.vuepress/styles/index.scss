@@ -46,7 +46,23 @@ html:root {
   --code-hl-bg-color: #f3f4f9;
 
   // 自定义渐变（非默认主题变量，用于装饰元素）
-  --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+  
+  // ── rc.137 新变量体系映射（--vp-c-*）──
+  --vp-c-accent: #6366f1;
+  --vp-c-accent-hover: #818cf8;
+  --vp-c-accent-bg: #6366f1;
+  --vp-c-accent-soft: rgba(99, 102, 241, 0.14);
+  --vp-c-accent-text: #ffffff;
+  --vp-c-bg: #f8f9fc;
+  --vp-c-bg-alt: #f0f1f6;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-border: #e5e7f0;
+  --vp-c-border-hard: #d5d7e0;
+  --vp-c-divider: #e8eaf2;
+  --vp-c-text: #1a1c2e;
+  --vp-c-text-mute: #6b7090;
+
+--gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
   --gradient-brand-soft: linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(139,92,246,0.10) 50%, rgba(6,182,212,0.12) 100%);
   --gradient-text: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #22d3ee 100%);
 
@@ -87,7 +103,23 @@ html.dark:root {
 
   --code-hl-bg-color: #161b2e;
 
-  --gradient-brand: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #22d3ee 100%);
+  
+  // ── rc.137 新变量体系映射（暗色）──
+  --vp-c-accent: #818cf8;
+  --vp-c-accent-hover: #a5b4fc;
+  --vp-c-accent-bg: #818cf8;
+  --vp-c-accent-soft: rgba(129, 140, 248, 0.16);
+  --vp-c-accent-text: #0b0e1a;
+  --vp-c-bg: #0b0e1a;
+  --vp-c-bg-alt: #111627;
+  --vp-c-bg-elv: #161b2e;
+  --vp-c-border: #1f2438;
+  --vp-c-border-hard: #2a3048;
+  --vp-c-divider: #1f2438;
+  --vp-c-text: #e6e9f5;
+  --vp-c-text-mute: #7a8099;
+
+--gradient-brand: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #22d3ee 100%);
   --gradient-brand-soft: linear-gradient(135deg, rgba(129,140,248,0.16) 0%, rgba(167,139,250,0.12) 50%, rgba(34,211,238,0.14) 100%);
   --gradient-text: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 50%, #67e8f9 100%);
 
@@ -167,7 +199,7 @@ html.dark ::selection {
 // ============================================================
 // 导航栏：玻璃态
 // ============================================================
-.navbar {
+.vp-navbar {
   position: sticky;
   top: 0;
   backdrop-filter: saturate(180%) blur(16px);
@@ -192,7 +224,7 @@ html.dark ::selection {
     align-items: center !important;
   }
 
-  .logo {
+  .vp-site-logo {
     height: 32px;
     width: 32px;
     margin-right: 12px;
@@ -202,7 +234,7 @@ html.dark ::selection {
     object-fit: cover;
   }
 
-  .site-name {
+  .vp-site-name {
     font-weight: 800;
     font-size: 1.25rem;
     background: var(--gradient-text);
@@ -215,7 +247,7 @@ html.dark ::selection {
   }
 
   // 右侧区域：导航项 + 主题切换 + 搜索框 同行垂直居中
-  .navbar-items-wrapper {
+  .vp-navbar-items-wrapper {
     display: flex;
     align-items: center;
     flex: 1;
@@ -223,20 +255,20 @@ html.dark ::selection {
     gap: 0.75rem;
   }
 
-  .navbar-items {
+  .vp-navbar-items {
     display: flex;
     align-items: center;
     gap: 0.2rem;
   }
 
   // 统一导航项（含下拉项）的垂直居中
-  .navbar-item {
+  .vp-navbar-item {
     display: flex;
     align-items: center;
   }
 
   // 导航链接：hover 渐变下划线 + 当前页高亮
-  .navbar-items .navbar-item > a {
+  .vp-navbar-items .vp-navbar-item > a {
     position: relative;
     font-weight: 500;
     font-size: 0.95rem;
@@ -274,12 +306,12 @@ html.dark ::selection {
     }
   }
 
-  .navbar-dropdown-wrapper {
+  .vp-navbar-dropdown-wrapper {
     display: flex;
     align-items: center;
   }
 
-  .navbar-dropdown-title {
+  .vp-navbar-dropdown-title {
     display: inline-flex !important;
     align-items: center !important;
     gap: 0.25rem;
@@ -301,7 +333,7 @@ html.dark ::selection {
       line-height: 1.4;
     }
   }
-  // (旧版 .nav-links 选择器保留兼容，v2 实际结构见上 .navbar-items)
+  // (旧版 .nav-links 选择器保留兼容，v2 实际结构见上 .vp-navbar-items)
 
   .search-box {
     display: flex;
@@ -337,14 +369,14 @@ html.dark ::selection {
 // ============================================================
 // 侧边栏增强
 // ============================================================
-.sidebar {
+.vp-sidebar {
   border-right: 1px solid var(--c-border);
   padding-top: 1.5rem;
   font-size: 0.92rem;
 
-  .sidebar-group { margin-bottom: 1.2rem; }
+  .vp-sidebar-group { margin-bottom: 1.2rem; }
 
-  .sidebar-heading {
+  .vp-sidebar-heading {
     font-weight: 600;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -353,7 +385,7 @@ html.dark ::selection {
     opacity: 0.7;
   }
 
-  a.sidebar-link {
+  a.vp-sidebar-item {
     border-left: 3px solid transparent;
     padding: 0.5rem 1.5rem;
     font-weight: 500;
@@ -374,11 +406,11 @@ html.dark ::selection {
 // ============================================================
 // 页面主区域
 // ============================================================
-.page {
+.vp-page {
   padding-top: 2rem;
   padding-bottom: 4rem;
 
-  .theme-default-content {
+  #content {
     max-width: 820px;
     margin: 0 auto;
     padding: 2rem 2.5rem;
@@ -422,15 +454,15 @@ html.dark ::selection {
     }
   }
 
-  .page-meta {
+  .vp-page-meta {
     font-size: 0.85rem;
     margin-top: 3rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--c-border);
   }
 
-  .page-nav {
-    margin-top: 3rem;
+  .vp-page-nav {
+    margin-top: 3rem; /* 新主题自带样式，此段仅微调 */
     padding: 1.5rem 0 0;
     border-top: 1px solid var(--c-border);
     .next a, .prev a { font-weight: 500; }
@@ -446,13 +478,31 @@ html.dark ::selection {
   padding: 0 1.5rem;
 
   // 首页内容区放宽，容纳产品展示等更宽的布局
-  .theme-default-content {
+  #content {
     max-width: none;
     padding: 2rem 0;
   }
 }
 
-.home .hero {
+
+.vp-hero .vp-hero-image {
+  width: 140px !important;
+  height: 140px !important;
+  max-height: none !important;
+  object-fit: cover;
+  border-radius: 50% !important;
+  border: 4px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.15), 0 12px 40px rgba(99, 102, 241, 0.25) !important;
+  margin: 0 auto 1.5rem !important;
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+html.dark .vp-hero .vp-hero-image {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 0 0 6px rgba(129, 140, 248, 0.2), 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.vp-hero {
   position: relative;
   text-align: center;
   padding: 4rem 1rem 4rem !important;
@@ -535,7 +585,7 @@ html.dark ::selection {
   }
 }
 
-html.dark .home .hero {
+html.dark .vp-hero {
   img {
     border-color: rgba(255, 255, 255, 0.15) !important;
     box-shadow: 0 0 0 6px rgba(129,140,248,0.2),
@@ -567,6 +617,11 @@ html.dark .home .hero {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+.home-card,
+.home-card * {
+  text-decoration: none !important;
 }
 
 .home-card {
@@ -654,7 +709,7 @@ html.dark .home .hero {
 // ============================================================
 // 首页按钮
 // ============================================================
-.home .hero .action-button {
+.vp-hero .vp-hero-actions .route-link {
   border-radius: 999px !important;
   padding: 0.7rem 1.8rem !important;
   font-size: 0.95rem !important;
@@ -765,7 +820,7 @@ table {
 // ============================================================
 // 列表
 // ============================================================
-.theme-default-content {
+#content {
   ul, ol { li { margin: 0.4rem 0; } }
   ul li::marker { color: var(--c-brand); }
   ol li::marker { color: var(--c-brand); font-weight: 700; }
@@ -774,7 +829,7 @@ table {
 // ============================================================
 // 图片
 // ============================================================
-.theme-default-content img {
+#content img {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   transition: transform var(--transition-base);
@@ -869,12 +924,12 @@ table {
 // 右侧目录（OutlineItem）
 // ============================================================
 .toc-container,
-aside.page-outline,
+aside.vp-page-outline,
 .outline-item {
   font-size: 0.86rem;
 }
 
-.theme-default-content:not(.home) {
+#content:not(.home) {
   // 内容淡入
   animation: contentFadeIn 0.45s ease both;
 }
@@ -887,96 +942,18 @@ aside.page-outline,
 // ============================================================
 // 任务列表复选框（config.js extendsMarkdown 生成）
 // ============================================================
-.theme-default-content li:has(input.task-checkbox) {
+#content li:has(input.task-checkbox) {
   list-style: none;
 }
-.theme-default-content li:has(> input.task-checkbox) {
+#content li:has(> input.task-checkbox) {
   margin-left: -1.3em; // 让复选框对齐到原项目符号位置
 }
-.theme-default-content input.task-checkbox {
+#content input.task-checkbox {
   accent-color: var(--c-brand);
   margin-right: 0.45em;
   vertical-align: -0.1em;
   width: 15px;
   height: 15px;
-}
-
-// ============================================================
-// 代码块复制按钮（client.js 注入）
-// ============================================================
-div[class*="language-"] {
-  .copy-code-btn {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.6rem;
-    z-index: 3;
-    padding: 0.18rem 0.7rem;
-    font-size: 0.75rem;
-    font-family: var(--font-family);
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity var(--transition-fast), background var(--transition-fast);
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.18);
-      opacity: 1 !important;
-    }
-
-    // 触屏设备没有 hover，常显半透明
-    @media (hover: none) {
-      opacity: 0.7;
-    }
-  }
-
-  &:hover .copy-code-btn { opacity: 1; }
-}
-
-// ============================================================
-// 返回顶部按钮（client.js 注入）
-// ============================================================
-.back-to-top {
-  position: fixed;
-  right: 2rem;
-  bottom: 2.4rem;
-  z-index: 90;
-  width: 42px;
-  height: 42px;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #fff;
-  background: var(--gradient-brand);
-  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.4);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-  transition: opacity var(--transition-base), transform var(--transition-base),
-    box-shadow var(--transition-base);
-
-  &.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 26px rgba(99, 102, 241, 0.55);
-  }
-
-  @media (max-width: 768px) {
-    right: 1.1rem;
-    bottom: 1.6rem;
-    width: 38px;
-    height: 38px;
-  }
 }
 
 // ============================================================
@@ -1010,16 +987,16 @@ kbd {
 // 移动端
 // ============================================================
 @media (max-width: 768px) {
-  .navbar { height: 56px; line-height: 56px; }
+  .vp-navbar { height: 56px; line-height: 56px; }
 
-  // 关键：主题用 .navbar .can-hide { display: none } 在窄屏隐藏导航项，
-  // 但本文件的 .navbar-items { display: flex } 同优先级且更晚加载，
+  // 关键：主题用 .vp-navbar .can-hide { display: none } 在窄屏隐藏导航项，
+  // 但本文件的 .vp-navbar-items { display: flex } 同优先级且更晚加载，
   // 会把它覆盖掉导致导航项溢出压到汉堡按钮上 —— 这里显式恢复隐藏
-  .navbar .navbar-items { display: none; }
+  .vp-navbar .vp-navbar-items { display: none; }
 
-  .page .theme-default-content { padding: 1.5rem 1.25rem; }
-  .page h1 { font-size: 1.7rem; }
-  .home .hero { padding: 3rem 1rem 2.5rem !important; }
-  .home .hero img { width: 110px !important; height: 110px !important; }
-  .page h2 { padding-left: 0.75rem; }
+  .vp-page #content { padding: 1.5rem 1.25rem; }
+  .vp-page h1 { font-size: 1.7rem; }
+  .vp-hero { padding: 3rem 1rem 2.5rem !important; }
+  .vp-hero img { width: 110px !important; height: 110px !important; }
+  .vp-page h2 { padding-left: 0.75rem; }
 }

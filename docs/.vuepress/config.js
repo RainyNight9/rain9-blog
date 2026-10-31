@@ -1,7 +1,9 @@
 import { defineUserConfig } from "vuepress";
 import { defaultTheme } from "@vuepress/theme-default";
+import { viteBundler } from "@vuepress/bundler-vite";
 import { searchPlugin } from "@vuepress/plugin-search";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
+import { gitPlugin } from "@vuepress/plugin-git";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -74,6 +76,27 @@ const sectionLabels = {
   2026: "2026 · AI 时代",
 };
 
+const blogSidebars = {};
+// 这些分区使用下面手工定义的分组侧边栏，不参与自动扫描
+const manualSidebarSections = new Set(["ai-jobs", "backend"]);
+try {
+  for (const dirent of fs.readdirSync(blogsRoot, { withFileTypes: true })) {
+    if (!dirent.isDirectory() || dirent.name.startsWith(".")) continue;
+    if (manualSidebarSections.has(dirent.name)) continue;
+    const links = buildSectionSidebar(dirent.name);
+    if (links.length) {
+      blogSidebars[`/blogs/${dirent.name}/`] = [
+        {
+          text: sectionLabels[dirent.name] || dirent.name,
+          children: links,
+        },
+      ];
+    }
+  }
+} catch (e) {
+  /* 扫描失败时退回无侧边栏，不影响构建 */
+}
+
 // 数据分析 AI Agent 课程：扫描章节目录自动生成侧边栏
 function buildCourseSidebar() {
   const courseDir = path.join(blogsRoot, "2026", "数据分析 AI Agent");
@@ -98,46 +121,9 @@ function buildCourseSidebar() {
   }
 }
 
-const blogSidebars = {};
-// 这些分区使用下面手工定义的分组侧边栏，不参与自动扫描
-const manualSidebarSections = new Set(["ai-jobs", "backend"]);
-try {
-  for (const dirent of fs.readdirSync(blogsRoot, { withFileTypes: true })) {
-    if (!dirent.isDirectory() || dirent.name.startsWith(".")) continue;
-    if (manualSidebarSections.has(dirent.name)) continue;
-    const links = buildSectionSidebar(dirent.name);
-    if (links.length) {
-      blogSidebars[`/blogs/${dirent.name}/`] = [
-        {
-          text: sectionLabels[dirent.name] || dirent.name,
-          children: links,
-        },
-      ];
-    }
-  }
-} catch (e) {
-  /* 扫描失败时退回无侧边栏，不影响构建 */
-}
-
 export default defineUserConfig({
   lang: "zh-CN",
-  // beta.67 未内置 GFM 任务列表，这里手动渲染 `- [ ]` / `- [x]` 为复选框
-  extendsMarkdown: (md) => {
-    md.core.ruler.after("inline", "task-list-checkbox", (state) => {
-      for (const token of state.tokens) {
-        if (token.type !== "inline" || !token.children?.length) continue;
-        const first = token.children[0];
-        if (first.type !== "text") continue;
-        const matched = first.content.match(/^\[( |x|X)\]\s+/);
-        if (!matched) continue;
-        const checked = matched[1].toLowerCase() === "x";
-        const checkbox = new state.Token("html_inline", "", 0);
-        checkbox.content = `<input type="checkbox" class="task-checkbox" disabled${checked ? " checked" : ""}> `;
-        token.children.unshift(checkbox);
-        first.content = first.content.slice(matched[0].length);
-      }
-    });
-  },
+  bundler: viteBundler(),
   head: [
     ["link", { rel: "icon", href: "/images/lover.png" }],
     // 预连接 Google 字体（提升加载速度）
@@ -162,7 +148,7 @@ export default defineUserConfig({
       (function() {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?87d26d5dfc581ba7870114f705815bcd";
-        var s = document.getElementsByTagName("script")[0]; 
+        var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
       })();
       `,
@@ -171,15 +157,15 @@ export default defineUserConfig({
   title: "Rain9",
   description: "Rain9 的站点 | 探索 AI，深耕全栈，记录成长",
   theme: defaultTheme({
-    hostname: "https://raingpt.top",
     logo: "/images/lover.png",
+    colorMode: "auto",
+    colorModeSwitch: true,
     // 侧边栏不挂页内锚点子链接（当前页 h2 列表）：beta.67 主题的
     // resolveMultiSidebarItems 在组件上下文外重算时 useRoute() 会抛错，
     // 导致切分区后侧边栏冻结。同时全局 scroll-padding 仍保证锚点跳转体验。
     sidebarDepth: 0,
-    // 深色模式：默认跟随系统，右上角显示切换按钮（colorModeSwitch 默认为 true）
-    colorMode: "auto",
-    colorModeSwitch: true,
+    lastUpdated: true,
+    contributors: true,
     navbar: [
       { text: "首页", link: "/" },
       { text: "AI 岗位", link: "/blogs/ai-jobs/" },
@@ -302,16 +288,11 @@ export default defineUserConfig({
       // 其余博客分区：自动扫描生成
       ...blogSidebars,
     },
-    // 上一页/下一页
-    prevLink: true,
-    nextLink: true,
-    // 最后更新时间
-    lastUpdated: "最近更新",
-    // 编辑链接（暂时关闭，避免误链接到不存在的仓库）
-    // editLinkText: "编辑此页",
-    // repo: "RainyNight9/rain9-blog",
-    // docsDir: "docs",
-    // editLinkPattern: ":repo/edit/main/:path",
+    locales: {
+      "/": {
+        lastUpdatedText: "最近更新",
+      },
+    },
   }),
   plugins: [
     searchPlugin({
@@ -323,7 +304,25 @@ export default defineUserConfig({
       },
     }),
     registerComponentsPlugin({
-      componentsDir: __dirname + "/components",
+      componentsDir: path.resolve(__dirname, "components"),
     }),
+    gitPlugin(),
   ],
+  // beta.67 未内置 GFM 任务列表，这里手动渲染 `- [ ]` / `- [x]` 为复选框
+  extendsMarkdown: (md) => {
+    md.core.ruler.after("inline", "task-list-checkbox", (state) => {
+      for (const token of state.tokens) {
+        if (token.type !== "inline" || !token.children?.length) continue;
+        const first = token.children[0];
+        if (first.type !== "text") continue;
+        const matched = first.content.match(/^\[( |x|X)\]\s+/);
+        if (!matched) continue;
+        const checked = matched[1].toLowerCase() === "x";
+        const checkbox = new state.Token("html_inline", "", 0);
+        checkbox.content = `<input type="checkbox" class="task-checkbox" disabled${checked ? " checked" : ""}> `;
+        token.children.unshift(checkbox);
+        first.content = first.content.slice(matched[0].length);
+      }
+    });
+  },
 });
